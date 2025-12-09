@@ -1,0 +1,21 @@
+ .navlink {
+        @apply text-black hover:text-white text-sm font-medium uppercase;
+    }
+    .dropdown-item {
+        @apply block px-4 py-2 text-sm text-black hover:bg-white/5 hover:text-white;
+    }
+    .mobile-item {
+        @apply block text-black hover:text-white text-sm font-medium py-2;
+    }
+
+* { font-family: 'Poppins', sans-serif !important; }
+
+.brand {
+    font-family: 'Cormorant', serif !important;
+    font-weight: 500 !important;
+}
+
+.brand1 {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 200 !important;
+}
