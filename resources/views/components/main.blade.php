@@ -18,7 +18,7 @@
          </p>
 
          <div class="mt-6 flex items-center gap-x-6">
-             <a href="#"
+             <a href="/login"
                  class="rounded-md px-4 py-2.5 text-sm font-semibold text-white shadow transition hover:opacity-80"
                  style="background-color: #5A3E2B; font-family: poppins, sans-serif !important;">
                  Sign In
