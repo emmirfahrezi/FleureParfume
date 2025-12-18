@@ -18,11 +18,10 @@
                 id="searchInput"
                 placeholder="Cari produk..."
                 class="border border-gray-300 rounded-lg px-4 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
             <a href="{{ route('products.create') }}"
-               class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg">
+                class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg">
                 Cari
             </a>
         </div>
@@ -43,78 +42,81 @@
             </thead>
 
             <tbody id="productTable">
-                <!-- ROW -->
+                @forelse ($products as $product)
                 <tr class="border-b hover:bg-gray-50">
                     <td class="px-6 py-4">
-                        <img src="{{ asset('images/products/parfum1.jpg') }}"
-                             class="w-14 h-14 rounded-lg object-cover">
+                        @if ($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}"
+                            class="w-14 h-14 rounded-lg object-cover">
+                        @else
+                        <span class="text-xs text-gray-400">No Image</span>
+                        @endif
                     </td>
-                    <td class="px-6 py-4 font-medium text-gray-800">
-                        Fleur Rose
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="px-3 py-1 text-xs rounded-full bg-pink-100 text-pink-700">
-                            Wanita
-                        </span>
-                    </td>
-                    <td class="px-6 py-4">Rp 250.000</td>
-                    <td class="px-6 py-4">20</td>
-                    <td class="px-6 py-4 text-center space-x-2">
-                        <a href="#"
-                           class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">
-                            Edit
-                        </a>
-                        <a href="#"
-                           onclick="return confirm('Hapus produk ini?')"
-                           class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">
-                            Hapus
-                        </a>
-                    </td>
-                </tr>
 
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="px-6 py-4">
-                        <img src="{{ asset('images/products/parfum2.jpg') }}"
-                             class="w-14 h-14 rounded-lg object-cover">
-                    </td>
                     <td class="px-6 py-4 font-medium text-gray-800">
-                        Noir Homme
+                        {{ $product->name }}
                     </td>
+
                     <td class="px-6 py-4">
-                        <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
-                            Pria
+                        <span class="px-3 py-1 text-xs rounded-full
+                    {{ $product->category == 'Wanita' ? 'bg-pink-100 text-pink-700' : '' }}
+                    {{ $product->category == 'Pria' ? 'bg-blue-100 text-blue-700' : '' }}
+                    {{ $product->category == 'Unisex' ? 'bg-purple-100 text-purple-700' : '' }}">
+                            {{ $product->category }}
                         </span>
                     </td>
-                    <td class="px-6 py-4">Rp 300.000</td>
-                    <td class="px-6 py-4">15</td>
+
+                    <td class="px-6 py-4">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {{ $product->stock }}
+                    </td>
+
                     <td class="px-6 py-4 text-center space-x-2">
                         <a href="#"
-                           class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">
+                            class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">
                             Edit
                         </a>
-                        <a href="#"
-                           onclick="return confirm('Hapus produk ini?')"
-                           class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">
-                            Hapus
-                        </a>
+
+                        <form action="#"
+                            method="POST"
+                            class="inline"
+                            onsubmit="return confirm('Hapus produk ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button
+                                class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">
+                                Hapus
+                            </button>
+                        </form>
                     </td>
                 </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center py-6 text-gray-400">
+                        Belum ada produk
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
+
         </table>
     </div>
 </div>
 
 <!-- SEARCH SCRIPT -->
 <script>
-document.getElementById('searchInput').addEventListener('keyup', function () {
-    let value = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#productTable tr');
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let value = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#productTable tr');
 
-    rows.forEach(row => {
-        row.style.display = row.innerText.toLowerCase().includes(value)
-            ? ''
-            : 'none';
+        rows.forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(value) ?
+                '' :
+                'none';
+        });
     });
-});
 </script>
 @endsection
