@@ -19,7 +19,7 @@
 
         /* Layer gelap biar form keliatan */
         .overlay {
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(0, 0, 0, 0.46);
             width: 100%;
             min-height: 100vh;
 
