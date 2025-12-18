@@ -15,3 +15,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::prefix('dashboard')->group(function () {
     Route::resource('products', ProductController::class);
 });
+
+//hapus
+// Perhatikan ada parameter {id} dan method-nya delete
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
