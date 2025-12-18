@@ -20,10 +20,11 @@
                 class="border border-gray-300 rounded-lg px-4 py-2 text-sm
                        focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
-            <a href="{{ route('products.create') }}"
+            <a href=""
                 class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg">
                 Cari
             </a>
+            <a href="{{ route('products.create') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg">create</a>
         </div>
     </div>
 
