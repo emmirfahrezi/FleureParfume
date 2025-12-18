@@ -80,10 +80,10 @@
                             Edit
                         </a>
 
-                        <form action="#"
+                        <form action="{{ route('products.destroy', $product->id) }}"
                             method="POST"
                             class="inline"
-                            onsubmit="return confirm('Hapus produk ini?')">
+                            onsubmit="return confirm('Yakin mau hapus produk {{ $product->name }}?');">
                             @csrf
                             @method('DELETE')
                             <button
