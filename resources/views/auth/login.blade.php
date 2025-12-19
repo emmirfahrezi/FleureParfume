@@ -19,20 +19,8 @@
         <h2 class="text-3xl font-bold text-center mb-2" style="color:#3B2F2F;">FLEURE PARFUMES</h2>
         <p class="text-center mb-6" style="color:#5a4a30;">Welcome, please sign in</p>
 
-        @if(session('success'))
-            <p class="text-green-500 text-sm mb-3">{{ session('success') }}</p>
-        @endif
-
         @if(session('error'))
             <p class="text-red-500 text-sm mb-3">{{ session('error') }}</p>
-        @endif
-
-        @if($errors->any())
-            <ul class="text-red-500 text-sm mb-3">
-                @foreach($errors->all() as $error)
-                    <li>- {{ $error }}</li>
-                @endforeach
-            </ul>
         @endif
 
         <form method="POST" action="/login">

@@ -24,6 +24,8 @@
                  Sign In
              </a>
          </div>
+
+     </div>
  </div>
 
  {{-- hero section done --}}
