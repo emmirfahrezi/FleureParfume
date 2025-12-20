@@ -59,6 +59,22 @@ class ProductController extends Controller
         //execute query ambil data
         $products = $query->get();
 
+        // jika request AJAX atau ingin JSON, kembalikan data JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            $data = $products->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'name' => $p->name,
+                    'category' => $p->category,
+                    'price' => $p->price,
+                    'stock' => $p->stock,
+                    'image' => $p->image ? asset('storage/' . $p->image) : null,
+                ];
+            });
+
+            return response()->json(['products' => $data]);
+        }
+
         return view('dashboard.products.index', compact('products'));
     }
 
@@ -75,7 +91,19 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+
+            //25 kata untuk deskripsi
+            'description' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    if (str_word_count($value) > 25) {
+                        $fail('Maksimal 25 kata saja!.');
+                    }
+                },
+            ],
         ]);
+
+
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
@@ -85,6 +113,7 @@ class ProductController extends Controller
 
         Product::create([
             'name' => $request->name,
+            'description' => $request->description,
             'category' => $request->category,
             'price' => $request->price,
             'stock' => $request->stock,
@@ -118,11 +147,22 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'image' => 'nullable|image|mines:jpg,jpeg,png|max:2048',
+
+            //25 kata untuk deskripsi
+            'description' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    if (str_word_count($value) > 25) {
+                        $fail('Deskripsi kepanjangan Bang! Maksimal 25 kata aja.');
+                    }
+                },
+            ],
         ]);
 
         //data untuk update
         $data = [
             'name' => $request->name,
+            'description' => $request->description,
             'category' => $request->category,
             'price' => $request->price,
             'stock' => $request->stock,

@@ -20,6 +20,23 @@
                        focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
+        <!-- Deskripsi -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+                Deskripsi <span class="text-gray-400 text-xs">(Maks. 25 Kata)</span>
+            </label>
+            <textarea
+                name="description"
+                rows="3"
+                placeholder=""
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+
+            @error('description')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <!-- Kategori -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">
