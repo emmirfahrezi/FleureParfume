@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -65,7 +66,7 @@ class ProductController extends Controller
                 return [
                     'id' => $p->id,
                     'name' => $p->name,
-                    'category' => $p->category,
+                    'category' => $p->category->name,
                     'price' => $p->price,
                     'stock' => $p->stock,
                     'image' => $p->image ? asset('storage/' . $p->image) : null,
@@ -80,14 +81,16 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('dashboard.products.create');
+        $categories = Category::all();
+
+        return view('dashboard.products.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'category' => 'required|in:Pria,Wanita,Unisex',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -114,7 +117,7 @@ class ProductController extends Controller
         Product::create([
             'name' => $request->name,
             'description' => $request->description,
-            'category' => $request->category,
+            'category_id' => $request->category_id,
             'price' => $request->price,
             'stock' => $request->stock,
             'image' => $imagePath,
