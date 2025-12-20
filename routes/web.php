@@ -19,3 +19,10 @@ Route::prefix('dashboard')->group(function () {
 //hapus
 // Perhatikan ada parameter {id} dan method-nya delete
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+// dumy FE Najran
+Route::get('/pesanan', function () {
+    return view('pesanan.index');
+})->name('pesanan.index');
+
+Route::view('/show', 'pesanan.show');
