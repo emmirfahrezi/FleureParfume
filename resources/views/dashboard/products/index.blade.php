@@ -106,13 +106,17 @@
                     </td>
 
                     <td class="px-6 py-4">
-                        <span
-                            class="px-3 py-1 text-xs rounded-full
-                    {{ $product->category == 'Wanita' ? 'bg-pink-100 text-pink-700' : '' }}
-                    {{ $product->category == 'Pria' ? 'bg-blue-100 text-blue-700' : '' }}
-                    {{ $product->category == 'Unisex' ? 'bg-purple-100 text-purple-700' : '' }}">
-                            {{ $product->category }}
+                        @if($product->category)
+                        <span class="px-3 py-1 text-xs rounded-full
+            {{ $product->category->name == 'Wanita' ? 'bg-pink-100 text-pink-700' : '' }}
+            {{ $product->category->name == 'Pria' ? 'bg-blue-100 text-blue-700' : '' }}
+            {{ $product->category->name == 'Unisex' ? 'bg-purple-100 text-purple-700' : '' }}">
+
+                            {{ $product->category->name }}
                         </span>
+                        @else
+                        <span class="text-xs text-gray-400">Tanpa Kategori</span>
+                        @endif
                     </td>
 
                     <td class="px-6 py-4">
@@ -154,6 +158,74 @@
 
 <!-- Optional: Client-side quick filter on current page results -->
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.querySelector('input[name="q"]');
+        if (!input) return;
+        const tableBody = document.getElementById('productTable');
+        const url = "{{ route('products.index') }}";
 
+        let timer = null;
+
+        input.addEventListener('input', function() {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                const q = input.value;
+
+                // preserve other filters in querystring
+                const params = new URLSearchParams(window.location.search);
+                if (q) params.set('q', q);
+                else params.delete('q');
+
+                fetch(url + '?' + params.toString(), {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        const products = data.products || [];
+
+                        if (products.length === 0) {
+                            tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-400">Belum ada produk</td></tr>`;
+                            return;
+                        }
+
+                        tableBody.innerHTML = products.map(p => `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-6 py-4">${p.image ? `<img src="${p.image}" class="w-14 h-14 rounded-lg object-cover">` : `<span class="text-xs text-gray-400">No Image</span>`}</td>
+                            <td class="px-6 py-4 font-medium text-gray-800">${escapeHtml(p.name)}</td>
+                            <td class="px-6 py-4"><span class="px-3 py-1 text-xs rounded-full ${p.category == 'Wanita' ? 'bg-pink-100 text-pink-700' : ''} ${p.category == 'Pria' ? 'bg-blue-100 text-blue-700' : ''} ${p.category == 'Unisex' ? 'bg-purple-100 text-purple-700' : ''}">${p.category}</span></td>
+                            <td class="px-6 py-4">Rp ${Number(p.price).toLocaleString('id-ID')}</td>
+                            <td class="px-6 py-4">${p.stock}</td>
+                            <td class="px-6 py-4 text-center space-x-2">
+                                <a href="/dashboard/products/${p.id}/edit" class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">Edit</a>
+
+                                <form action="/dashboard/products/${p.id}" method="POST" class="inline" onsubmit="return confirm('Yakin mau hapus produk ${escapeHtml(p.name)}?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    `).join('');
+                    })
+                    .catch(err => console.error(err));
+            }, 300);
+        });
+
+        function escapeHtml(unsafe) {
+            return unsafe ? unsafe.replace(/[&<>"'\/]/g, function(m) {
+                return ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;',
+                    '/': '&#x2F;'
+                })[m];
+            }) : '';
+        }
+    });
 </script>
 @endsection
