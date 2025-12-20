@@ -39,7 +39,7 @@
             </nav>
 
             <!-- LOGOUT -->
-            {{--
+            
                 <form action="{{ route('logout') }}"
             method="POST"
             onsubmit="return confirmLogout();"
@@ -50,7 +50,7 @@
                 Logout
             </button>
             </form>
-            --}}
+           
         </aside>
 
         <!-- CONTENT -->

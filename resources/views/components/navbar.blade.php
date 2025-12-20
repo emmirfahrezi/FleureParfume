@@ -52,7 +52,7 @@
                 </a>
 
                 <!-- USER ICON -->
-                <a href="" class="hover:opacity-70 transition-opacity">
+                <a href="/user/dashboard" class="hover:opacity-70 transition-opacity">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-7 text-black">
                         <path stroke-linecap="round" stroke-linejoin="round"
