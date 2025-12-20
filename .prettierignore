@@ -1,0 +1,14 @@
+node_modules
+vendor
+.git
+dist
+build
+public/build
+storage
+bootstrap/cache
+.env
+*.log
+
+# Ignore PHP and Blade files; use Pint/Laravel tools for them
+**/*.php
+**/*.blade.php
