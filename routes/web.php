@@ -25,14 +25,13 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('products', ProductController::class);
 });
 
-// Grup untuk admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-});
+//hapus
+// Perhatikan ada parameter {id} dan method-nya delete
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-// Grup untuk user
-Route::middleware(['auth', 'user'])->prefix('user')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('user');
-    });
-});
+// dumy FE Najran
+Route::get('/pesanan', function () {
+    return view('pesanan.index');
+})->name('pesanan.index');
+
+Route::view('/show', 'pesanan.show');
