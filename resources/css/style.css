@@ -1,14 +1,16 @@
- .navlink {
-        @apply text-black hover:text-white text-sm font-medium uppercase;
-    }
-    .dropdown-item {
-        @apply block px-4 py-2 text-sm text-black hover:bg-white/5 hover:text-white;
-    }
-    .mobile-item {
-        @apply block text-black hover:text-white text-sm font-medium py-2;
-    }
+.navlink {
+    @apply text-sm font-medium text-black uppercase hover:text-white;
+}
+.dropdown-item {
+    @apply block px-4 py-2 text-sm text-black hover:bg-white/5 hover:text-white;
+}
+.mobile-item {
+    @apply block py-2 text-sm font-medium text-black hover:text-white;
+}
 
-* { font-family: 'Poppins', sans-serif !important; }
+* {
+    font-family: 'Poppins', sans-serif !important;
+}
 
 .brand {
     font-family: 'Cormorant', serif !important;
