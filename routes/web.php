@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\ReportController;
+
 Route::get('/', function () {
     return view('home');
 });
@@ -35,3 +37,24 @@ Route::get('/pesanan', function () {
 })->name('pesanan.index');
 
 Route::view('/show', 'pesanan.show');
+
+// Grup untuk admin
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+});
+
+// Grup untuk user
+Route::middleware(['auth', 'user'])->prefix('user')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('user');
+    });
+});
+
+// Route untuk laporan PDF
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/report-user', [ReportController::class, 'downloadUserReport'])->name('reports.users.download');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/report-product', [ReportController::class, 'downloadProductReport'])->name('reports.products.download');
+});
