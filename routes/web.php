@@ -26,3 +26,18 @@ Route::get('/pesanan', function () {
 })->name('pesanan.index');
 
 Route::view('/show', 'pesanan.show');
+
+Route::get('/update', function () {
+    return view('dashboard.products.update', [
+        'product' => (object)[
+            'id' => 1,
+            'name' => 'Parfum Dummy',
+            'category' => 'Unisex',
+            'price' => 150000,
+            'stock' => 20,
+            'image' => null
+        ]
+    ]);
+});
+
+// end dumy FE Najran
