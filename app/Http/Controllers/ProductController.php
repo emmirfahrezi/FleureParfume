@@ -8,9 +8,57 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        // query builder
+        $query = Product::query();
+
+        //filter untuk pencarian dari nama produk
+        if ($request->filled('q')) {
+            $query->where('name', 'like', '%' . $request->q . '%');
+        }
+
+        //filter dari kategori (pria, wanita, unisex)
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        //filter harga minimum
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', $request->price_min);
+        }
+
+        //filter harga max
+        if ($request->filled('price_max')) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        //untuk sorting 
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'name_asc':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                default:
+                    $query->orderBy('create_at', 'desc');
+                    break;
+            }
+        } else {
+            $query->orderBy('create_at', 'desc');
+        }
+
+        //execute query ambil data
+        $products = $query->get();
+
         return view('dashboard.products.index', compact('products'));
     }
 
