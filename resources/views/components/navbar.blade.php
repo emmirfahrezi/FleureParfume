@@ -1,5 +1,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 py-3 transition-all duration-300" style="background-color: rgba(240, 226, 198, 0);">
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 py-3 transition-all duration-300"
+    style="background-color: rgba(240, 226, 198, 0);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- DESKTOP GRID -->
@@ -14,14 +15,14 @@
                     <button onclick="toggleDropdown()"
                         class="text-black hover:text-white text-sm font-medium flex items-center gap-1">
                         CATEGORIES
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                            viewBox="0 0 24 24">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
 
                     <div id="dropdownMenu"
-                        class="absolute left-0 mt-2 hidden w-36 rounded-md shadow-lg ring-1 ring-black/10" style="background-color: #F0E2C6;">
+                        class="absolute left-0 mt-2 hidden w-36 rounded-md shadow-lg ring-1 ring-black/10"
+                        style="background-color: #F0E2C6;">
                         <a href="#" class="dropdown-item text-black">Wanita</a>
                         <a href="#" class="dropdown-item text-black">Pria</a>
                         <a href="#" class="dropdown-item text-black">Unisex</a>
@@ -51,14 +52,37 @@
                     </svg>
                 </a>
 
-                <!-- USER ICON -->
-                <a href="/user/dashboard" class="hover:opacity-70 transition-opacity">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-7 text-black">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                </a>
+                <!-- USER ICON (auth-aware) -->
+                @guest
+                    <a href="{{ route('login') }}" class="hover:opacity-70 transition-opacity" aria-label="Sign in">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-7 text-black">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </a>
+                @else
+                    <div class="relative group">
+                        <button class="hover:opacity-70 transition-opacity" aria-label="User menu">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-7 text-black">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </button>
+
+                        <div class="absolute right-0 mt-2 hidden w-40 rounded-md shadow-lg ring-1 ring-black/10 group-hover:block group-focus-within:block"
+                            style="background-color: #F0E2C6;">
+                            <a href="/profile"
+                                class="flex items-center px-4 py-2 text-sm text-black hover:bg-black/10">Profile</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full text-left px-4 py-2 text-sm text-black hover:bg-black/10">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                @endguest
             </div>
         </div>
 
