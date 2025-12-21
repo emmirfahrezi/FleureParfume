@@ -55,6 +55,33 @@
                 Pengaturan
             </a>
         </nav>
+
+        <!-- download data user -->
+        <h3>Menu Laporan</h3>
+        <a href="{{ route('reports.users.download') }}" style="padding: 10px; background: green; color: white; text-decoration: none; border-radius: 5px;">
+            Download PDF Daftar User
+        </a>
+        
+        <!-- download data produk -->
+        <div style="margin: 20px 0; border: 1px solid #ccc; padding: 15px;">
+            <h4>Laporan Inventaris</h4>
+            <a href="{{ route('reports.products.download') }}" 
+            style="display: inline-block; padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
+                Cetak Daftar Produk (PDF)
+            </a>
+        </div>
+
+        <!-- LOGOUT -->
+        <form action="{{ route('logout') }}"
+              method="POST"
+              onsubmit="return confirmLogout();"
+              class="mt-auto">
+            @csrf
+            <button type="submit"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm">
+                Logout
+            </button>
+        </form>
     </aside>
 
     <!-- CONTENT -->
