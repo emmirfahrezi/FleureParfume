@@ -3,7 +3,6 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,24 +19,39 @@ Route::get('/register', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
+// Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+// Products
 Route::prefix('dashboard')->group(function () {
     Route::resource('products', ProductController::class);
 });
 
-//hapus
-// Perhatikan ada parameter {id} dan method-nya delete
-Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+// Delete product
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])
+    ->name('products.destroy');
 
-// dumy FE Najran
+// Dummy FE Najran
 Route::get('/pesanan', function () {
     return view('pesanan.index');
 })->name('pesanan.index');
 
 Route::view('/show', 'pesanan.show');
 
+Route::get('/update', function () {
+    return view('dashboard.products.update', [
+        'product' => (object)[
+            'id' => 1,
+            'name' => 'Parfum Dummy',
+            'category' => 'Unisex',
+            'price' => 150000,
+            'stock' => 20,
+            'image' => null
+        ]
+    ]);
+});
+
+// end dummy FE Najran
 // Grup untuk admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
