@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 
 use Dedoc\Scramble\Scramble;
@@ -16,7 +17,7 @@ use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

@@ -1,7 +1,8 @@
  {{-- hero section --}}
  <style>
      .hero-bg {
-         background-image: linear-gradient(135deg, rgba(90, 62, 43, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%), url('{{ asset('images/products/thumbnail.jpg') }}');
+         background-image: linear-gradient(135deg, rgba(90, 62, 43, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+         url("{{ asset('images/products/thumbnail.jpg') }}");
          background-size: cover;
          background-position: center;
          background-attachment: fixed;
@@ -140,24 +141,34 @@
      </div>
      <!-- 4 Column Cards -->
      @php
-         $bestSellers = \Database\Factories\ProductData::getBestSellers();
+     use App\Models\Product;
+
+
+     $bestSellers = Product::with('category')->latest()->take(4)->get();
      @endphp
-     
+
      <div class="max-w-7xl mx-auto mt-12">
          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
              @foreach($bestSellers as $product)
              <div class="bg-white rounded-lg shadow-lg overflow-hidden transition hover:shadow-xl">
-                 <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}"
-                     class="w-full h-64 object-cover transition-transform duration-300 hover:scale-110">
+                 <div class="w-full h-64 overflow-hidden">
+                     @if($product->image)
+                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                         class="w-full h-full object-cover transition-transform duration-300 hover:scale-110">
+                     @else
+                     <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
+                     @endif
+                 </div>
                  <div class="p-4">
                      <h4 class="text-s text-gray-500 mb-1" style="font-family: cormorant, serif !important;">
-                         {{ $product['category'] }}
+                         {{ $product->category->name ?? 'Uncategorized' }}
                      </h4>
                      <h3 class="text-xl font-semibold text-gray-900"
                          style="font-family: cormorant, serif !important;">
-                         {{ $product['name'] }}</h3>
+                         {{ $product->name }}
+                     </h3>
                      <p class="text-gray-600 mt-2" style="font-family: poppins, sans-serif !important;">
-                         Rp {{ number_format($product['price'], 0, ',', '.') }}
+                         Rp {{ number_format($product->price, 0, ',', '.') }}
                      </p>
                  </div>
              </div>
@@ -170,7 +181,7 @@
 
  {{-- banner brand --}}
  @php
-     $brands = \Database\Factories\BrandData::get();
+ $brands = \Database\Factories\BrandData::get();
  @endphp
 
  <div class="marquee-container" style="height: 300px;">
@@ -204,71 +215,47 @@
 
 
  {{-- section 5  --}}
+ @php
+ use App\Models\Category;
+
+
+ $categories = Category::with('products')->take(4)->get()
+ @endphp
  <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-20">
- <div class="max-w-7xl mx-auto">
-     <div class="text-center text-black" style="font-family: cormorant, serif !important;">
-         <h4 class="text-2xl font-bold tracking-wide" style="font-family: cormorant, serif !important">New Perfumes
-         </h4>
-         <h1 class="text-5xl font-bold leading-tight uppercase" style="font-family: cormorant, serif !important">Shop
-             By
-             Category</h1>
-     </div>
+     <div class="max-w-7xl mx-auto">
+         <div class="text-center text-black" style="font-family: cormorant, serif !important;">
+             <h4 class="text-2xl font-bold tracking-wide" style="font-family: cormorant, serif !important">New Perfumes</h4>
+             <h1 class="text-5xl font-bold leading-tight uppercase" style="font-family: cormorant, serif !important">Shop By Category</h1>
+         </div>
 
+         <div class="max-w-7xl mx-auto mt-8">
+             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-     <div class="max-w-7xl mx-auto mt-8">
-         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-             <!-- Pria -->
-             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
-                 <div class="relative w-full h-96">
-                     <img src="{{ asset('images/products/bitterpeach.jpg') }}" alt="Pria"
-                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
-                     <div class="absolute bottom-0 left-0 right-0 p-3">
-                         <h3 class="text-white text-lg font-semibold drop-shadow"
-                             style="font-family: cormorant, serif !important;">Pria</h3>
+                 @foreach($categories as $cat)
+                 <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                     <div class="relative w-full h-96">
+                         @php
+                         // Ambil gambar produk pertama di kategori ini
+                         $coverImage = $cat->products->first()->image ?? null;
+                         @endphp
+
+                         @if($coverImage)
+                         <img src="{{ asset('storage/' . $coverImage) }}" alt="{{ $cat->name }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                         @else
+                         <div class="absolute inset-0 w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">No Image</div>
+                         @endif
+
+                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
+                         <div class="absolute bottom-0 left-0 right-0 p-3">
+                             <h3 class="text-white text-lg font-semibold drop-shadow" style="font-family: cormorant, serif !important;">
+                                 {{ $cat->name }}
+                             </h3>
+                         </div>
                      </div>
                  </div>
-             </div>
+                 @endforeach
 
-             <!-- Wanita -->
-             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
-                 <div class="relative w-full h-96">
-                     <img src="{{ asset('images/products/lostcherry.jpg') }}" alt="Wanita"
-                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
-                     <div class="absolute bottom-0 left-0 right-0 p-3">
-                         <h3 class="text-white text-lg font-semibold drop-shadow"
-                             style="font-family: cormorant, serif !important;">Wanita</h3>
-                     </div>
-                 </div>
-             </div>
-
-             <!-- Unisex -->
-             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
-                 <div class="relative w-full h-96">
-                     <img src="{{ asset('images/products/lostcherry2.jpg') }}" alt="Unisex"
-                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
-                     <div class="absolute bottom-0 left-0 right-0 p-3">
-                         <h3 class="text-white text-lg font-semibold drop-shadow"
-                             style="font-family: cormorant, serif !important;">Unisex</h3>
-                     </div>
-                 </div>
-             </div>
-
-             <!-- Exclusive -->
-             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
-                 <div class="relative w-full h-96">
-                     <img src="{{ asset('images/products/bitterpeach.jpg') }}" alt="Exclusive"
-                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
-                     <div class="absolute bottom-0 left-0 right-0 p-3">
-                         <h3 class="text-white text-lg font-semibold drop-shadow"
-                             style="font-family: cormorant, serif !important;">Exclusive</h3>
-                     </div>
-                 </div>
              </div>
          </div>
      </div>
- </div>
  </div>
