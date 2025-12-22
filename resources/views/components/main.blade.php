@@ -1,9 +1,16 @@
  {{-- hero section --}}
- <div class="relative isolate px-6 pt-32 lg:px-20 min-h-screen"
-     style="background-image: linear-gradient(135deg, rgba(90,62,43,0.7) 0%, rgba(0,0,0,0.5) 100%), url('https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=1920&q=80'); background-size: cover; background-position: center; background-attachment: fixed;">
+ <style>
+     .hero-bg {
+         background-image: linear-gradient(135deg, rgba(90, 62, 43, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%), url('{{ asset('images/products/thumbnail.jpg') }}');
+         background-size: cover;
+         background-position: center;
+         background-attachment: fixed;
+     }
+ </style>
+ <div class="relative isolate px-6 pt-20 lg:px-20 h-[600px] lg:h-[700px] hero-bg">
 
      <!-- Container kiri (hapus mx-auto agar TIDAK center) -->
-     <div class="max-w-3xl py-6 sm:py-8 lg:py-16 flex flex-col justify-center pt-20 min-h-screen">
+     <div class="max-w-3xl py-6 sm:py-8 lg:py-16 flex flex-col justify-center h-full">
 
          <!-- LEFT TEXT -->
          <h1 class="text-5xl font-semibold tracking-tight text-white sm:text-7xl leading-none drop-shadow-lg"
@@ -17,13 +24,7 @@
              Elit sunt amet fugiat veniam occaecat.
          </p>
 
-         <div class="mt-6 flex items-center gap-x-6">
-             <a href="/login"
-                 class="rounded-md px-4 py-2.5 text-sm font-semibold text-white shadow transition hover:opacity-80"
-                 style="background-color: #5A3E2B; font-family: poppins, sans-serif !important;">
-                 Sign In
-             </a>
-         </div>
+
 
      </div>
  </div>
@@ -31,13 +32,13 @@
  {{-- hero section done --}}
 
  {{-- section 2 --}}
- <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-20">
+ <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-20 ">
      <div class="max-w-7xl mx-auto">
          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
              <!-- LEFT SIDE - IMAGE -->
              <div class="flex justify-center lg:justify-start">
-                 <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&q=80" alt="Parfume"
+                 <img src="{{ asset('images/products/bitterpeach.jpg') }}" alt="Parfume bitter peach"
                      class="rounded-lg shadow-lg w-full max-w-md h-auto object-cover">
              </div>
 
@@ -74,11 +75,13 @@
      </div>
  </div>
 
-  {{-- section 2 done --}}
+ {{-- section 2 done --}}
 
-  {{-- section 3   --}}
 
-  <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-20">
+
+ {{-- section 3   --}}
+
+ <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-20">
      <div class="max-w-7xl mx-auto">
          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
@@ -88,16 +91,184 @@
                      style="font-family: cormorant, serif !important;">
                      Smell is good
                  </h2>
+                 <p class="mt-4 text-lg text-gray-600 max-w-xl"
+                     style="font-family: poppins, sans-serif !important; font-weight: 300;">
+                     Temukan aroma yang menghidupkan mood, membangun kepercayaan diri, dan meninggalkan kesan lembut
+                     setiap kali melangkah. Pilih wewangian yang paling menggambarkan dirimu.
+                 </p>
              </div>
 
              <!-- RIGHT SIDE - IMAGE -->
              <div class="flex justify-center lg:justify-end">
-                 <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&q=80" alt="Parfume"
-                     class="rounded-lg shadow-lg w-full max-w-md h-auto object-cover">
+                 <style>
+                     .img-hover-effect {
+                         transition: transform 0.3s ease, filter 0.3s ease;
+                     }
+
+                     .img-hover-effect:hover {
+                         transform: scale(1.05);
+                     }
+
+                     .dark-overlay {
+                         transition: opacity 0.3s ease;
+                     }
+
+                     .img-hover-effect:hover~.dark-overlay {
+                         opacity: 0;
+                     }
+                 </style>
+                 <div class="relative inline-block rounded-lg" style="overflow: visible;">
+                     <img src="{{ asset('images/products/lostcherry.jpg') }}" alt="Lost Cherry"
+                         class="img-hover-effect rounded-lg shadow-lg w-full max-w-md h-auto object-cover">
+                     <div class="dark-overlay absolute inset-0 bg-black/30 rounded-lg pointer-events-none"></div>
+                     <img src="{{ asset('images/products/lostcherry2.jpg') }}" alt="Lost Cherry detail"
+                         class="absolute -right-6 top-1/2 -translate-y-1/2 w-50 h-50 rounded-md shadow-lg ring-2 ring-white/80">
+                 </div>
              </div>
 
          </div>
      </div>
  </div>
 
-   {{-- section 3 done --}}
+ {{-- section 3 done --}}
+
+ {{-- sectiion 4 --}}
+ <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-20">
+     <div class="text-center text-black" style="font-family: cormorant, serif !important;">
+         <h4 class="text-2xl tracking-wide" style="font-family: cormorant, serif !important">Check Out Our</h4>
+         <h1 class="text-5xl  leading-tight" style="font-family: cormorant, serif !important">BEST SELLER</h1>
+     </div>
+     <!-- 4 Column Cards -->
+     @php
+         $bestSellers = \Database\Factories\ProductData::getBestSellers();
+     @endphp
+     
+     <div class="max-w-7xl mx-auto mt-12">
+         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+             @foreach($bestSellers as $product)
+             <div class="bg-white rounded-lg shadow-lg overflow-hidden transition hover:shadow-xl">
+                 <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}"
+                     class="w-full h-64 object-cover transition-transform duration-300 hover:scale-110">
+                 <div class="p-4">
+                     <h4 class="text-s text-gray-500 mb-1" style="font-family: cormorant, serif !important;">
+                         {{ $product['category'] }}
+                     </h4>
+                     <h3 class="text-xl font-semibold text-gray-900"
+                         style="font-family: cormorant, serif !important;">
+                         {{ $product['name'] }}</h3>
+                     <p class="text-gray-600 mt-2" style="font-family: poppins, sans-serif !important;">
+                         Rp {{ number_format($product['price'], 0, ',', '.') }}
+                     </p>
+                 </div>
+             </div>
+             @endforeach
+         </div>
+     </div>
+ </div>
+
+ {{-- section 4 done --}}
+
+ {{-- banner brand --}}
+ @php
+     $brands = \Database\Factories\BrandData::get();
+ @endphp
+
+ <div class="marquee-container" style="height: 300px;">
+     <div class="flex items-center h-full">
+         <div class="marquee-content">
+
+             @foreach($brands as $brand)
+             <div class="brand-logo">
+                 <div class="text-center">
+                     <img src="{{ asset($brand['image']) }}" alt="{{ $brand['name'] }}" class="rounded-lg">
+                     <p class="mt-2 text-sm font-semibold text-gray-700"
+                         style="font-family: cormorant, serif !important;">{{ $brand['name'] }}</p>
+                 </div>
+             </div>
+             @endforeach
+
+             @foreach($brands as $brand)
+             <div class="brand-logo">
+                 <div class="text-center">
+                     <img src="{{ asset($brand['image']) }}" alt="{{ $brand['name'] }}" class="rounded-lg">
+                     <p class="mt-2 text-sm font-semibold text-gray-700"
+                         style="font-family: cormorant, serif !important;">{{ $brand['name'] }}</p>
+                 </div>
+             </div>
+             @endforeach
+         </div>
+     </div>
+ </div>
+ {{-- banner brand done --}}
+
+
+
+ {{-- section 5  --}}
+ <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-20">
+ <div class="max-w-7xl mx-auto">
+     <div class="text-center text-black" style="font-family: cormorant, serif !important;">
+         <h4 class="text-2xl font-bold tracking-wide" style="font-family: cormorant, serif !important">New Perfumes
+         </h4>
+         <h1 class="text-5xl font-bold leading-tight uppercase" style="font-family: cormorant, serif !important">Shop
+             By
+             Category</h1>
+     </div>
+
+
+     <div class="max-w-7xl mx-auto mt-8">
+         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+             <!-- Pria -->
+             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                 <div class="relative w-full h-96">
+                     <img src="{{ asset('images/products/bitterpeach.jpg') }}" alt="Pria"
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
+                     <div class="absolute bottom-0 left-0 right-0 p-3">
+                         <h3 class="text-white text-lg font-semibold drop-shadow"
+                             style="font-family: cormorant, serif !important;">Pria</h3>
+                     </div>
+                 </div>
+             </div>
+
+             <!-- Wanita -->
+             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                 <div class="relative w-full h-96">
+                     <img src="{{ asset('images/products/lostcherry.jpg') }}" alt="Wanita"
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
+                     <div class="absolute bottom-0 left-0 right-0 p-3">
+                         <h3 class="text-white text-lg font-semibold drop-shadow"
+                             style="font-family: cormorant, serif !important;">Wanita</h3>
+                     </div>
+                 </div>
+             </div>
+
+             <!-- Unisex -->
+             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                 <div class="relative w-full h-96">
+                     <img src="{{ asset('images/products/lostcherry2.jpg') }}" alt="Unisex"
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
+                     <div class="absolute bottom-0 left-0 right-0 p-3">
+                         <h3 class="text-white text-lg font-semibold drop-shadow"
+                             style="font-family: cormorant, serif !important;">Unisex</h3>
+                     </div>
+                 </div>
+             </div>
+
+             <!-- Exclusive -->
+             <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                 <div class="relative w-full h-96">
+                     <img src="{{ asset('images/products/bitterpeach.jpg') }}" alt="Exclusive"
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
+                     <div class="absolute bottom-0 left-0 right-0 p-3">
+                         <h3 class="text-white text-lg font-semibold drop-shadow"
+                             style="font-family: cormorant, serif !important;">Exclusive</h3>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ </div>

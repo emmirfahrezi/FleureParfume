@@ -2,71 +2,124 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard | Fleure Perfumes</title>
-
+    <title>Dashboard | Fleur Parfume</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script>
+        (function() {
+            try {
+                window.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                const _fetch = window.fetch;
+                window.fetch = function(input, init = {}) {
+                    init.headers = init.headers || {};
+                    const method = (init.method || 'GET').toUpperCase();
+                    if (method !== 'GET' && method !== 'HEAD') {
+                        if (!init.headers['X-CSRF-TOKEN'] && !init.headers['x-csrf-token']) {
+                            init.headers['X-CSRF-TOKEN'] = window.csrfToken;
+                        }
+                        if (!init.credentials) init.credentials = 'same-origin';
+                    }
+                    return _fetch(input, init);
+                };
+            } catch (e) {
+                // no-op if DOM not ready or meta missing
+            }
+        })();
+    </script>
 </head>
 
-<body class="bg-[#F5EFE6] text-[#3B2F2F]">
+<body class="bg-gray-100">
 
-<div class="flex min-h-screen">
-
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-[#2B1E16] text-white flex flex-col px-6 py-10 shadow-xl">
-
-        <!-- LOGO -->
-        <div class="mb-14 text-center">
-            <h1 class="font-brand text-3xl tracking-[0.35em]">
-                FLEURE
-            </h1>
-            <span class="font-brand text-xs tracking-[0.55em] text-[#D6B98C]">
-                PERFUMES
-            </span>
+<!-- Responsif MOBILE LAYOUT MODE -->
+<header class="md:hidden bg-gray-900 text-white px-4 py-3 relative">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="font-bold text-lg">Fleur Parfume</h2>
+            <span class="text-xs text-gray-300">Halo, ADMINNN</span>
         </div>
 
-        <!-- MENU -->
-        <nav class="space-y-2 text-sm">
-            <a href="{{ route('dashboard') }}"
-               class="block px-4 py-2 rounded-lg transition
-               {{ request()->routeIs('dashboard')
-               ? 'bg-[#8B5A2B] text-white shadow'
-               : 'text-gray-300 hover:bg-[#6F4518]' }}">
+        <!-- Toggle -->
+        <input type="checkbox" id="menu-toggle" class="hidden peer">
+        <label for="menu-toggle" class="cursor-pointer text-2xl select-none">
+            ☰
+        </label>
+    </div>
+
+    <!-- Mobile Menu -->
+    <nav
+        class="hidden peer-checked:block absolute left-0 top-full w-full
+               bg-gray-900 text-sm text-gray-300 border-t border-gray-800 z-50">
+        <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-gray-800">Dashboard</a>
+        <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-gray-800">Produk</a>
+        <a href="{{ route('pesanan.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
+        <a href="#" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
+    </nav>
+</header>
+
+<!-- Responsif DESKTOP LAYOUT MODE -->
+<div class="flex min-h-screen">
+
+    <!-- SIDEBAR (DESKTOP ONLY) -->
+    <aside class="hidden md:flex w-60 bg-gray-900 text-white flex-col p-6">
+        <h2 class="text-xl font-bold mb-10">Fleur Parfume</h2>
+
+        <nav class="space-y-4 text-sm">
+            <a href="{{ route('dashboard') }}" class="block text-gray-300 hover:text-white">
                 Dashboard
             </a>
-
-            <a href="{{ route('products.index') }}"
-               class="block px-4 py-2 rounded-lg transition
-               {{ request()->routeIs('products.*')
-               ? 'bg-[#8B5A2B] text-white shadow'
-               : 'text-gray-300 hover:bg-[#6F4518]' }}">
+            <a href="{{ route('products.index') }}" class="block text-gray-300 hover:text-white">
                 Produk
             </a>
-
-            <a href="#"
-               class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-[#6F4518]">
+            <a href="{{ route('pesanan.index') }}" class="block text-gray-300 hover:text-white">
                 Pesanan
             </a>
-
-            <a href="#"
-               class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-[#6F4518]">
+            <a href="#" class="block text-gray-300 hover:text-white">
                 Pengaturan
             </a>
         </nav>
 
+        <!-- download data user -->
+        <h3>Menu Laporan</h3>
+        <a href="{{ route('reports.users.download') }}" style="padding: 10px; background: green; color: white; text-decoration: none; border-radius: 5px;">
+            Download PDF Daftar User
+        </a>
+        
+        <!-- download data produk -->
+        <div style="margin: 20px 0; border: 1px solid #ccc; padding: 15px;">
+            <h4>Laporan Inventaris</h4>
+            <a href="{{ route('reports.products.download') }}" 
+            style="display: inline-block; padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
+                Cetak Daftar Produk (PDF)
+            </a>
+        </div>
+
+        <!-- LOGOUT -->
+        <form action="{{ route('logout') }}"
+              method="POST"
+              onsubmit="return confirmLogout();"
+              class="mt-auto">
+            @csrf
+            <button type="submit"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm">
+                Logout
+            </button>
+        </form>
     </aside>
 
     <!-- CONTENT -->
     <div class="flex-1 flex flex-col">
 
-        <!-- TOP BAR -->
-        <header class="bg-[#F1E5D1] px-10 py-5 shadow-sm">
-            <span class="text-sm tracking-wide">
-                Halo, <b>ADMINNNN</b>
+        <!-- DESKTOP HEADER -->
+        <header class="hidden md:block bg-white shadow px-6 py-4">
+            <span class="text-gray-700 font-medium">
+                Halo, ADMINNN
             </span>
         </header>
 
-        <!-- MAIN -->
-        <main class="flex-1 p-10">
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 p-4 md:p-6">
             @yield('content')
         </main>
 

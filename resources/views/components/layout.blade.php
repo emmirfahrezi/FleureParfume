@@ -19,7 +19,7 @@
 
     @include('components.main')
     
-
+    @include('components.footer')
 
 </body>
 
