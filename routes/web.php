@@ -75,9 +75,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
 // Grup untuk user
 Route::middleware(['auth', 'user'])->prefix('user')->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('user');
-    });
+    })->name('user.dashboard');
 });
 
 // Route untuk laporan PDF
