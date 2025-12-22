@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 
+use Dedoc\Scramble\Scramble;
+use Illuminate\Support\Str;
+
+
+
+
 use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
@@ -71,4 +77,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/report-product', [ReportController::class, 'downloadProductReport'])->name('reports.products.download');
+});
+
+// Register Scramble documentation routes
+Scramble::registerUiRoute('/docs');
+Scramble::registerJsonSpecificationRoute('/openapi.json');
+
+// Include only API routes (URIs starting with 'api') in documentation
+
+Scramble::routes(function ($route) {
+    return true; // include every route
 });
