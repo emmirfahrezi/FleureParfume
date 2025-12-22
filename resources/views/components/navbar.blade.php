@@ -8,7 +8,7 @@
 
             <!-- LEFT NAV -->
             <div class="flex items-center space-x-6 ">
-                <a href="#" class="navlink text-black">BUY PERFUMES</a>
+                <a href="/" class="navlink text-black">BUY PERFUMES</a>
                 <a href="#" class="navlink text-black   ">EXCLUSIVE</a>
 
                 <div class="relative">
@@ -40,8 +40,8 @@
 
             <!-- RIGHT NAV -->
             <div class="flex justify-end items-center space-x-6">
-                <a href="#" class="navlink text-black">ABOUT</a>
-                <a href="#" class="navlink text-black">CONTACT</a>
+                <a href="/about" class="navlink text-black">ABOUT</a>
+                <a href="/contact" class="navlink text-black">CONTACT</a>
 
                 <!-- CART ICON -->
                 <a href="">
@@ -91,12 +91,12 @@
 
             <!-- LOGO MOBILE -->
             <div class="flex flex-col leading-tight">
-                <span class="brand text-white text-lg font-bold tracking-wide">FLEURE</span>
-                <span class="brand text-white text-lg tracking-wide">PARFUME</span>
+                <span class="brand text-black text-lg font-bold tracking-wide">FLEURE</span>
+                <span class="brand text-black text-lg tracking-wide">PARFUME</span>
             </div>
 
             <!-- HAMBURGER -->
-            <button onclick="toggleMobile()" class="text-white focus:outline-none">
+            <button onclick="toggleMobile()" class="text-black focus:outline-none">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
@@ -105,7 +105,7 @@
 
         <!-- MOBILE MENU -->
         <div id="mobileMenu" class="hidden sm:hidden mt-3 space-y-2">
-            <a href="#" class="mobile-item">BUY PERFUMES</a>
+            <a href="/" class="mobile-item">BUY PERFUMES</a>
             <a href="#" class="mobile-item">EXCLUSIVE</a>
 
             <details class="mobile-dropdown">
@@ -118,7 +118,7 @@
             </details>
 
             <a href="#" class="mobile-item">ABOUT</a>
-            <a href="#" class="mobile-item">CONTACT</a>
+            <a href="/contact" class="mobile-item">CONTACT</a>
         </div>
 
     </div>

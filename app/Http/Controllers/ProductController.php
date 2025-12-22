@@ -58,7 +58,7 @@ class ProductController extends Controller
         }
 
         //execute query ambil data
-        $products = $query->get();
+        $products = $query->with('category')->get();
 
         // jika request AJAX atau ingin JSON, kembalikan data JSON
         if ($request->ajax() || $request->wantsJson()) {
