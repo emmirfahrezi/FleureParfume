@@ -72,3 +72,31 @@
          max-height: 100%;
          object-fit: contain;
      }
+
+     #priceMinRange,
+            #priceMaxRange {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    background: transparent;
+                    pointer-events: none;
+                }
+
+                #priceMinRange::-webkit-slider-thumb,
+                #priceMaxRange::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    height: 24px;
+                    width: 24px;
+                    border-radius: 9999px;
+                    background: transparent;
+                    pointer-events: auto;
+                }
+
+                #priceMinRange::-moz-range-thumb,
+                #priceMaxRange::-moz-range-thumb {
+                    height: 24px;
+                    width: 24px;
+                    border-radius: 9999px;
+                    background: transparent;
+                    pointer-events: auto;
+                }
