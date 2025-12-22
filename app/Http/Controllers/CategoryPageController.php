@@ -36,4 +36,13 @@ class CategoryPageController extends Controller
 
         return view('unisex', compact('products'));
     }
+
+    public function exclusive()
+    {
+        $products = Product::whereHas('category', function ($query) {
+            $query->where('name', 'Exclusive');
+        })->latest()->get();
+
+        return view('exclusive', compact('products'));
+    }
 }

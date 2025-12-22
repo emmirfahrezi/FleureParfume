@@ -39,9 +39,6 @@ Route::get('/about', function () {
 });
 
 
-Route::get('/exclusive', function () {
-    return view('exclusive');
-});
 
 Route::view('/contact', 'contact');
 
@@ -116,3 +113,6 @@ Route::get('/man', [CategoryPageController::class, 'man'])->name('man.index');
 
 // Route Halaman Unisex
 Route::get('/unisex', [CategoryPageController::class, 'unisex'])->name('unisex.index');
+
+// Route Halaman Unisex
+Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('exclusive.index');
