@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Str;
@@ -11,7 +12,7 @@ use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/buy', function () {
     return view('buy');
@@ -61,6 +62,8 @@ Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('pr
 // Delete product
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])
     ->name('products.destroy');
+
+
 
 // Dummy FE Najran
 Route::get('/pesanan', function () {

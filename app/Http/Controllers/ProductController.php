@@ -135,7 +135,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return view('dashboard.products.edit', compact('product'));
+        $categories = Category::all();
+
+        return view('dashboard.products.update', compact('product', 'categories'));
     }
 
     public function update(Request $request, string $id)
@@ -146,10 +148,10 @@ class ProductController extends Controller
         //validasi
         $request->validate([
             'name' => 'required',
-            'category' => 'required|in:Pria,Wanita,Unisex',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
-            'image' => 'nullable|image|mines:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             //25 kata untuk deskripsi
             'description' => [
@@ -166,7 +168,7 @@ class ProductController extends Controller
         $data = [
             'name' => $request->name,
             'description' => $request->description,
-            'category' => $request->category,
+            'category_id' => $request->category_id,
             'price' => $request->price,
             'stock' => $request->stock,
         ];
@@ -188,6 +190,8 @@ class ProductController extends Controller
 
         //excute update
         $product->update($data);
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate!');
     }
 
     public function destroy(string $id)
