@@ -1,5 +1,5 @@
 <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 py-3 transition-all duration-300"
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 py-3 transition-all duration-300 shadow-md shadow-black/5"
     style="background-color: rgba(240, 226, 198, 0);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -8,8 +8,8 @@
 
             <!-- LEFT NAV -->
             <div class="flex items-center space-x-6 ">
-                <a href="/" class="navlink text-black">BUY PERFUMES</a>
-                <a href="#" class="navlink text-black   ">EXCLUSIVE</a>
+                <a href="/buy" class="navlink text-black">BUY PERFUMES</a>
+                <a href="/exclusive" class="navlink text-black   ">EXCLUSIVE</a>
 
                 <div class="relative">
                     <button onclick="toggleDropdown()"
@@ -23,9 +23,9 @@
                     <div id="dropdownMenu"
                         class="absolute left-0 mt-2 hidden w-36 rounded-md shadow-lg ring-1 ring-black/10"
                         style="background-color: #F0E2C6;">
-                        <a href="#" class="dropdown-item text-black">Wanita</a>
-                        <a href="#" class="dropdown-item text-black">Pria</a>
-                        <a href="#" class="dropdown-item text-black">Unisex</a>
+                        <a href="/woman" class="dropdown-item text-black">Woman</a>
+                        <a href="/man" class="dropdown-item text-black">Man</a>
+                        <a href="/unisex" class="dropdown-item text-black">Unisex</a>
                     </div>
                 </div>
             </div>
@@ -105,19 +105,19 @@
 
         <!-- MOBILE MENU -->
         <div id="mobileMenu" class="hidden sm:hidden mt-3 space-y-2">
-            <a href="/" class="mobile-item">BUY PERFUMES</a>
-            <a href="#" class="mobile-item">EXCLUSIVE</a>
+            <a href="/buy" class="mobile-item">BUY PERFUMES</a>
+            <a href="/exclusive" class="mobile-item">EXCLUSIVE</a>
 
             <details class="mobile-dropdown">
                 <summary class="mobile-item">CATEGORIES</summary>
                 <div class="pl-4 space-y-1">
-                    <a href="#" class="mobile-item">Wanita</a>
-                    <a href="#" class="mobile-item">Pria</a>
-                    <a href="#" class="mobile-item">Unisex</a>
+                    <a href="/woman" class="mobile-item">Wanita</a>
+                    <a href="/man" class="mobile-item">Pria</a>
+                    <a href="/unisex" class="mobile-item">Unisex</a>
                 </div>
             </details>
 
-            <a href="#" class="mobile-item">ABOUT</a>
+            <a href="/about" class="mobile-item">ABOUT</a>
             <a href="/contact" class="mobile-item">CONTACT</a>
         </div>
 
