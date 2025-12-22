@@ -3,7 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard | Fleur Parfume</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script>
+        (function() {
+            try {
+                window.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                const _fetch = window.fetch;
+                window.fetch = function(input, init = {}) {
+                    init.headers = init.headers || {};
+                    const method = (init.method || 'GET').toUpperCase();
+                    if (method !== 'GET' && method !== 'HEAD') {
+                        if (!init.headers['X-CSRF-TOKEN'] && !init.headers['x-csrf-token']) {
+                            init.headers['X-CSRF-TOKEN'] = window.csrfToken;
+                        }
+                        if (!init.credentials) init.credentials = 'same-origin';
+                    }
+                    return _fetch(input, init);
+                };
+            } catch (e) {
+                // no-op if DOM not ready or meta missing
+            }
+        })();
+    </script>
 </head>
 
 <body class="bg-gray-100">
