@@ -129,7 +129,7 @@
                     </td>
 
                     <td class="px-6 py-4 text-center space-x-2">
-                        <a href="#"
+                        <a href="{{ route('products.edit', $product->id) }}"
                             class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">
                             Edit
                         </a>

@@ -31,6 +31,8 @@ Route::prefix('dashboard')->group(function () {
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])
     ->name('products.destroy');
 
+
+
 // Dummy FE Najran
 Route::get('/pesanan', function () {
     return view('pesanan.index');
