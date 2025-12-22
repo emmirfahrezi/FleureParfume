@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CategoryPageController;
 
 Route::get('/', function () {
     return view('home');
@@ -37,21 +38,7 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/unisex', function () {
-    return view('unisex');
-});
 
-Route::get('/man', function () {
-    return view('man');
-});
-
-Route::get('/woman', function () {
-    return view('woman');
-});
-
-Route::get('/exclusive', function () {
-    return view('exclusive');
-});
 
 Route::view('/contact', 'contact');
 
@@ -116,3 +103,16 @@ Scramble::registerJsonSpecificationRoute('/openapi.json');
 Scramble::routes(function ($route) {
     return true; // include every route
 });
+
+//CATEGORIES\\
+// Route Halaman Women
+Route::get('/woman', [CategoryPageController::class, 'woman'])->name('woman.index');
+
+// Route Halaman Man
+Route::get('/man', [CategoryPageController::class, 'man'])->name('man.index');
+
+// Route Halaman Unisex
+Route::get('/unisex', [CategoryPageController::class, 'unisex'])->name('unisex.index');
+
+// Route Halaman Unisex
+Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('exclusive.index');
