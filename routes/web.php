@@ -16,6 +16,13 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('products', ProductController::class);
 });
 
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::view('/contact', 'contact');
+
+
 //hapus
 // Perhatikan ada parameter {id} dan method-nya delete
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
