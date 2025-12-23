@@ -178,5 +178,4 @@ statusFilter.addEventListener('change', filterTable);
 dateFilter.addEventListener('change', filterTable);
 </script>
 
-
 @endsection
