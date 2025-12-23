@@ -25,14 +25,14 @@
         </div>
 
         <!-- Mobile Menu -->
-        <nav
-            class="hidden peer-checked:block absolute left-0 top-full w-full
-               bg-gray-900 text-sm text-gray-300 border-t border-gray-800 z-50">
-            <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-gray-800">Dashboard</a>
-            <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-gray-800">Produk</a>
-            <a href="{{ route('pesanan.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
-            <a href="{{ route('settings.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
-        </nav>
+                <nav
+                class="hidden peer-checked:block absolute left-0 top-full w-full
+                    bg-gray-900 text-sm text-gray-300 border-t border-gray-800 z-50">
+                <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-gray-800">Dashboard</a>
+                <a href="/dashboard/products" class="block px-6 py-3 hover:bg-gray-800">Produk</a>
+                <a href="{{ route('pesanan.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
+                <a href="{{ route('settings.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
+          </nav>
     </header>
 
     <!-- Responsif DESKTOP LAYOUT MODE -->
@@ -46,7 +46,7 @@
                 <a href="{{ route('dashboard') }}" class="block text-gray-300 hover:text-white">
                     Dashboard
                 </a>
-                <a href="{{ route('products.index') }}" class="block text-gray-300 hover:text-white">
+                <a href="/dashboard/products" class="block text-gray-300 hover:text-white">
                     Produk
                 </a>
                 <a href="{{ route('pesanan.index') }}" class="block text-gray-300 hover:text-white">
