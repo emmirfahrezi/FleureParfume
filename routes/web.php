@@ -16,7 +16,25 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/buy', function () {
-    return view('buy');
+    $products = \App\Models\Product::with('category')->inRandomOrder()->get();
+    return view('buy', compact('products'));
+});
+
+Route::get('/detailProduk/{id}', function ($id) {
+    $product = \App\Models\Product::with('category')->findOrFail($id);
+    return view('detailProduk', compact('product'));
+});
+
+Route::get('/cart', function () {
+    return view('cart');
+});
+
+Route::view('/checkout', 'formCheckout');
+
+// Fallback for old /detailProduk route without ID
+Route::get('/detailProduk', function () {
+    $product = \App\Models\Product::with('category')->firstOrFail();
+    return redirect('/detailProduk/' . $product->id);
 });
 
 // Authentication routes
@@ -42,16 +60,12 @@ Route::get('/about', function () {
 
 Route::view('/contact', 'contact');
 
-
-//hapus
-// Perhatikan ada parameter {id} dan method-nya delete
+// Delete product (public endpoint pointing to dashboard resource action)
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-// Delete product
-Route::delete('/products/{id}', [ProductController::class, 'destroy'])
-    ->name('products.destroy');
 
 
 
+<<<<<<< HEAD
 // <<<<<<< Dummy FE Najran >>>>>>>
 Route::get('/pesanan', function () {
     return view('pesanan.index');
@@ -76,6 +90,9 @@ Route::view('/dashboard/settings', 'dashboard.settings.index')->name('settings.i
 
 // <<<<<<<< end dummy FE Najran >>>>>>>>
 
+=======
+
+>>>>>>> 86d469b4c91a253f2d4a8ed2a52e0465fa687c81
 // Grup untuk admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
