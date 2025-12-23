@@ -29,6 +29,8 @@ Route::get('/cart', function () {
     return view('cart');
 });
 
+Route::view('/checkout', 'formCheckout');
+
 // Fallback for old /detailProduk route without ID
 Route::get('/detailProduk', function () {
     $product = \App\Models\Product::with('category')->firstOrFail();
