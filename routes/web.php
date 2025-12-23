@@ -72,6 +72,8 @@ Route::get('/update', function () {
     ]);
 });
 
+Route::view('/dashboard/settings', 'dashboard.settings.index')->name('settings.index');
+
 // end dummy FE Najran
 // Grup untuk admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {

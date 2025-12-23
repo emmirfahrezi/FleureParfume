@@ -31,7 +31,7 @@
             <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-gray-800">Dashboard</a>
             <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-gray-800">Produk</a>
             <a href="{{ route('pesanan.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
-            <a href="#" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
+            <a href="{{ route('settings.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
         </nav>
     </header>
 
