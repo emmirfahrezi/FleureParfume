@@ -52,11 +52,11 @@
                 <a href="{{ route('pesanan.index') }}" class="block text-gray-300 hover:text-white">
                     Pesanan
                 </a>
-                <a href="#" class="block text-gray-300 hover:text-white">
+                <a href="/dashboard/settings" class="block text-gray-300 hover:text-white">
                     Pengaturan
                 </a>
             </nav>
-
+            <br>
             <!-- download data user -->
             <h3>Menu Laporan</h3>
             <a href="{{ route('reports.users.download') }}" style="padding: 10px; background: green; color: white; text-decoration: none; border-radius: 5px;">

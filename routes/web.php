@@ -52,7 +52,7 @@ Route::delete('/products/{id}', [ProductController::class, 'destroy'])
 
 
 
-// Dummy FE Najran
+// <<<<<<< Dummy FE Najran >>>>>>>
 Route::get('/pesanan', function () {
     return view('pesanan.index');
 })->name('pesanan.index');
@@ -74,7 +74,8 @@ Route::get('/update', function () {
 
 Route::view('/dashboard/settings', 'dashboard.settings.index')->name('settings.index');
 
-// end dummy FE Najran
+// <<<<<<<< end dummy FE Najran >>>>>>>>
+
 // Grup untuk admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
