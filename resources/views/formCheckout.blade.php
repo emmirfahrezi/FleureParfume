@@ -57,35 +57,6 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
-                    <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Pengiriman</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <label class="border rounded-lg p-4 flex flex-col gap-2 cursor-pointer hover:border-black">
-                            <div class="flex items-center gap-2">
-                                <input type="radio" name="shipping" value="regular" class="h-4 w-4" checked>
-                                <span class="font-semibold" style="font-family: poppins, sans-serif;">Reguler</span>
-                            </div>
-                            <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Estimasi 2-4 hari</p>
-                            <p class="text-sm font-medium" style="font-family: poppins, sans-serif;">Rp 20.000</p>
-                        </label>
-                        <label class="border rounded-lg p-4 flex flex-col gap-2 cursor-pointer hover:border-black">
-                            <div class="flex items-center gap-2">
-                                <input type="radio" name="shipping" value="express" class="h-4 w-4">
-                                <span class="font-semibold" style="font-family: poppins, sans-serif;">Express</span>
-                            </div>
-                            <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Estimasi 1-2 hari</p>
-                            <p class="text-sm font-medium" style="font-family: poppins, sans-serif;">Rp 35.000</p>
-                        </label>
-                        <label class="border rounded-lg p-4 flex flex-col gap-2 cursor-pointer hover:border-black">
-                            <div class="flex items-center gap-2">
-                                <input type="radio" name="shipping" value="pickup" class="h-4 w-4">
-                                <span class="font-semibold" style="font-family: poppins, sans-serif;">Ambil di Toko</span>
-                            </div>
-                            <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Gratis biaya kirim</p>
-                            <p class="text-sm font-medium" style="font-family: poppins, sans-serif;">Rp 0</p>
-                        </label>
-                    </div>
-                </div>
 
                 <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
                     <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Metode Pembayaran</h2>
