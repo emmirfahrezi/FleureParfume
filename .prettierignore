@@ -1,5 +1,16 @@
 node_modules
 vendor
+public/hot
+storage
+bootstrap/cache
+.env
+.env.*
+*.log
+package-lock.json
+yarn.lock
+.git
+node_modules
+vendor
 .git
 dist
 build

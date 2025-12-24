@@ -23,11 +23,23 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect('/')->with('success', 'Selamat datang kembali di Fleure Parfume!');
-        }
+        // if (Auth::attempt($request->only('email', 'password'))) {
+        //     return redirect('/')->with('success', 'Selamat datang kembali di Fleure Parfume!');
+        // }
 
-        return back()->with('error', 'Email atau password salah.');
+        // return back()->with('error', 'Email atau password salah.');
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+        $request->session()->regenerate();
+        
+        // Redirect berdasarkan role
+        if (Auth::user()->role == 'admin') {
+            return redirect()->intended('/admin/dashboard');
+        }
+        return redirect()->intended('/user');
+    }
+
+    return back()->withErrors(['email' => 'Email atau password salah.']);
     }
 
     public function register(Request $request) {

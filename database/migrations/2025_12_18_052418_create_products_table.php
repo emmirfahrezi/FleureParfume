@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('category', ['Pria', 'Wanita', 'Unisex']);
+            $table->text('description')->nullable();
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->integer('price');
             $table->integer('stock');
             $table->string('image')->nullable();
