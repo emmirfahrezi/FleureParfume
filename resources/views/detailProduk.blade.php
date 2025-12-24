@@ -8,11 +8,11 @@
                 {{-- LEFT: PRODUCT IMAGE --}}
                 <div class="flex items-center justify-center">
                     @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                            class="w-full h-96 object-cover rounded-lg shadow-lg">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                        class="w-full h-96 object-cover rounded-lg shadow-lg">
                     @else
-                        <div class="w-full h-96 flex items-center justify-center bg-gray-200 rounded-lg text-gray-400">No
-                            Image</div>
+                    <div class="w-full h-96 flex items-center justify-center bg-gray-200 rounded-lg text-gray-400">No
+                        Image</div>
                     @endif
                 </div>
 
@@ -38,28 +38,39 @@
 
                     {{-- DESCRIPTION --}}
                     @if ($product->description)
-                        <p class="text-gray-700 leading-relaxed text-base" style="font-family: poppins, sans-serif;">
-                            {{ $product->description }}
-                        </p>
+                    <p class="text-gray-700 leading-relaxed text-base" style="font-family: poppins, sans-serif;">
+                        {{ $product->description }}
+                    </p>
                     @else
-                        <p class="text-gray-600 text-base" style="font-family: poppins, sans-serif;">
-                            Premium fragrance crafted with the finest ingredients.
-                        </p>
+                    <p class="text-gray-600 text-base" style="font-family: poppins, sans-serif;">
+                        Premium fragrance crafted with the finest ingredients.
+                    </p>
                     @endif
 
                     {{-- QUANTITY + ADD TO CART --}}
-                    <div class="flex items-center gap-4 py-6 border-t border-b">
-                        <div class="flex border rounded-md overflow-hidden">
-                            <button onclick="decrementQty()" class="px-4 py-2 hover:bg-gray-100">−</button>
-                            <input id="quantityInput" type="number" value="1" min="1" max="{{ $product->stock }}"
-                                class="w-16 text-center border-x focus:outline-none" readonly>
-                            <button onclick="incrementQty()" class="px-4 py-2 hover:bg-gray-100">+</button>
+                    <form action="{{ route('cart.store') }}" method="POST">
+                        @csrf
+
+                        {{-- 🔥 WAJIB ADA INI: Biar Controller tau produk mana yang dibeli 🔥 --}}
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                        <div class="flex items-center gap-4 py-6 border-t border-b">
+                            <div class="flex border rounded-md overflow-hidden">
+                                <button type="button" onclick="decrementQty()" class="px-4 py-2 hover:bg-gray-100">−</button>
+
+                                {{-- Pastikan name="quantity" ada --}}
+                                <input id="quantityInput" type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}"
+                                    class="w-16 text-center border-x focus:outline-none" readonly>
+
+                                <button type="button" onclick="incrementQty()" class="px-4 py-2 hover:bg-gray-100">+</button>
+                            </div>
+
+                            <button type="submit"
+                                class="flex-1 bg-black text-white py-3 uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
+                                Add to Cart
+                            </button>
                         </div>
-                        <button
-                            class="flex-1 bg-black text-white py-3 uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
-                            Add to Cart
-                        </button>
-                    </div>
+                    </form>
 
                     {{-- FEATURES --}}
                     <ul class="space-y-3 text-sm text-gray-700" style="font-family: poppins, sans-serif;">
@@ -80,7 +91,7 @@
                     </h3>
                     <div class="space-y-4 text-gray-700 leading-relaxed" style="font-family: poppins, sans-serif;">
                         @if ($product->description)
-                            <p>{{ $product->description }}</p>
+                        <p>{{ $product->description }}</p>
                         @endif
                         <p>
                             Discover the perfect scent for your personality. Our premium fragrance collection is crafted
@@ -94,7 +105,7 @@
                         </p>
                     </div>
 
-                    
+
                 </div>
             </div>
 
@@ -104,35 +115,36 @@
                     May Also Like</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @php
-                        $related = \App\Models\Product::where('id', '!=', $product->id)
-                            ->with('category')
-                            ->limit(4)
-                            ->get();
+                    $related = \App\Models\Product::where('id', '!=', $product->id)
+                    ->with('category')
+                    ->limit(4)
+                    ->get();
                     @endphp
                     @forelse($related as $item)
-                        <a href="/detailProduk/{{ $item->id }}"
-                            class="bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden group">
-                            <div class="relative h-56 overflow-hidden">
-                                @if ($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition">
-                                @else
-                                    <div
-                                        class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
-                                        No Image</div>
-                                @endif
-                            </div>
-                            <div class="p-4">
-                                <p class="text-xs text-gray-500 mb-1" style="font-family: poppins, sans-serif;">
-                                    {{ $item->category->name ?? 'General' }}</p>
-                                <h3 class="font-semibold text-gray-900 mb-2 truncate"
-                                    style="font-family: cormorant, serif !important;">{{ $item->name }}</h3>
-                                <p class="text-sm font-medium text-gray-800" style="font-family: poppins, sans-serif;">
-                                    Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-                            </div>
-                        </a>
+                    <a href="/detailProduk/{{ $item->id }}"
+                        class="bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden group">
+                        <div class="relative h-56 overflow-hidden">
+                            @if ($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition">
+                            @else
+                            <div
+                                class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                No Image</div>
+                            @endif
+                        </div>
+                        <div class="p-4">
+                            <p class="text-xs text-gray-500 mb-1" style="font-family: poppins, sans-serif;">
+                                {{ $item->category->name ?? 'General' }}
+                            </p>
+                            <h3 class="font-semibold text-gray-900 mb-2 truncate"
+                                style="font-family: cormorant, serif !important;">{{ $item->name }}</h3>
+                            <p class="text-sm font-medium text-gray-800" style="font-family: poppins, sans-serif;">
+                                Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+                        </div>
+                    </a>
                     @empty
-                        <p class="col-span-4 text-center text-gray-500">No related products available.</p>
+                    <p class="col-span-4 text-center text-gray-500">No related products available.</p>
                     @endforelse
                 </div>
             </div>
@@ -149,8 +161,12 @@
     </div>
 
     <script>
-        const maxStock = {{ $product->stock }};
-        
+        const maxStock = {
+            {
+                $product - > stock
+            }
+        };
+
         function incrementQty() {
             const input = document.getElementById('quantityInput');
             let currentValue = parseInt(input.value);
