@@ -114,3 +114,5 @@ Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('ex
 Route::get('/pesanan', function () {
     return view('pesanan.index');
 })->name('pesanan.index');
+
+Route::get('/buy', [ProductController::class, 'index'])->name('products.index');
