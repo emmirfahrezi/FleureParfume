@@ -68,10 +68,16 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 9l-7 7-7-7" /></svg>
                     </button>
                     <div id="sortDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                        <ul class="py-2 text-sm">
-                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Default sorting</li>
-                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
-                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high</li>
+                        <ul class="py-2">
+                            {{-- Modifikasi Sorting: Menggunakan link agar mengirim parameter ?sort= ke URL --}}
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Default sorting']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">Default sorting</li>
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by latest']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: low to high']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high</li>
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: high to low']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low</li>
                         </ul>
                     </div>
                 </div>
