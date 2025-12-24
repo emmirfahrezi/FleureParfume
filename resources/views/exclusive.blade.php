@@ -87,18 +87,11 @@
                     <div id="sortDropdown"
                         class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <ul class="py-2">
-                            <li onclick="selectSort('Default sorting')"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Default sorting</li>
-                            <li onclick="selectSort('Sort by popularity')"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by popularity</li>
-                            <li onclick="selectSort('Sort by latest')"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
-                            <li onclick="selectSort('Sort by price: low to high')"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high
-                            </li>
-                            <li onclick="selectSort('Sort by price: high to low')"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low
-                            </li>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Default sorting</li>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by popularity</li>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high</li>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low</li>
                         </ul>
                     </div>
                 </div>
@@ -126,13 +119,9 @@
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 @else
-                                    <div
-                                        class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
-                                        No Image
-                                    </div>
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
                                 @endif
-                                <span
-                                    class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
+                                <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
                                     style="font-family: poppins, sans-serif;">Exclusive</span>
                             </div>
                             <div class="p-5 space-y-2">
@@ -144,9 +133,7 @@
                                     {{ number_format($product->price, 0, ',', '.') }}</p>
                                 <div class="flex items-center justify-between pt-2">
                                     <span class="text-sm text-gray-500 italic">Limited release</span>
-                                    <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">
-                                        View details
-                                    </button>
+                                    <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View details</button>
                                 </div>
                             </div>
                         </a>
@@ -161,10 +148,7 @@
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 @else
-                                    <div
-                                        class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
-                                        No Image
-                                    </div>
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
                                 @endif
                             </div>
 
@@ -172,22 +156,13 @@
                                 <div class="flex items-center gap-3">
                                     <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
                                         style="font-family: poppins, sans-serif;">Exclusive</span>
-                                    <span class="text-xs sm:text-sm text-gray-500"
-                                        style="font-family: poppins, sans-serif;">{{ $product->category->name ?? 'Exclusive' }}</span>
+                                    <span class="text-xs sm:text-sm text-gray-500">{{ $product->category->name ?? 'Exclusive' }}</span>
                                 </div>
-                                <h3 class="text-2xl font-semibold text-gray-900"
-                                    style="font-family: cormorant, serif !important;">
-                                    {{ $product->name }}
-                                </h3>
-                                <p class="text-base sm:text-lg text-gray-700"
-                                    style="font-family: poppins, sans-serif !important;">
-                                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                                </p>
+                                <h3 class="text-2xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-base sm:text-lg text-gray-700">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                                 <div class="flex items-center justify-between pt-1">
                                     <span class="text-sm text-gray-500 italic">Limited release</span>
-                                    <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">
-                                        View details
-                                    </button>
+                                    <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View details</button>
                                 </div>
                             </div>
                         </a>
@@ -196,6 +171,7 @@
             @else
                 <div class="text-center py-20">
                     <p class="text-gray-500 text-lg">Belum ada produk Exclusive.</p>
+                    <a href="{{ request()->url() }}" class="text-amber-700 underline mt-4">Reset Filter</a>
                 </div>
             @endif
         </div>
@@ -204,47 +180,75 @@
     <div id="overlay"
         class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
+    {{-- SIDEBAR FILTER --}}
     <div id="filterSidebar"
         class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
-        <div class="flex justify-end p-4"><button onclick="closeFilter()" class="text-2xl">&times;</button></div>
-        <div class="px-6">
-            <div class="flex border">
-                <input type="text" placeholder="Search products..." class="w-full px-4 py-2 outline-none">
-                <button class="bg-black text-white px-4">&gt;</button>
-            </div>
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="font-bold">Filter Options</h2>
+            <button onclick="closeFilter()" class="text-2xl">&times;</button>
         </div>
 
-        <div class="px-6 mt-10">
-            <h2 class="text-4xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter by<br>price
-            </h2>
-            <div class="relative h-2 bg-gray-200 rounded-full mb-6">
-                <div id="priceRangeFill" class="absolute inset-y-0 bg-black rounded-full"></div>
-                <div id="priceMinHandle"
-                    class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
-                <div id="priceMaxHandle"
-                    class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
-                <input id="priceMinRange" type="range" min="0" max="500" value="199"
-                    step="1" class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
-                <input id="priceMaxRange" type="range" min="0" max="500" value="375"
-                    step="1" class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-20">
+        {{-- FORM FILTER --}}
+        <form action="{{ request()->url() }}" method="GET">
+            {{-- Filter Pencarian --}}
+            <div class="px-6 mt-6">
+                <div class="flex border rounded overflow-hidden">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." 
+                        class="w-full px-4 py-2 outline-none text-sm">
+                    <button type="submit" class="bg-black text-white px-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="flex gap-4">
-                <div class="border px-4 py-2" id="priceMinLabel">Rp 199.000</div>
-                <div class="border px-4 py-2" id="priceMaxLabel">Rp 375.000</div>
-            </div>
-            <div class="flex justify-between text-sm mt-2 text-gray-500">
-                <span>Min. Price</span>
-                <span>Max. Price</span>
-            </div>
-        </div>
 
-        <div class="px-6 mt-14">
-            <h3 class="text-xl mb-6 tracking-widest">FILTER BY CATEGORY</h3>
-            <ul class="space-y-3 font-semibold">
-                <li class="cursor-pointer">Exclusive</li>
-                <li class="cursor-pointer">Men</li>
-                <li class="cursor-pointer">Women</li>
-                <li class="cursor-pointer">Unisex</li>
+            {{-- Filter Harga --}}
+            <div class="px-6 mt-10">
+                <h2 class="text-4xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter by<br>price</h2>
+                <div class="relative h-2 bg-gray-200 rounded-full mb-6">
+                    <div id="priceRangeFill" class="absolute inset-y-0 bg-black rounded-full"></div>
+                    <div id="priceMinHandle" class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
+                    <div id="priceMaxHandle" class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
+                    
+                    {{-- Input Range dengan Atribut Name --}}
+                    <input id="priceMinRange" name="min_price" type="range" min="0" max="500" value="{{ request('min_price', 0) }}"
+                        step="1" class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
+                    <input id="priceMaxRange" name="max_price" type="range" min="0" max="500" value="{{ request('max_price', 500) }}"
+                        step="1" class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-20">
+                </div>
+                <div class="flex gap-4">
+                    <div class="border px-4 py-2 text-xs" id="priceMinLabel">Rp {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}</div>
+                    <div class="border px-4 py-2 text-xs" id="priceMaxLabel">Rp {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}</div>
+                </div>
+                <button type="submit" class="w-full mt-4 bg-black text-white py-2 rounded font-bold hover:bg-gray-800 transition">APPLY PRICE</button>
+            </div>
+        </form>
+
+        {{-- Filter Kategori --}}
+        <div class="px-6 mt-14 mb-10">
+            <h3 class="text-xl mb-6 tracking-widest uppercase text-gray-400 text-sm font-bold">Filter by Category</h3>
+            <ul class="space-y-4 font-semibold text-lg">
+                {{-- Menggunakan request()->fullUrlWithQuery agar filter search/harga tidak hilang saat pilih kategori --}}
+                <li>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}" 
+                       class="{{ request('category') == 'Exclusive' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Exclusive</a>
+                </li>
+                <li>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}" 
+                       class="{{ request('category') == 'Pria' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Pria</a>
+                </li>
+                <li>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}" 
+                       class="{{ request('category') == 'Wanita' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Wanita</a>
+                </li>
+                <li>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Unisex']) }}" 
+                       class="{{ request('category') == 'Unisex' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Unisex</a>
+                </li>
+                <li class="pt-4">
+                    <a href="{{ request()->url() }}" class="text-red-500 text-xs font-normal underline">Reset All Filters</a>
+                </li>
             </ul>
         </div>
     </div>
