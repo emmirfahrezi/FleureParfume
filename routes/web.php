@@ -98,3 +98,15 @@ Scramble::registerJsonSpecificationRoute('/openapi.json');
 Scramble::routes(function ($route) {
     return true; // include every route
 });
+
+Route::get('/profile', function () {
+    return view('profile');
+})->middleware('auth')->name('profile');
+
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+});
+
+Route::get('/reset-password', function () {
+    return view('auth.reset-password');
+});

@@ -92,25 +92,5 @@
     </div>
 </section>
 
-<!-- CTA -->
-<section class="bg-[#2B1E16] py-24">
-    <div class="max-w-4xl mx-auto px-6 text-center text-white">
-
-        <h2 class="font-brand text-4xl tracking-wide mb-6">
-            Discover Your Signature Scent
-        </h2>
-
-        <p class="text-gray-300 mb-10">
-            Temukan aroma yang mencerminkan karakter dan gaya hidup Anda bersama Fleure Perfumes.
-        </p>
-
-        <a href="/products"
-           class="inline-block bg-[#8B5A2B] hover:bg-[#6F4518]
-           px-8 py-4 rounded-full text-sm tracking-wide transition shadow-lg">
-            Explore Collection
-        </a>
-
-    </div>
-</section>
 
 @endsection

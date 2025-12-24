@@ -7,6 +7,7 @@
          background-attachment: fixed;
      }
  </style>
+ 
  <div class="relative isolate px-6 pt-20 lg:px-20 h-[600px] lg:h-[700px] hero-bg">
 
      <!-- Container kiri (hapus mx-auto agar TIDAK center) -->
