@@ -139,34 +139,65 @@
          <h4 class="text-2xl tracking-wide" style="font-family: cormorant, serif !important">Check Out Our</h4>
          <h1 class="text-5xl  leading-tight" style="font-family: cormorant, serif !important">BEST SELLER</h1>
      </div>
-     <!-- 4 Column Cards -->
+
      @php
-     use App\Models\Product;
-
-
-     $bestSellers = Product::with('category')->latest()->take(4)->get();
+     // Panggil Model pakai backslash biar aman
+     $bestSellers = \App\Models\Product::with('category')->latest()->take(4)->get();
      @endphp
 
      <div class="max-w-7xl mx-auto mt-12">
          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
              @foreach($bestSellers as $product)
-             <div class="bg-white rounded-lg shadow-lg overflow-hidden transition hover:shadow-xl">
-                 <div class="w-full h-64 overflow-hidden">
-                     @if($product->image)
-                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                         class="w-full h-full object-cover transition-transform duration-300 hover:scale-110">
-                     @else
-                     <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
-                     @endif
+
+             {{-- Logic Link Kategori --}}
+             @php
+             $catName = strtolower($product->category->name ?? '');
+             $linkCategory = '#';
+
+             if (str_contains($catName, 'wanita') || str_contains($catName, 'women')) {
+             $linkCategory = route('woman.index');
+             } elseif (str_contains($catName, 'pria') || str_contains($catName, 'men')) {
+             $linkCategory = route('man.index');
+             } elseif (str_contains($catName, 'unisex')) {
+             $linkCategory = route('unisex.index');
+             } elseif (str_contains($catName, 'exclusive')) {
+             $linkCategory = route('exclusive.index');
+             }
+             @endphp
+
+             <div class="bg-white rounded-lg shadow-lg overflow-hidden transition hover:shadow-xl group">
+
+                 {{-- [MODIFIKASI] Bungkus Area Gambar Pakai Link --}}
+                 <div class="w-full h-64 overflow-hidden relative">
+                     <a href="{{ $linkCategory }}" class="block w-full h-full cursor-pointer">
+                         @if($product->image)
+                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                         @else
+                         <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
+                         @endif
+
+                         {{-- Efek Overlay Gelap pas di-hover (Opsional biar cakep) --}}
+                         <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                     </a>
                  </div>
+
                  <div class="p-4">
-                     <h4 class="text-s text-gray-500 mb-1" style="font-family: cormorant, serif !important;">
-                         {{ $product->category->name ?? 'Uncategorized' }}
-                     </h4>
-                     <h3 class="text-xl font-semibold text-gray-900"
-                         style="font-family: cormorant, serif !important;">
-                         {{ $product->name }}
-                     </h3>
+                     {{-- Link di Tulisan Kategori --}}
+                     <a href="{{ $linkCategory }}" class="block w-fit hover:underline hover:text-black transition">
+                         <h4 class="text-s text-gray-500 mb-1" style="font-family: cormorant, serif !important;">
+                             {{ $product->category->name ?? 'Uncategorized' }}
+                         </h4>
+                     </a>
+
+                     {{-- Link di Nama Produk (Opsional: Kalau mau nama produk diklik juga ke kategori) --}}
+                     <a href="{{ $linkCategory }}">
+                         <h3 class="text-xl font-semibold text-gray-900 hover:text-gray-600 transition"
+                             style="font-family: cormorant, serif !important;">
+                             {{ $product->name }}
+                         </h3>
+                     </a>
+
                      <p class="text-gray-600 mt-2" style="font-family: poppins, sans-serif !important;">
                          Rp {{ number_format($product->price, 0, ',', '.') }}
                      </p>
@@ -176,7 +207,6 @@
          </div>
      </div>
  </div>
-
  {{-- section 4 done --}}
 
  {{-- banner brand --}}
