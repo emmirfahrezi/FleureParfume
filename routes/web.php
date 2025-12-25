@@ -81,6 +81,13 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+//hapus
+// Perhatikan ada parameter {id} dan method-nya delete
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+// Delete product
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])
+    ->name('products.destroy');
+    
 // Grup untuk admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
