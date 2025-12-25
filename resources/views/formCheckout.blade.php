@@ -7,8 +7,14 @@
             </p>
         </div>
 
-        <form action="#" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <form action="{{ route('orders.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             @csrf
+
+            @if(session('error'))
+            <div class="lg:col-span-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                {{ session('error') }}
+            </div>
+            @endif
 
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
@@ -91,15 +97,15 @@
                     <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Ringkasan Pesanan</h2>
                     <div class="flex justify-between text-sm text-gray-700" style="font-family: poppins, sans-serif;">
                         <span>Subtotal</span>
-                        <span>Rp 290.000</span>
+                        <span>Rp {{ number_format($subtotal ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between text-sm text-gray-700" style="font-family: poppins, sans-serif;">
                         <span>Ongkir</span>
-                        <span>Rp 20.000</span>
+                        <span>Rp {{ number_format($shippingCost ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between text-base font-semibold pt-2" style="font-family: poppins, sans-serif;">
                         <span>Total</span>
-                        <span>Rp 310.000</span>
+                        <span>Rp {{ number_format($total ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <button type="submit" class="w-full bg-black text-white py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
                         Bayar Sekarang

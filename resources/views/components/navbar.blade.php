@@ -75,6 +75,8 @@
                             style="background-color: #F0E2C6;">
                             <a href="/profile"
                                 class="flex items-center px-4 py-2 text-sm text-black hover:bg-black/10">Profile</a>
+                            <a href="{{ route('orders.index') }}"
+                                class="flex items-center px-4 py-2 text-sm text-black hover:bg-black/10">Pesanan Saya</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"
