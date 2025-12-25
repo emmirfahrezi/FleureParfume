@@ -16,25 +16,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/buy', function () {
-    $products = \App\Models\Product::with('category')->inRandomOrder()->get();
-    return view('buy', compact('products'));
-});
-
-Route::get('/detailProduk/{id}', function ($id) {
-    $product = \App\Models\Product::with('category')->findOrFail($id);
-    return view('detailProduk', compact('product'));
-});
-
-Route::get('/cart', function () {
-    return view('cart');
-});
-
-Route::view('/checkout', 'formCheckout');
-
-// Fallback for old /detailProduk route without ID
-Route::get('/detailProduk', function () {
-    $product = \App\Models\Product::with('category')->firstOrFail();
-    return redirect('/detailProduk/' . $product->id);
+    return view('buy');
 });
 
 // Authentication routes
@@ -60,39 +42,14 @@ Route::get('/about', function () {
 
 Route::view('/contact', 'contact');
 
-// Delete product (public endpoint pointing to dashboard resource action)
+
+//hapus
+// Perhatikan ada parameter {id} dan method-nya delete
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-
-
-
-<<<<<<< HEAD
-// <<<<<<< Dummy FE Najran >>>>>>>
-Route::get('/pesanan', function () {
-    return view('pesanan.index');
-})->name('pesanan.index');
-
-Route::view('/show', 'pesanan.show');
-
-Route::get('/update', function () {
-    return view('dashboard.products.update', [
-        'product' => (object)[
-            'id' => 1,
-            'name' => 'Parfum Dummy',
-            'category' => 'Unisex',
-            'price' => 150000,
-            'stock' => 20,
-            'image' => null
-        ]
-    ]);
-});
-
-Route::view('/dashboard/settings', 'dashboard.settings.index')->name('settings.index');
-
-// <<<<<<<< end dummy FE Najran >>>>>>>>
-
-=======
-
->>>>>>> 86d469b4c91a253f2d4a8ed2a52e0465fa687c81
+// Delete product
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])
+    ->name('products.destroy');
+    
 // Grup untuk admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
