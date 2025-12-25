@@ -93,3 +93,8 @@ Route::get('/unisex', [CategoryPageController::class, 'unisex'])->name('unisex.i
 
 // Route Halaman Unisex
 Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('exclusive.index');
+
+//Route pesanan 
+Route::get('/pesanan', function () {
+    return view('pesanan.index');
+})->name('pesanan.index');
