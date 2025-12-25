@@ -24,7 +24,7 @@
                             class="absolute left-0 mt-2 hidden w-36 rounded-md shadow-lg ring-1 ring-black/10" style="background-color: #F0E2C6;">
                             <a href="#" class="dropdown-item text-black">Wanita</a>
                             <a href="#" class="dropdown-item text-black">Pria</a>
-                            <a href="#" class="dropdown-item text-black">Unisex</a>
+                            <a href="#" class="dropdown-item text-black">Unisexx</a>
                         </div>
                     </div>
                 </div>
