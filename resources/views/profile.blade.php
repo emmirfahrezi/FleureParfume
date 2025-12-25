@@ -25,17 +25,20 @@
 
                     <!-- LEFT : AVATAR -->
                     <div class="text-center">
+                        @php
+                            $initial = strtoupper(substr($user->name ?? 'U', 0, 1));
+                        @endphp
                         <div class="w-32 h-32 mx-auto rounded-full bg-[#E8D7B9]
                                     flex items-center justify-center text-4xl
                                     font-semibold text-[#3B2F2F] mb-4">
-                            R
+                            {{ $initial }}
                         </div>
 
                         <h3 class="font-semibold text-lg text-[#3B2F2F]">
-                            Rvelclaw
+                            {{ $user->name ?? 'User' }}
                         </h3>
                         <p class="text-sm text-gray-600 mb-3">
-                            rvenz17@gmail.com
+                            {{ $user->email ?? '-' }}
                         </p>
 
                         <span class="inline-block bg-[#F5EAD7] text-[#3B2F2F]
@@ -53,9 +56,10 @@
                                     Full Name
                                 </label>
                                 <input type="text"
-                                    value="Rvelclaw"
+                                    value="{{ $user->name ?? 'User' }}"
+                                    disabled
                                     class="w-full border border-gray-300
-                                           rounded-xl px-4 py-3">
+                                           rounded-xl px-4 py-3 bg-gray-100">
                             </div>
 
                             <div>
@@ -63,9 +67,10 @@
                                     Email Address
                                 </label>
                                 <input type="email"
-                                    value="rvenz17@gmail.com"
+                                    value="{{ $user->email ?? '-' }}"
+                                    disabled
                                     class="w-full border border-gray-300
-                                           rounded-xl px-4 py-3">
+                                           rounded-xl px-4 py-3 bg-gray-100">
                             </div>
 
                             <div>
@@ -86,11 +91,14 @@
                                     Edit Profile
                                 </button>
 
-                                <button type="button"
-                                    class="px-8 py-3 rounded-xl bg-red-500
-                                           text-white hover:bg-red-600 transition">
-                                    Logout
-                                </button>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-8 py-3 rounded-xl bg-red-500
+                                               text-white hover:bg-red-600 transition">
+                                        Logout
+                                    </button>
+                                </form>
                             </div>
 
                         </form>

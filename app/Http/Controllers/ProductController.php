@@ -11,30 +11,24 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        // query builder
-        $query = Product::query();
+        // Build base query with category relation
+        $query = Product::with('category');
 
-        //filter untuk pencarian dari nama produk
+        // Front filters (q, category, price_min/max, sort)
         if ($request->filled('q')) {
             $query->where('name', 'like', '%' . $request->q . '%');
         }
-
-        //filter dari kategori (pria, wanita, unisex)
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('name', $request->category);
+            });
         }
-
-        //filter harga minimum
         if ($request->filled('price_min')) {
             $query->where('price', '>=', $request->price_min);
         }
-
-        //filter harga max
         if ($request->filled('price_max')) {
             $query->where('price', '<=', $request->price_max);
         }
-
-        //untuk sorting 
         if ($request->filled('sort')) {
             switch ($request->sort) {
                 case 'name_asc':
@@ -50,23 +44,30 @@ class ProductController extends Controller
                     $query->orderBy('price', 'desc');
                     break;
                 default:
-                    $query->orderBy('create_at', 'desc');
+                    $query->orderBy('created_at', 'desc');
                     break;
             }
-        } else {
-            $query->orderBy('create_at', 'desc');
         }
 
-        //execute query ambil data
-        $products = $query->with('category')->get();
+        // Additional filters for slider-based UI (min_price/max_price fields)
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $query->whereBetween('price', [$request->min_price * 1000, $request->max_price * 1000]);
+        }
 
-        // jika request AJAX atau ingin JSON, kembalikan data JSON
+        // Default sort
+        if (!$request->filled('sort')) {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $products = $query->get();
+
+        // JSON response for AJAX
         if ($request->ajax() || $request->wantsJson()) {
             $data = $products->map(function ($p) {
                 return [
                     'id' => $p->id,
                     'name' => $p->name,
-                    'category' => $p->name,
+                    'category' => optional($p->category)->name,
                     'price' => $p->price,
                     'stock' => $p->stock,
                     'image' => $p->image ? asset('storage/' . $p->image) : null,
@@ -76,45 +77,13 @@ class ProductController extends Controller
             return response()->json(['products' => $data]);
         }
 
-        // 1. Mulai Query
-        $query = Product::with('category');
+        $isAdmin = auth()->check() && auth()->user()->role === 'admin';
 
-        // 2. Filter Search (Cari Nama)
-        if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+        if ($isAdmin) {
+            return view('dashboard.products.index', compact('products'));
         }
 
-        // 3. Filter Kategori (Mencari di tabel categories)
-        if ($request->filled('category')) {
-            $query->whereHas('category', function($q) use ($request) {
-                $q->where('name', $request->category);
-            });
-        }
-
-        // 4. Filter Harga (Min & Max)
-        // Kita kali 1000 karena di slider kamu 0-500 (asumsi jadi 0 - 500rb)
-        if ($request->filled('min_price') && $request->filled('max_price')) {
-            $query->whereBetween('price', [$request->min_price * 1000, $request->max_price * 1000]);
-        }
-
-        // 5. Sorting
-        if ($request->sort == 'Sort by price: low to high') {
-            $query->orderBy('price', 'asc');
-        } elseif ($request->sort == 'Sort by price: high to low') {
-            $query->orderBy('price', 'desc');
-        } elseif ($request->sort == 'Sort by latest') {
-            $query->orderBy('created_at', 'desc');
-        } else {
-            $query->orderBy('created_at', 'desc'); // Default
-        }
-
-        // 6. Ambil Data
-        $products = $query->get();
-
-        // 7. Kirim ke View (Ganti 'nama_file_view' dengan nama file blade kamu)
         return view('buy', compact('products'));
-
-        return view('dashboard.products.index', compact('products'));
     }
 
     public function create()
@@ -246,6 +215,4 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
     }
-
-    
 }

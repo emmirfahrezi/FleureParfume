@@ -22,17 +22,17 @@
             <label for="menu-toggle" class="cursor-pointer text-2xl select-none">
                 ☰
             </label>
-        </div>
+        </div>https://github.com/emmirfahrezi/FleureParfume/pull/41/conflict?name=resources%252Fviews%252Flayouts%252Fdashboard.blade.php&ancestor_oid=f0b2d3d1f6c83a3bffd179ebf7582f604466acff&base_oid=462dc5a836bac74b7d84387e51a0baf2aa94b1ac&head_oid=21124eadd603f0f15a25acf51199666241d3036b
 
         <!-- Mobile Menu -->
-                <nav
-                class="hidden peer-checked:block absolute left-0 top-full w-full
-                    bg-gray-900 text-sm text-gray-300 border-t border-gray-800 z-50">
-                <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-gray-800">Dashboard</a>
-                <a href="/dashboard/products" class="block px-6 py-3 hover:bg-gray-800">Produk</a>
-                <a href="{{ route('pesanan.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
-                <a href="{{ route('settings.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
-          </nav>
+        <nav
+            class="hidden peer-checked:block absolute left-0 top-full w-full
+               bg-gray-900 text-sm text-gray-300 border-t border-gray-800 z-50">
+            <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-gray-800">Dashboard</a>
+            <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-gray-800">Produk</a>
+            <a href="{{ route('admin.orders.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
+            <a href="#" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
+        </nav>
     </header>
 
     <!-- Responsif DESKTOP LAYOUT MODE -->
@@ -49,7 +49,7 @@
                 <a href="/dashboard/products" class="block text-gray-300 hover:text-white">
                     Produk
                 </a>
-                <a href="{{ route('pesanan.index') }}" class="block text-gray-300 hover:text-white">
+                <a href="{{ route('admin.orders.index') }}" class="block text-gray-300 hover:text-white">
                     Pesanan
                 </a>
                 <a href="/dashboard/settings" class="block text-gray-300 hover:text-white">
