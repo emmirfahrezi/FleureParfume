@@ -127,4 +127,11 @@
         </div>
     </form>
 </div>
+
+<script>
+document.querySelector('form').addEventListener('submit', () => {
+    localStorage.setItem('product_created', 'true');
+});
+</script>
+
 @endsection

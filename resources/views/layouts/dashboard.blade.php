@@ -22,7 +22,7 @@
             <label for="menu-toggle" class="cursor-pointer text-2xl select-none">
                 ☰
             </label>
-        </div>
+        </div>https://github.com/emmirfahrezi/FleureParfume/pull/41/conflict?name=resources%252Fviews%252Flayouts%252Fdashboard.blade.php&ancestor_oid=f0b2d3d1f6c83a3bffd179ebf7582f604466acff&base_oid=462dc5a836bac74b7d84387e51a0baf2aa94b1ac&head_oid=21124eadd603f0f15a25acf51199666241d3036b
 
         <!-- Mobile Menu -->
         <nav
@@ -46,17 +46,17 @@
                 <a href="{{ route('dashboard') }}" class="block text-gray-300 hover:text-white">
                     Dashboard
                 </a>
-                <a href="{{ route('products.index') }}" class="block text-gray-300 hover:text-white">
+                <a href="/dashboard/products" class="block text-gray-300 hover:text-white">
                     Produk
                 </a>
                 <a href="{{ route('admin.orders.index') }}" class="block text-gray-300 hover:text-white">
                     Pesanan
                 </a>
-                <a href="#" class="block text-gray-300 hover:text-white">
+                <a href="/dashboard/settings" class="block text-gray-300 hover:text-white">
                     Pengaturan
                 </a>
             </nav>
-
+            <br>
             <!-- download data user -->
             <h3>Menu Laporan</h3>
             <a href="{{ route('reports.users.download') }}" style="padding: 10px; background: green; color: white; text-decoration: none; border-radius: 5px;">
