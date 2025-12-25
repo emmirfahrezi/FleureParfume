@@ -58,15 +58,14 @@
                         </svg>
                     </button>
 
-                    <div id="dropdownMenu"
-                        class="hidden absolute left-0 mt-2 w-36 shadow-xl ring-1 ring-black/5 z-50 animate__animated animate__fadeIn animate__faster"
-                        style="background-color: #F0E2C6;">
-                        <a href="#" class="block px-4 py-3 text-sm text-black hover:bg-black/5 transition-colors">Wanita</a>
-                        <a href="#" class="block px-4 py-3 text-sm text-black hover:bg-black/5 transition-colors">Pria</a>
-                        <a href="#" class="block px-4 py-3 text-sm text-black hover:bg-black/5 transition-colors">Unisex</a>
+                        <div id="dropdownMenu"
+                            class="absolute left-0 mt-2 hidden w-36 rounded-md shadow-lg ring-1 ring-black/10" style="background-color: #F0E2C6;">
+                            <a href="#" class="dropdown-item text-black">Wanita</a>
+                            <a href="#" class="dropdown-item text-black">Pria</a>
+                            <a href="#" class="dropdown-item text-black">Unisex</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
             <div class="flex justify-center">
                 <a href="/" class="flex flex-col justify-center items-center group">
