@@ -113,9 +113,4 @@ Route::get('/pesanan', function () {
     return view('pesanan.index');
 })->name('pesanan.index');
 
-//Route Cart
-Route::middleware(['auth'])->group(function () {
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add', [CartController::class, 'store'])->name('cart.store');
-    Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
-});
+Route::get('/buy', [ProductController::class, 'index'])->name('products.index');
