@@ -17,31 +17,31 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    // LOGIN (Logic: Kirim sinyal 'login_success')
     public function login(Request $request) {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        // if (Auth::attempt($request->only('email', 'password'))) {
-        //     return redirect('/')->with('success', 'Selamat datang kembali di Fleure Parfume!');
-        // }
-
-        // return back()->with('error', 'Email atau password salah.');
-
         if (Auth::attempt($request->only('email', 'password'))) {
-        $request->session()->regenerate();
-        
-        // Redirect berdasarkan role
-        if (Auth::user()->role == 'admin') {
-            return redirect()->intended('/admin/dashboard');
+            $request->session()->regenerate();
+            
+            // Cek Role Admin
+            if (Auth::user()->role == 'admin') {
+                return redirect()->intended('/admin/dashboard')
+                        ->with('login_success', true); 
+            }
+
+            // User Biasa
+            return redirect()->intended('/user')
+                    ->with('login_success', true); 
         }
-        return redirect()->intended('/user');
+
+        return back()->withErrors(['email' => 'Email atau password salah.']);
     }
 
-    return back()->withErrors(['email' => 'Email atau password salah.']);
-    }
-
+    // REGISTER (Logic Baru: Auto Login + Kirim sinyal 'register_success')
     public function register(Request $request) {
         $request->validate([
             'name' => 'required',
@@ -49,13 +49,20 @@ class AuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        User::create([
+        // 1. Buat User Baru
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'role' => 'user' // Default role user biar aman
         ]);
 
-        return redirect('/login')->with('success', 'Akun parfum kamu berhasil dibuat!');
+        // 2. AUTO LOGIN (Ini kuncinya bang!)
+        // Jadi habis daftar, gak perlu input password lagi, langsung masuk.
+        Auth::login($user);
+
+        // 3. Redirect ke Dashboard dengan sinyal 'register_success'
+        return redirect('/user')->with('register_success', true);
     }
 
     public function logout() {
