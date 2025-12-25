@@ -35,7 +35,7 @@
             </h2>
 
             <p class="text-sm text-gray-700 mb-8">
-                Apakah Anda yakin ingin keluar dari akun?
+                Apakah Anda yakin ingin keluar dari akun ini?
             </p>
 
             <div class="flex gap-4 justify-center">

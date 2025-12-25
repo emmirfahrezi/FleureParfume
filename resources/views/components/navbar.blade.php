@@ -283,7 +283,7 @@
         const isRegister = "{{ session('register_success') ? 'yes' : 'no' }}" === "yes";
 
         // Default Text (Login)
-        let titleText = 'WELCOME BACK!';
+        let titleText = 'WELCOME BACKK!';
         let bodyText = `Halo ${userName}, senang melihatmu kembali.`;
         let iconType = 'success';
 

@@ -57,8 +57,7 @@ class AuthController extends Controller
             'role' => 'user' // Default role user biar aman
         ]);
 
-        // 2. AUTO LOGIN (Ini kuncinya bang!)
-        // Jadi habis daftar, gak perlu input password lagi, langsung masuk.
+        // 2. AUTO LOGIN 
         Auth::login($user);
 
         // 3. Redirect ke Dashboard dengan sinyal 'register_success'
@@ -69,4 +68,4 @@ class AuthController extends Controller
         Auth::logout();
         return redirect('/login')->with('success', 'Kamu sudah logout.');
     }
-}
+} 
