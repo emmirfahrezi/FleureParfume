@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Dedoc\Scramble\Scramble;
@@ -25,9 +26,6 @@ Route::get('/detailProduk/{id}', function ($id) {
     return view('detailProduk', compact('product'));
 });
 
-Route::get('/cart', function () {
-    return view('cart');
-});
 
 Route::view('/checkout', 'formCheckout');
 
@@ -114,3 +112,10 @@ Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('ex
 Route::get('/pesanan', function () {
     return view('pesanan.index');
 })->name('pesanan.index');
+
+//Route Cart
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+});
