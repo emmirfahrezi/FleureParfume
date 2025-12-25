@@ -25,62 +25,68 @@
                         @php $totalPrice = 0; @endphp
 
                         @forelse($cartItems as $item)
-                        @php
-                        $subtotal = $item->product->price * $item->quantity;
-                        $totalPrice += $subtotal;
-                        @endphp
+                            @php
+                                $subtotal = $item->product->price * $item->quantity;
+                                $totalPrice += $subtotal;
+                            @endphp
 
-                        <tr class="border-b hover:bg-gray-50">
-                            {{-- PRODUCT --}}
-                            <td class="p-4">
-                                <div class="flex items-center gap-3">
-                                    {{-- Tombol Hapus --}}
-                                    <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-gray-400 hover:text-red-500 transition">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                            <tr class="border-b hover:bg-gray-50">
+                                {{-- PRODUCT --}}
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        {{-- Tombol Hapus --}}
+                                        <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-gray-400 hover:text-red-500 transition">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </form>
 
-                                    {{-- Gambar Produk --}}
-                                    @if($item->product->image)
-                                    <img src="{{ asset('storage/' . $item->product->image) }}" class="w-16 h-16 object-cover rounded">
-                                    @else
-                                    <div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs">No img</div>
-                                    @endif
+                                        {{-- Gambar Produk --}}
+                                        @if ($item->product->image)
+                                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                                class="w-16 h-16 object-cover rounded">
+                                        @else
+                                            <div
+                                                class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs">
+                                                No img</div>
+                                        @endif
 
-                                    <span class="font-medium text-gray-900" style="font-family: poppins, sans-serif;">
-                                        {{ $item->product->name }}
+                                        <span class="font-medium text-gray-900"
+                                            style="font-family: poppins, sans-serif;">
+                                            {{ $item->product->name }}
+                                        </span>
+                                    </div>
+                                </td>
+
+                                {{-- PRICE --}}
+                                <td class="p-4 text-gray-700" style="font-family: poppins, sans-serif;">
+                                    Rp {{ number_format($item->product->price, 0, ',', '.') }}
+                                </td>
+
+                                {{-- QUANTITY (Display Only dulu) --}}
+                                <td class="p-4">
+                                    <span class="px-4 py-2 border rounded bg-gray-50">
+                                        {{ $item->quantity }}
                                     </span>
-                                </div>
-                            </td>
+                                </td>
 
-                            {{-- PRICE --}}
-                            <td class="p-4 text-gray-700" style="font-family: poppins, sans-serif;">
-                                Rp {{ number_format($item->product->price, 0, ',', '.') }}
-                            </td>
-
-                            {{-- QUANTITY (Display Only dulu) --}}
-                            <td class="p-4">
-                                <span class="px-4 py-2 border rounded bg-gray-50">
-                                    {{ $item->quantity }}
-                                </span>
-                            </td>
-
-                            {{-- SUBTOTAL --}}
-                            <td class="p-4 font-semibold text-gray-900" style="font-family: poppins, sans-serif;">
-                                Rp {{ number_format($subtotal, 0, ',', '.') }}
-                            </td>
-                        </tr>
+                                {{-- SUBTOTAL --}}
+                                <td class="p-4 font-semibold text-gray-900" style="font-family: poppins, sans-serif;">
+                                    Rp {{ number_format($subtotal, 0, ',', '.') }}
+                                </td>
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="4" class="p-8 text-center text-gray-500">
-                                Keranjangmu masih kosong, Bang. Yuk belanja dulu!
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-gray-500">
+                                    Keranjangmu masih kosong, Bang. Yuk belanja dulu!
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -109,14 +115,16 @@
                     </div>
                 </div>
 
-                @if($cartItems->count() > 0)
-                <a href="/checkout" class="block w-full bg-black text-center text-white py-3 mt-6 rounded-md uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
-                    Checkout
-                </a>
+                @if ($cartItems->count() > 0)
+                    <a href="{{ route('orders.checkout') }}"
+                        class="block w-full bg-black text-center text-white py-3 mt-6 rounded-md uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
+                        Checkout
+                    </a>
                 @else
-                <button disabled class="w-full bg-gray-300 text-white py-3 mt-6 rounded-md uppercase tracking-widest text-sm font-semibold cursor-not-allowed">
-                    Checkout
-                </button>
+                    <button disabled
+                        class="w-full bg-gray-300 text-white py-3 mt-6 rounded-md uppercase tracking-widest text-sm font-semibold cursor-not-allowed">
+                        Checkout
+                    </button>
                 @endif
 
                 <a href="/buy" class="block text-center text-sm text-gray-600 mt-4 hover:text-black">
