@@ -4,6 +4,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Dedoc\Scramble\Scramble;
@@ -16,7 +18,22 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/buy', function () {
-    return view('buy');
+    $products = \App\Models\Product::with('category')->inRandomOrder()->get();
+    return view('buy', compact('products'));
+});
+
+Route::get('/detailProduk/{id}', function ($id) {
+    $product = \App\Models\Product::with('category')->findOrFail($id);
+    return view('detailProduk', compact('product'));
+});
+
+
+Route::view('/checkout', 'formCheckout');
+
+// Fallback for old /detailProduk route without ID
+Route::get('/detailProduk', function () {
+    $product = \App\Models\Product::with('category')->firstOrFail();
+    return redirect('/detailProduk/' . $product->id);
 });
 
 // Authentication routes
@@ -41,6 +58,27 @@ Route::get('/about', function () {
 
 
 Route::view('/contact', 'contact');
+
+// Delete product (public endpoint pointing to dashboard resource action)
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+// Cart routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+});
+
+// Order routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/success/{order}', [OrderController::class, 'success'])->name('orders.success');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+});
+
+
 
 
 //hapus
@@ -81,20 +119,14 @@ Scramble::routes(function ($route) {
     return true; // include every route
 });
 
-//CATEGORIES\\
-// Route Halaman Women
-Route::get('/woman', [CategoryPageController::class, 'woman'])->name('woman.index');
+Route::get('/profile', function () {
+    return view('profile');
+})->middleware('auth')->name('profile');
 
-// Route Halaman Man
-Route::get('/man', [CategoryPageController::class, 'man'])->name('man.index');
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+});
 
-// Route Halaman Unisex
-Route::get('/unisex', [CategoryPageController::class, 'unisex'])->name('unisex.index');
-
-// Route Halaman Unisex
-Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('exclusive.index');
-
-//Route pesanan 
-Route::get('/pesanan', function () {
-    return view('pesanan.index');
-})->name('pesanan.index');
+Route::get('/reset-password', function () {
+    return view('auth.reset-password');
+});
