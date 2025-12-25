@@ -66,7 +66,7 @@ class ProductController extends Controller
                 return [
                     'id' => $p->id,
                     'name' => $p->name,
-                    'category' => $p->category->name,
+                    'category' => $p->name,
                     'price' => $p->price,
                     'stock' => $p->stock,
                     'image' => $p->image ? asset('storage/' . $p->image) : null,
@@ -75,6 +75,44 @@ class ProductController extends Controller
 
             return response()->json(['products' => $data]);
         }
+
+        // 1. Mulai Query
+        $query = Product::with('category');
+
+        // 2. Filter Search (Cari Nama)
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // 3. Filter Kategori (Mencari di tabel categories)
+        if ($request->filled('category')) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('name', $request->category);
+            });
+        }
+
+        // 4. Filter Harga (Min & Max)
+        // Kita kali 1000 karena di slider kamu 0-500 (asumsi jadi 0 - 500rb)
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $query->whereBetween('price', [$request->min_price * 1000, $request->max_price * 1000]);
+        }
+
+        // 5. Sorting
+        if ($request->sort == 'Sort by price: low to high') {
+            $query->orderBy('price', 'asc');
+        } elseif ($request->sort == 'Sort by price: high to low') {
+            $query->orderBy('price', 'desc');
+        } elseif ($request->sort == 'Sort by latest') {
+            $query->orderBy('created_at', 'desc');
+        } else {
+            $query->orderBy('created_at', 'desc'); // Default
+        }
+
+        // 6. Ambil Data
+        $products = $query->get();
+
+        // 7. Kirim ke View (Ganti 'nama_file_view' dengan nama file blade kamu)
+        return view('buy', compact('products'));
 
         return view('dashboard.products.index', compact('products'));
     }
@@ -135,7 +173,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return view('dashboard.products.edit', compact('product'));
+        $categories = Category::all();
+
+        return view('dashboard.products.update', compact('product', 'categories'));
     }
 
     public function update(Request $request, string $id)
@@ -146,10 +186,10 @@ class ProductController extends Controller
         //validasi
         $request->validate([
             'name' => 'required',
-            'category' => 'required|in:Pria,Wanita,Unisex',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
-            'image' => 'nullable|image|mines:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             //25 kata untuk deskripsi
             'description' => [
@@ -166,7 +206,7 @@ class ProductController extends Controller
         $data = [
             'name' => $request->name,
             'description' => $request->description,
-            'category' => $request->category,
+            'category_id' => $request->category_id,
             'price' => $request->price,
             'stock' => $request->stock,
         ];
@@ -188,6 +228,8 @@ class ProductController extends Controller
 
         //excute update
         $product->update($data);
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate!');
     }
 
     public function destroy(string $id)
@@ -204,4 +246,6 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
     }
+
+    
 }

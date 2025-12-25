@@ -4,18 +4,36 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
-
 use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Str;
-
-
-
-
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CategoryPageController;
 
 Route::get('/', function () {
     return view('home');
+})->name('home');
+
+Route::get('/buy', function () {
+    $products = \App\Models\Product::with('category')->inRandomOrder()->get();
+    return view('buy', compact('products'));
+});
+
+Route::get('/detailProduk/{id}', function ($id) {
+    $product = \App\Models\Product::with('category')->findOrFail($id);
+    return view('detailProduk', compact('product'));
+});
+
+
+Route::view('/checkout', 'formCheckout');
+
+// Fallback for old /detailProduk route without ID
+Route::get('/detailProduk', function () {
+    $product = \App\Models\Product::with('category')->firstOrFail();
+    return redirect('/detailProduk/' . $product->id);
 });
 
 // Authentication routes
@@ -37,37 +55,32 @@ Route::get('/about', function () {
     return view('about');
 });
 
+
+
 Route::view('/contact', 'contact');
 
-
-//hapus
-// Perhatikan ada parameter {id} dan method-nya delete
+// Delete product (public endpoint pointing to dashboard resource action)
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-// Delete product
-Route::delete('/products/{id}', [ProductController::class, 'destroy'])
-    ->name('products.destroy');
 
-// Dummy FE Najran
-Route::get('/pesanan', function () {
-    return view('pesanan.index');
-})->name('pesanan.index');
-
-Route::view('/show', 'pesanan.show');
-
-Route::get('/update', function () {
-    return view('dashboard.products.update', [
-        'product' => (object)[
-            'id' => 1,
-            'name' => 'Parfum Dummy',
-            'category' => 'Unisex',
-            'price' => 150000,
-            'stock' => 20,
-            'image' => null
-        ]
-    ]);
+// Cart routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 
-// end dummy FE Najran
+// Order routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/success/{order}', [OrderController::class, 'success'])->name('orders.success');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+});
+
+
+
+
 // Grup untuk admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
