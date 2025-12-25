@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Dedoc\Scramble\Scramble;
@@ -25,9 +26,6 @@ Route::get('/detailProduk/{id}', function ($id) {
     return view('detailProduk', compact('product'));
 });
 
-Route::get('/cart', function () {
-    return view('cart');
-});
 
 Route::view('/checkout', 'formCheckout');
 
