@@ -112,22 +112,14 @@ Scramble::routes(function ($route) {
     return true; // include every route
 });
 
-//CATEGORIES\\
-// Route Halaman Women
-Route::get('/woman', [CategoryPageController::class, 'woman'])->name('woman.index');
+Route::get('/profile', function () {
+    return view('profile');
+})->middleware('auth')->name('profile');
 
-// Route Halaman Man
-Route::get('/man', [CategoryPageController::class, 'man'])->name('man.index');
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+});
 
-// Route Halaman Unisex
-Route::get('/unisex', [CategoryPageController::class, 'unisex'])->name('unisex.index');
-
-// Route Halaman Unisex
-Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('exclusive.index');
-
-//Route pesanan 
-Route::get('/pesanan', function () {
-    return view('pesanan.index');
-})->name('pesanan.index');
-
-Route::get('/buy', [ProductController::class, 'index'])->name('products.index');
+Route::get('/reset-password', function () {
+    return view('auth.reset-password');
+});

@@ -36,6 +36,14 @@
                 <input type="password" name="password" class="w-full p-2 border rounded-lg mt-1" required>
             </div>
 
+            <div class="text-right mb-4">
+                <a href="/forgot-password"
+                class="text-sm"
+                style="color:#4B2E15; text-decoration: underline;">
+                    Forgot your password?
+                </a>
+            </div>
+
             <button class="w-full py-2 rounded-xl font-semibold text-white"
                     style="background-color:#4B2E15;">
                 Sign In
