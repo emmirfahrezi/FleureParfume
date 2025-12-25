@@ -16,9 +16,15 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role == 'admin') {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login sebagai Admin.');
         }
-        return redirect('/login')->with('error', 'Anda bukan Admin!');
+
+        if (Auth::user()->role !== 'admin') {
+            // Larang user non-admin mengakses area admin
+            return redirect()->route('user.dashboard')->with('error', 'Anda tidak memiliki akses Admin.');
+        }
+
+        return $next($request);
     }
 }

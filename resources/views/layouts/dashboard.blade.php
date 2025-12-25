@@ -30,7 +30,7 @@
                bg-gray-900 text-sm text-gray-300 border-t border-gray-800 z-50">
             <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-gray-800">Dashboard</a>
             <a href="{{ route('products.index') }}" class="block px-6 py-3 hover:bg-gray-800">Produk</a>
-            <a href="{{ route('pesanan.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
+            <a href="{{ route('admin.orders.index') }}" class="block px-6 py-3 hover:bg-gray-800">Pesanan</a>
             <a href="#" class="block px-6 py-3 hover:bg-gray-800">Pengaturan</a>
         </nav>
     </header>
@@ -49,7 +49,7 @@
                 <a href="{{ route('products.index') }}" class="block text-gray-300 hover:text-white">
                     Produk
                 </a>
-                <a href="{{ route('pesanan.index') }}" class="block text-gray-300 hover:text-white">
+                <a href="{{ route('admin.orders.index') }}" class="block text-gray-300 hover:text-white">
                     Pesanan
                 </a>
                 <a href="#" class="block text-gray-300 hover:text-white">
