@@ -14,6 +14,8 @@
         "dedoc/scramble": "^0.13.8",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.2",
+        "laravel/socialite": "^5.24",
+        "laravel/tinker": "^2.10.1"
         "laravel/tinker": "^2.10.1",
         "midtrans/midtrans-php": "^2.6"
     },

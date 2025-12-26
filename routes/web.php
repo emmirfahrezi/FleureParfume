@@ -14,6 +14,8 @@ use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\OrderController;
 use App\Models\Order;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\Auth\GoogleController;
+
 use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
@@ -149,6 +151,11 @@ Route::middleware(['auth', 'user'])->group(function () {
 Route::get('/wilayah/provinsi', [WilayahController::class, 'provinsi']);
 Route::get('/wilayah/kabupaten/{id}', [WilayahController::class, 'kabupaten']);
 
+//route api google
+Route::get('/auth/google', [GoogleController::class, 'redirect'])
+        ->name('google.login');
+
+Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 // Midtrans payment routes
 Route::post('/payments/midtrans/notification', [PaymentController::class, 'midtransNotification'])->name('payments.midtrans.notification');
 
