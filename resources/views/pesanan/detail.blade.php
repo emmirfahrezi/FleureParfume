@@ -112,5 +112,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="flex justify-center gap-4 mt-8">
+            <a href="{{ route('invoices.show', $order->id) }}"
+                class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
+                📄 Lihat Invoice
+            </a>
+            <a href="{{ route('invoices.download', $order->id) }}"
+                class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition font-semibold">
+                📥 Download PDF
+            </a>
+        </div>
     </div>
 </x-layoutCategories>
