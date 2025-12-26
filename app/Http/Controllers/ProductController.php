@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -77,7 +78,7 @@ class ProductController extends Controller
             return response()->json(['products' => $data]);
         }
 
-        $isAdmin = auth()->check() && auth()->user()->role === 'admin';
+        $isAdmin = Auth::check() && Auth::user()->role === 'admin';
 
         if ($isAdmin) {
             return view('dashboard.products.index', compact('products'));
