@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\OrderController;
 use App\Models\Order;
+use App\Http\Controllers\WilayahController;
 
 Route::get('/', function () {
     return view('home');
@@ -132,3 +133,7 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::post('/cart/add', [CartController::class, 'store'])->name('cart.store');
     Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
+
+//route api wilayah 
+Route::get('/wilayah/provinsi', [WilayahController::class, 'provinsi']);
+Route::get('/wilayah/kabupaten/{id}', [WilayahController::class, 'kabupaten']);
