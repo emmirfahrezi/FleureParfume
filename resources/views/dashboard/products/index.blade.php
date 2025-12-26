@@ -41,8 +41,10 @@
                         <option value="">Default</option>
                         <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama A–Z</option>
                         <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama Z–A</option>
-                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga Terendah</option>
-                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga Tertinggi</option>
+                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga Terendah
+                        </option>
+                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga Tertinggi
+                        </option>
                     </select>
                 </div>
 
@@ -92,76 +94,77 @@
 
                 <tbody id="productTable">
                     @forelse ($products as $product)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4">
-                            @if ($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}"
-                                    class="w-14 h-14 rounded-lg object-cover">
-                            @else
-                                <span class="text-xs text-gray-400">No Image</span>
-                            @endif
-                        </td>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        class="w-14 h-14 rounded-lg object-cover">
+                                @else
+                                    <span class="text-xs text-gray-400">No Image</span>
+                                @endif
+                            </td>
 
-                        <td class="px-6 py-4 font-medium text-gray-800">
-                            {{ $product->name }}
-                        </td>
+                            <td class="px-6 py-4 font-medium text-gray-800">
+                                {{ $product->name }}
+                            </td>
 
-                        <!-- KATEGORI -->
-                        <td class="px-6 py-4">
-                            @php
-                                $categoryName = $product->category;
-                            @endphp
+                            <!-- KATEGORI -->
+                            <td class="px-6 py-4">
+                                @php
+                                    $categoryName = $product->category->name ?? null;
+                                @endphp
 
-                            @if($categoryName)
-                                <span class="px-3 py-1 text-xs rounded-full
+                                @if ($categoryName)
+                                    <span
+                                        class="px-3 py-1 text-xs rounded-full
                                     {{ $categoryName == 'Wanita' ? 'bg-pink-100 text-pink-700' : '' }}
                                     {{ $categoryName == 'Pria' ? 'bg-blue-100 text-blue-700' : '' }}
                                     {{ $categoryName == 'Unisex' ? 'bg-purple-100 text-purple-700' : '' }}
                                 ">
-                                    {{ $categoryName }}
-                                </span>
-                            @else
-                                <span class="text-xs text-gray-400">Tanpa Kategori</span>
-                            @endif
-                        </td>
+                                        {{ $categoryName }}
+                                    </span>
+                                @else
+                                    <span class="text-xs text-gray-400">Tanpa Kategori</span>
+                                @endif
+                            </td>
 
-                        <td class="px-6 py-4">
-                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                        </td>
+                            <td class="px-6 py-4">
+                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                            </td>
 
-                        <td class="px-6 py-4">
-                            {{ $product->stock }}
-                        </td>
+                            <td class="px-6 py-4">
+                                {{ $product->stock }}
+                            </td>
 
-                        <td class="px-6 py-4 text-center space-x-2">
-                            <a href="{{ route('products.edit', $product->id) }}"
-                                class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">
-                                Edit
-                            </a>
+                            <td class="px-6 py-4 text-center space-x-2">
+                                <a href="{{ route('products.edit', $product->id) }}"
+                                    class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">
+                                    Edit
+                                </a>
 
-                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline"
-                                onsubmit="return confirm('Yakin mau hapus produk {{ $product->name }}?');">
-                                @csrf
-                                @method('DELETE')
-                                <button class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">
-                                    Hapus
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline"
+                                    onsubmit="return confirm('Yakin mau hapus produk {{ $product->name }}?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="6" class="text-center py-6 text-gray-400">
-                            Belum ada produk
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="6" class="text-center py-6 text-gray-400">
+                                Belum ada produk
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
 
             </table>
         </div>
     </div>
-    
+
     <!-- ✅ Popup Success Modal -->
     {{-- <div
         id="success-modal"
@@ -220,5 +223,4 @@
             });
         });
     </script> --}}
-
 @endsection

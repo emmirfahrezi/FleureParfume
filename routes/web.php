@@ -65,8 +65,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/report-user', [ReportController::class, 'downloadUserReport'])->name('reports.users.download');
     Route::get('/admin/report-product', [ReportController::class, 'downloadProductReport'])->name('reports.products.download');
 
-    // Admin orders list view
-    Route::view('/admin/orders', 'dashboard.orders.index')->name('admin.orders.index');
+    // Admin orders
+    Route::get('/admin/orders', [App\Http\Controllers\AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('/admin/orders/{id}', [App\Http\Controllers\AdminOrderController::class, 'show'])->name('admin.orders.show');
+    Route::post('/admin/orders/{id}/status', [App\Http\Controllers\AdminOrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+    Route::post('/admin/orders/{id}/payment', [App\Http\Controllers\AdminOrderController::class, 'updatePaymentStatus'])->name('admin.orders.updatePayment');
 });
 
 Route::get('/about', function () {
