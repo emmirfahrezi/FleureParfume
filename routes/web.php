@@ -15,6 +15,8 @@ use App\Http\Controllers\OrderController;
 use App\Models\Order;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 use App\Http\Controllers\PaymentController;
 
@@ -162,4 +164,15 @@ Route::post('/payments/midtrans/notification', [PaymentController::class, 'midtr
 // Finish route needs to be accessible but we check auth inside
 Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/payments/midtrans/finish', [PaymentController::class, 'midtransFinish'])->name('payments.midtrans.finish');
+});
+
+Route::middleware('auth')->group(function () {
+    // Halaman View Profile (profile.blade.php)
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    
+    // Halaman Edit Profile (edit-profile.blade.php)
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    
+    // Proses Simpan Update
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
