@@ -256,7 +256,7 @@
      <div class="max-w-7xl mx-auto">
          <div class="text-center text-black" style="font-family: cormorant, serif !important;">
              <h4 class="text-2xl font-bold tracking-wide" style="font-family: cormorant, serif !important">New Perfumes</h4>
-             <h1 class="text-5xl font-bold leading-tight uppercase" style="font-family: cormorant, serif !important">Shop By Category</h1>
+             <h1 class="text-5xl font-bold leading-tight uppercase" style="font-family: cormorant, serif !important">Shop By Categorys</h1>
          </div>
 
          <div class="max-w-7xl mx-auto mt-8">
