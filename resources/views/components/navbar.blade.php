@@ -49,8 +49,8 @@
         <div class="hidden sm:grid grid-cols-3 h-16 items-center">
 
             <div class="flex items-center space-x-6 ">
-                <a href="/" class="navlink text-black hover:text-gray-600 transition-colors">BUY PERFUMES</a>
-                <a href="#" class="navlink text-black hover:text-gray-600 transition-colors">EXCLUSIVE</a>
+                <a href="/buy" class="navlink text-black hover:text-gray-600 transition-colors">BUY PERFUMES</a>
+                <a href="/exclusive" class="navlink text-black hover:text-gray-600 transition-colors">EXCLUSIVE</a>
 
                 <div class="relative">
                     <button id="cat-btn" onclick="toggleDropdown(event)"
@@ -64,9 +64,9 @@
                     <div id="dropdownMenu"
                         class="absolute left-0 mt-2 hidden w-36 rounded-md shadow-lg ring-1 ring-black/10"
                         style="background-color: #F0E2C6;">
-                        <a href="#" class="dropdown-item text-black">Wanita</a>
-                        <a href="#" class="dropdown-item text-black">Pria</a>
-                        <a href="#" class="dropdown-item text-black">Unisex</a>
+                        <a href="/woman" class="dropdown-item text-black">Wanita</a>
+                        <a href="/man" class="dropdown-item text-black">Pria</a>
+                        <a href="/unisex" class="dropdown-item text-black">Unisex</a>
                     </div>
                 </div>
             </div>
@@ -157,9 +157,10 @@
 
         <div id="mobileMenu"
             class="hidden sm:hidden mt-4 pb-4 border-t border-black/10 space-y-1 bg-[#F0E2C6]/95 backdrop-blur-md rounded-b-lg shadow-lg">
-            <a href="/" class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">BUY
+            <a href="/buy" class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">BUY
                 PERFUMES</a>
-            <a href="#" class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">EXCLUSIVE</a>
+            <a href="/exclusive"
+                class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">EXCLUSIVE</a>
 
             <details class="group">
                 <summary
@@ -171,13 +172,13 @@
                     </svg>
                 </summary>
                 <div class="pl-8 bg-black/5 space-y-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-black">Wanita</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-black">Pria</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-black">Unisex</a>
+                    <a href="/woman" class="block px-4 py-2 text-sm text-black">Wanita</a>
+                    <a href="/man" class="block px-4 py-2 text-sm text-black">Pria</a>
+                    <a href="/unisex" class="block px-4 py-2 text-sm text-black">Unisex</a>
                 </div>
             </details>
 
-            <a href="#" class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">ABOUT</a>
+            <a href="/about" class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">ABOUT</a>
             <a href="/contact" class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">CONTACT</a>
             <a href="{{ route('cart.index') }}"
                 class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">CART</a>
