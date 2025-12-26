@@ -77,10 +77,16 @@
                                     Rp {{ number_format($order->total, 0, ',', '.') }}
                                 </p>
                             </div>
-                            <a href="{{ route('orders.show', $order->id) }}"
-                                class="bg-black text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
-                                Lihat Detail
-                            </a>
+                            <div class="flex gap-2">
+                                <a href="{{ route('invoices.show', $order->id) }}"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+                                    📄 Invoice
+                                </a>
+                                <a href="{{ route('orders.show', $order->id) }}"
+                                    class="bg-black text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
+                                    Lihat Detail
+                                </a>
+                            </div>
                         </div>
                     </div>
                 @endforeach

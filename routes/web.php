@@ -17,6 +17,7 @@ use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\GoogleController;
 
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InvoiceController;
 
 Route::get('/', function () {
     return view('home');
@@ -145,6 +146,10 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'store'])->name('cart.store');
     Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    // Invoice
+    Route::get('/invoices/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{id}/download', [InvoiceController::class, 'download'])->name('invoices.download');
 });
 
 //route api wilayah 
