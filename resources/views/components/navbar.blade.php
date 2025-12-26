@@ -173,7 +173,7 @@
                 </summary>
                 <div class="pl-8 bg-black/5 space-y-1">
                     <a href="/woman" class="block px-4 py-2 text-sm text-black">Wanita</a>
-                    <a href="/man" class="block px-4 py-2 text-sm text-black">Pria</a>
+                    <a href="/man" class="block px-4 py-2 text-sm text-black">Priah</a>
                     <a href="/unisex" class="block px-4 py-2 text-sm text-black">Unisex</a>
                 </div>
             </details>
