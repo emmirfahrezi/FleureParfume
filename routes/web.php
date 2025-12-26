@@ -16,6 +16,7 @@ use App\Models\Order;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\GoogleController;
 
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return view('home');
@@ -30,9 +31,6 @@ Route::get('/detailProduk/{id}', function ($id) {
     $product = \App\Models\Product::with('category')->findOrFail($id);
     return view('detailProduk', compact('product'));
 });
-
-
-Route::view('/checkout', 'formCheckout');
 
 // Fallback for old /detailProduk route without ID
 Route::get('/detailProduk', function () {
@@ -56,6 +54,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Halaman pengaturan dashboard (hanya admin)
+    Route::get('/dashboard/settings', function () {
+        return view('dashboard.settings.index');
+    })->name('dashboard.settings');
 
     Route::prefix('dashboard')->group(function () {
         Route::resource('products', ProductController::class);
@@ -125,13 +128,18 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/orders/success/{orderId}', [OrderController::class, 'success'])->name('orders.success');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::post('/orders/prepare', [OrderController::class, 'prepare'])->name('orders.prepare');
 
     // Profile
     Route::get('/profile', function () {
-        $user = auth()->user();
+        $user = Auth::user();
         return view('profile', compact('user'));
     })->name('profile.show');
+
+    // Settings
+    Route::get('/settings', function () {
+        return view('dashboard.settings.index');
+    })->name('dashboard.settings');
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -148,3 +156,10 @@ Route::get('/auth/google', [GoogleController::class, 'redirect'])
         ->name('google.login');
 
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+// Midtrans payment routes
+Route::post('/payments/midtrans/notification', [PaymentController::class, 'midtransNotification'])->name('payments.midtrans.notification');
+
+// Finish route needs to be accessible but we check auth inside
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::get('/payments/midtrans/finish', [PaymentController::class, 'midtransFinish'])->name('payments.midtrans.finish');
+});

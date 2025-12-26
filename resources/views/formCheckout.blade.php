@@ -7,12 +7,19 @@
             </p>
         </div>
 
-        <form action="{{ route('orders.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <form id="checkoutForm" action="{{ route('orders.prepare') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             @csrf
 
             @if(session('error'))
             <div class="lg:col-span-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                 {{ session('error') }}
+            </div>
+            @endif
+
+            @if(isset($errorMessage) && $errorMessage)
+            <div class="lg:col-span-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                <strong>Payment Gateway Error:</strong> {{ $errorMessage }}
+                <br><small>Periksa konfigurasi Midtrans atau cek log untuk detail.</small>
             </div>
             @endif
 
@@ -118,8 +125,8 @@
                         <span>Total</span>
                         <span>Rp {{ number_format($total ?? 0, 0, ',', '.') }}</span>
                     </div>
-                    <button type="submit" class="w-full bg-black text-white py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
-                        Bayar Sekarang
+                    <button type="submit" id="pay-button" class="w-full bg-black text-white py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
+                        Lanjutkan ke Pembayaran
                     </button>
                     <a href="/cart" class="block text-center text-sm text-gray-600 hover:text-black" style="font-family: poppins, sans-serif;">Kembali ke Cart</a>
                 </div>
@@ -162,6 +169,63 @@
             });
 
         });
+    </script>
+
+    <!-- Midtrans Snap JS -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const payButton = document.getElementById('pay-button');
+            const form = document.getElementById('checkoutForm');
+            
+            if (payButton && form) {
+                payButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Validate required fields
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+                    
+                    // Submit form to save order data first
+                    form.submit();
+                });
+            }
+        });
+        
+        // If snap token exists, show payment popup
+        @if(isset($snapToken) && $snapToken)
+        document.addEventListener('DOMContentLoaded', function() {
+            const snapToken = "{{ $snapToken }}";
+            
+            if (typeof window.snap === 'undefined') {
+                console.error('Midtrans Snap not loaded');
+                return;
+            }
+            
+            // Auto-show payment popup
+            window.snap.pay(snapToken, {
+                onSuccess: function(result) {
+                    console.log('Payment success:', result);
+                    window.location.href = "{{ route('payments.midtrans.finish') }}?order_id={{ session('pending_order_code') }}&status_code=200&transaction_status=settlement";
+                },
+                onPending: function(result) {
+                    console.log('Payment pending:', result);
+                    window.location.href = "{{ route('payments.midtrans.finish') }}?order_id={{ session('pending_order_code') }}&status_code=201&transaction_status=pending";
+                },
+                onError: function(result) {
+                    console.error('Payment error:', result);
+                    alert('Pembayaran gagal. Silakan coba lagi.');
+                    window.location.href = "{{ route('orders.checkout') }}";
+                },
+                onClose: function() {
+                    console.log('Payment popup closed');
+                    // Don't redirect, let user try again
+                }
+            });
+        });
+        @endif
     </script>
 
 </x-layoutCategories>
