@@ -41,27 +41,38 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
-                    <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Alamat Pengiriman</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Alamat</label>
-                            <input type="text" name="address" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="Jl. Melati No. 10" required>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Kota / Kabupaten</label>
-                            <input type="text" name="city" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="Jakarta" required>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Provinsi</label>
-                            <input type="text" name="province" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="DKI Jakarta" required>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Kode Pos</label>
-                            <input type="text" name="postal_code" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="12345" required>
-                        </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                    <!-- Alamat tetap -->
+                    <div class="space-y-2">
+                        <label class="text-sm text-gray-600">Alamat</label>
+                        <input type="text" name="address" class="w-full border rounded-lg px-3 py-2" required>
                     </div>
+
+                    <!-- Provinsi -->
+                    <div class="space-y-2">
+                        <label class="text-sm text-gray-600">Provinsi</label>
+                        <select id="province" name="province" class="w-full border rounded-lg px-3 py-2" required>
+                            <option value="">-- Pilih Provinsi --</option>
+                        </select>
+                    </div>
+
+                    <!-- Kota -->
+                    <div class="space-y-2">
+                        <label class="text-sm text-gray-600">Kota / Kabupaten</label>
+                        <select id="city" name="city" class="w-full border rounded-lg px-3 py-2" required>
+                            <option value="">-- Pilih Kota/Kabupaten --</option>
+                        </select>
+                    </div>
+
+                    <!-- Kode Pos tetap -->
+                    <div class="space-y-2">
+                        <label class="text-sm text-gray-600">Kode Pos</label>
+                        <input type="text" name="postal_code" class="w-full border rounded-lg px-3 py-2" required>
+                    </div>
+
                 </div>
+
 
 
                 <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
@@ -115,4 +126,42 @@
             </div>
         </form>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Load provinsi
+            fetch('/wilayah/provinsi')
+                .then(res => res.json())
+                .then(data => {
+                    const prov = document.getElementById('province');
+                    data.forEach(item => {
+                        prov.innerHTML += `
+                    <option value="${item.name}" data-id="${item.id}">
+                        ${item.name}
+                    </option>`;
+                    });
+                });
+
+            // Load kota saat provinsi dipilih
+            document.getElementById('province').addEventListener('change', function() {
+                const provinceId = this.options[this.selectedIndex].dataset.id;
+
+                fetch(`/wilayah/kabupaten/${provinceId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const city = document.getElementById('city');
+                        city.innerHTML = '<option value="">-- Pilih Kota/Kabupaten --</option>';
+
+                        data.forEach(item => {
+                            city.innerHTML += `
+                        <option value="${item.name}">
+                            ${item.name}
+                        </option>`;
+                        });
+                    });
+            });
+
+        });
+    </script>
+
 </x-layoutCategories>
