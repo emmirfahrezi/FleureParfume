@@ -263,27 +263,45 @@
              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
                  @foreach($categories as $cat)
-                 <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
-                     <div class="relative w-full h-96">
-                         @php
-                         // Ambil gambar produk pertama di kategori ini
-                         $coverImage = $cat->products->first()->image ?? null;
-                         @endphp
+                @php
+                // Tentukan link kategori berdasarkan nama
+                $catName = strtolower($cat->name ?? '');
+                $linkCategory = '#';
 
-                         @if($coverImage)
-                         <img src="{{ asset('storage/' . $coverImage) }}" alt="{{ $cat->name }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                         @else
-                         <div class="absolute inset-0 w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">No Image</div>
-                         @endif
+                if (str_contains($catName, 'wanita')) {
+                    $linkCategory = route('woman.index');
+                } elseif (str_contains($catName, 'pria')) {
+                    $linkCategory = route('man.index');
+                } elseif (str_contains($catName, 'unisex')) {
+                    $linkCategory = route('unisex.index');
+                } elseif (str_contains($catName, 'exclusive')) {
+                    $linkCategory = route('exclusive.index');
+                }
+                @endphp
 
-                         <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
-                         <div class="absolute bottom-0 left-0 right-0 p-3">
-                             <h3 class="text-white text-lg font-semibold drop-shadow" style="font-family: cormorant, serif !important;">
-                                 {{ $cat->name }}
-                             </h3>
-                         </div>
-                     </div>
-                 </div>
+                <a href="{{ $linkCategory }}" class="block">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden group">
+                        <div class="relative w-full h-96">
+                            @php
+                            // Ambil gambar produk pertama di kategori ini
+                            $coverImage = $cat->products->first()->image ?? null;
+                            @endphp
+
+                            @if($coverImage)
+                            <img src="{{ asset('storage/' . $coverImage) }}" alt="{{ $cat->name }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            @else
+                            <div class="absolute inset-0 w-full h-full bg-gray-300 flex items-center justify-center text-gray-500">No Image</div>
+                            @endif
+
+                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-40 transition"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-3">
+                                <h3 class="text-white text-lg font-semibold drop-shadow" style="font-family: cormorant, serif !important;">
+                                    {{ $cat->name }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
                  @endforeach
 
              </div>
