@@ -94,9 +94,17 @@
         </div>
 
         <div class="text-center space-y-3">
-            <a href="{{ route('orders.index') }}" class="inline-block bg-black text-white px-8 py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
-                Lihat Semua Pesanan
-            </a>
+            <div class="flex justify-center gap-3">
+                <a href="{{ route('invoices.show', $order->id) }}" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-blue-700 transition">
+                    📄 Lihat Invoice
+                </a>
+                <a href="{{ route('invoices.download', $order->id) }}" class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-green-700 transition">
+                    📥 Download PDF
+                </a>
+                <a href="{{ route('orders.index') }}" class="inline-block bg-black text-white px-8 py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
+                    Lihat Semua Pesanan
+                </a>
+            </div>
             <br>
             <a href="/buy" class="text-sm text-gray-600 hover:text-black" style="font-family: poppins, sans-serif;">
                 ← Kembali Belanja

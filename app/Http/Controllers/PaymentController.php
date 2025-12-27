@@ -84,6 +84,16 @@ class PaymentController extends Controller
         
         $orderId = $request->query('order_id');
         $transactionStatus = $request->query('transaction_status');
+
+        // Jika popup ditutup atau status tidak valid, jangan buat order
+        $allowedStatuses = ['settlement', 'capture', 'pending'];
+        if (!$transactionStatus || !in_array($transactionStatus, $allowedStatuses, true)) {
+            Log::info('Payment aborted or closed by user', [
+                'order_id' => $orderId,
+                'transaction_status' => $transactionStatus,
+            ]);
+            return redirect()->route('orders.checkout')->with('error', 'Pembayaran dibatalkan. Silakan coba lagi.');
+        }
         
         // Get checkout data from session
         $checkoutData = session('checkout_data');

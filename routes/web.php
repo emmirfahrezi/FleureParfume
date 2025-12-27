@@ -14,8 +14,11 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -146,6 +149,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::delete('/admin/users/{id}', [AdminUserController::class, 'destroy'])
         ->name('admin.users.destroy');
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    // Invoice
+    Route::get('/invoices/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{id}/download', [InvoiceController::class, 'download'])->name('invoices.download');
 });
 
 /*
@@ -176,3 +187,18 @@ Route::middleware(['auth', 'user'])->get(
 Scramble::registerUiRoute('/docs');
 Scramble::registerJsonSpecificationRoute('/openapi.json');
 Scramble::routes(fn () => true);
+// Finish route needs to be accessible but we check auth inside
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::get('/payments/midtrans/finish', [PaymentController::class, 'midtransFinish'])->name('payments.midtrans.finish');
+});
+
+Route::middleware('auth')->group(function () {
+    // Halaman View Profile (profile.blade.php)
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    
+    // Halaman Edit Profile (edit-profile.blade.php)
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    
+    // Proses Simpan Update
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
