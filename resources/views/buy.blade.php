@@ -137,6 +137,10 @@
                     <a href="{{ request()->url() }}" class="text-black underline mt-4 inline-block">Reset Filter</a>
                 </div>
             @endif
+            {{--  PAGINATION --}}
+            <div class="mt-16 flex justify-center">
+                {{ $products->links() }}
+            </div>
         </div>
     </div>
 
