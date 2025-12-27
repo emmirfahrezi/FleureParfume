@@ -1,4 +1,5 @@
-<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+@if (session('success') && session('action') == 'update')
+<div id="updatePopup" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div class="bg-white w-96 rounded-2xl shadow-xl p-6 text-center">
 
         <!-- CHECK (BG BIRU) -->
@@ -13,12 +14,19 @@
         </h2>
 
         <p class="text-gray-600 mb-6">
-            Data berhasil diperbarui
+            {{ session('success') }}
         </p>
 
-        <button class="w-full py-2 bg-blue-600 hover:bg-blue-700
+        <button onclick="closeUpdatePopup()" class="w-full py-2 bg-blue-600 hover:bg-blue-700
                        text-white rounded-xl font-semibold transition">
             OK
         </button>
     </div>
 </div>
+
+<script>
+function closeUpdatePopup() {
+    document.getElementById('updatePopup').style.display = 'none';
+}
+</script>
+@endif

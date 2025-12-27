@@ -1,6 +1,8 @@
 @extends('layouts.dashboard')
 
 @section('content')
+
+
 <!-- TITLE -->
 <h1 class="text-lg sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6">
     Dashboard

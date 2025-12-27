@@ -1,6 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
+<!-- Popup Success -->
+<x-popup.popup-create-success />
+<x-popup.popup-update-success />
+<x-popup.popup-delete-success />
+
 <h1 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Data Produk</h1>
 
 <div class="bg-white rounded-xl shadow p-3 sm:p-6">

@@ -142,6 +142,16 @@
                             </div>
                         </a>
                     @endforeach
+
+                <!-- Pagination Centered -->
+                <div class="mt-8 flex justify-center">
+                    {{ $products->links() }}
+                </div>
+
+                                <!-- Pagination -->
+                                <div class="mt-8">
+                                    {{ $products->links() }}
+                                </div>
                 </div>
 
                 <div id="productsList" class="hidden space-y-4">

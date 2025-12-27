@@ -59,7 +59,7 @@ class CategoryPageController extends Controller
 
         $query = $this->applyFiltersToQuery($request, $query);
 
-        return $query->with('category')->get();
+        return $query->with('category')->paginate(4)->withQueryString();
     }
 
     public function woman(Request $request)
@@ -101,4 +101,5 @@ class CategoryPageController extends Controller
             'filters' => $request->only(['q', 'price_min', 'price_max', 'sort'])
         ]);
     }
+
 }

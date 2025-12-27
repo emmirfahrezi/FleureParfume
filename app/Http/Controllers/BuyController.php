@@ -27,7 +27,7 @@ class BuyController extends Controller
         }
 
         // PAGINATION 
-        $products = $query->paginate(2)->withQueryString();
+        $products = $query->paginate(4)->withQueryString();
 
         return view('buy', compact('products'));
     }

@@ -103,6 +103,11 @@
                             </div>
                         </a>
                     @endforeach
+
+                                <!-- Pagination -->
+                                <div class="mt-8">
+                                    {{ $products->links() }}
+                                </div>
                 </div>
             @else
                 <div class="text-center py-20 text-gray-500">Belum ada produk untuk kategori ini. <br> <a href="{{ request()->url() }}" class="underline text-black">Reset Filter</a></div>

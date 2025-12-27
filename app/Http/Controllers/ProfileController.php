@@ -26,7 +26,7 @@ class ProfileController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'], // Max 2MB
+            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:10144'], // Max 10MB
         ]);
 
         // Logika Upload Foto
