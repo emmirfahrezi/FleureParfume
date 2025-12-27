@@ -143,17 +143,12 @@
                         </a>
                     @endforeach
 
-                <!-- Pagination Centered -->
-                <div class="mt-8 flex justify-center">
-                    {{ $products->links() }}
-                </div>
-
-                                <!-- Pagination -->
-                                <div class="mt-8">
-                                    {{ $products->links() }}
-                                </div>
-                </div>
-
+                            <!-- Pagination -->
+                            <div class="mt-8">
+                                 {{ $products->links() }}
+                            </div>
+                        </div>  
+                        
                 <div id="productsList" class="hidden space-y-4">
                     @foreach ($products as $product)
                         <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-xl overflow-hidden flex flex-col sm:flex-row group block">
