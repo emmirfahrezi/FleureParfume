@@ -85,25 +85,12 @@
                 <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
                     <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Metode Pembayaran</h2>
                     <div class="space-y-3">
-                        <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-black">
-                            <input type="radio" name="payment" value="bank" class="h-4 w-4" checked>
-                            <div>
-                                <p class="font-semibold" style="font-family: poppins, sans-serif;">Transfer Bank</p>
-                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">BCA / Mandiri / BNI</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-black">
-                            <input type="radio" name="payment" value="ewallet" class="h-4 w-4">
-                            <div>
-                                <p class="font-semibold" style="font-family: poppins, sans-serif;">E-Wallet</p>
-                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">OVO / GoPay / DANA / ShopeePay</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-black">
-                            <input type="radio" name="payment" value="cod" class="h-4 w-4">
+                        <label for="codCheckbox" class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-black">
+                            <input type="checkbox" id="codCheckbox" name="cod" value="1" class="h-4 w-4">
+
                             <div>
                                 <p class="font-semibold" style="font-family: poppins, sans-serif;">Bayar di Tempat (COD)</p>
-                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Tersedia untuk area tertentu</p>
+                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Tersedia untuk area tertentu — centang jika ingin COD</p>
                             </div>
                         </label>
                     </div>
@@ -177,33 +164,53 @@
         document.addEventListener('DOMContentLoaded', function() {
             const payButton = document.getElementById('pay-button');
             const form = document.getElementById('checkoutForm');
-            
+            const codCheckbox = document.getElementById('codCheckbox');
+
+            function ensurePaymentField(value) {
+                let input = document.getElementById('paymentHidden');
+                if (!input) {
+                    input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'payment';
+                    input.id = 'paymentHidden';
+                    form.appendChild(input);
+                }
+                input.value = value;
+            }
+
             if (payButton && form) {
                 payButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
+
+                    // If COD checkbox is checked, set payment=cod, otherwise default to 'ewallet'
+                    if (codCheckbox && codCheckbox.checked) {
+                        ensurePaymentField('cod');
+                    } else {
+                        ensurePaymentField('ewallet');
+                    }
+
                     // Validate required fields
                     if (!form.checkValidity()) {
                         form.reportValidity();
                         return;
                     }
-                    
+
                     // Submit form to save order data first
                     form.submit();
                 });
             }
         });
-        
+
         // If snap token exists, show payment popup
         @if(isset($snapToken) && $snapToken)
         document.addEventListener('DOMContentLoaded', function() {
             const snapToken = "{{ $snapToken }}";
-            
+
             if (typeof window.snap === 'undefined') {
                 console.error('Midtrans Snap not loaded');
                 return;
             }
-            
+
             // Auto-show payment popup
             window.snap.pay(snapToken, {
                 onSuccess: function(result) {
