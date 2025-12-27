@@ -118,7 +118,15 @@ class OrderController extends Controller
         // Store form data in session
         session(['checkout_data' => $validated]);
         
-        // Redirect back to checkout to trigger payment popup
+        // Jika payment cod, langsung submit ke store (tanpa Midtrans)
+        if ($validated['payment'] === 'cod') {
+            // Simulasikan POST ke store dengan data session
+            // Redirect ke halaman store (POST) dengan data session
+            // Karena tidak bisa POST via redirect, arahkan ke route khusus yang handle COD
+            return $this->store(new Request(array_merge($validated, ['payment' => 'cod'])));
+        }
+
+        // Jika bukan cod, tetap ke Midtrans
         return redirect()->route('orders.checkout')->with('show_payment', true);
     }
 
