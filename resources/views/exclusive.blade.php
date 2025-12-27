@@ -3,7 +3,7 @@
     <style>
         .exclusive-hero {
             background-image: linear-gradient(135deg, rgba(23, 16, 7, 0.85) 0%, rgba(112, 85, 38, 0.65) 100%),
-                url("{{ asset('images/products/thumbnail.jpg') }}");
+            url("{{ asset('images/products/thumbnail.jpg') }}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -161,27 +161,15 @@
                                 @endif
                             </div>
 
-                            <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
-                                <div class="flex items-center gap-3">
-                                    <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
-                                        style="font-family: poppins, sans-serif;">Exclusive</span>
-                                    <span class="text-xs sm:text-sm text-gray-500">{{ $product->category->name ?? 'Exclusive' }}</span>
-                                </div>
-                                <h3 class="text-2xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                                <p class="text-base sm:text-lg text-gray-700">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                                <div class="flex items-center justify-between pt-1">
-                                    <span class="text-sm text-gray-500 italic">Limited release</span>
-                                    <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View details</button>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
+            <!-- Pagination placed outside the grid/list so it stays below the products -->
+            <div class="mt-8 flex justify-center">
+                {{ $products->links() }}
+            </div>
             @else
-                <div class="text-center py-20">
-                    <p class="text-gray-500 text-lg">Belum ada produk Exclusive.</p>
-                    <a href="{{ request()->url() }}" class="text-amber-700 underline mt-4">Reset Filter</a>
-                </div>
+            <div class="text-center py-20">
+                <p class="text-gray-500 text-lg">Belum ada produk Exclusive.</p>
+                <a href="{{ request()->url() }}" class="text-amber-700 underline mt-4">Reset Filter</a>
+            </div>
             @endif
         </div>
     </div>
@@ -202,7 +190,7 @@
             {{-- Filter Pencarian --}}
             <div class="px-6 mt-6">
                 <div class="flex border rounded overflow-hidden">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." 
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..."
                         class="w-full px-4 py-2 outline-none text-sm">
                     <button type="submit" class="bg-black text-white px-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -219,7 +207,7 @@
                     <div id="priceRangeFill" class="absolute inset-y-0 bg-black rounded-full"></div>
                     <div id="priceMinHandle" class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
                     <div id="priceMaxHandle" class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
-                    
+
                     {{-- Input Range dengan Atribut Name --}}
                     <input id="priceMinRange" name="min_price" type="range" min="0" max="500" value="{{ request('min_price', 0) }}"
                         step="1" class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
@@ -240,20 +228,20 @@
             <ul class="space-y-4 font-semibold text-lg">
                 {{-- Menggunakan request()->fullUrlWithQuery agar filter search/harga tidak hilang saat pilih kategori --}}
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}" 
-                       class="{{ request('category') == 'Exclusive' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Exclusive</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}"
+                        class="{{ request('category') == 'Exclusive' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Exclusive</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}" 
-                       class="{{ request('category') == 'Pria' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Pria</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}"
+                        class="{{ request('category') == 'Pria' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Pria</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}" 
-                       class="{{ request('category') == 'Wanita' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Wanita</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}"
+                        class="{{ request('category') == 'Wanita' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Wanita</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Unisex']) }}" 
-                       class="{{ request('category') == 'Unisex' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Unisex</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Unisex']) }}"
+                        class="{{ request('category') == 'Unisex' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Unisex</a>
                 </li>
                 <li class="pt-4">
                     <a href="{{ request()->url() }}" class="text-red-500 text-xs font-normal underline">Reset All Filters</a>
