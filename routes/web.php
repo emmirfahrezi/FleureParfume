@@ -15,8 +15,12 @@ use App\Http\Controllers\OrderController;
 use App\Models\Order;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\AdminUserController;
 
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InvoiceController;
 
 Route::get('/', function () {
     return view('home');
@@ -56,9 +60,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Halaman pengaturan dashboard (hanya admin)
-    Route::get('/dashboard/settings', function () {
-        return view('dashboard.settings.index');
-    })->name('dashboard.settings');
+    Route::get('/dashboard/settings', [AdminUserController::class, 'index'])->name('dashboard.settings');
 
     Route::prefix('dashboard')->group(function () {
         Route::resource('products', ProductController::class);
@@ -76,6 +78,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/orders/{id}', [App\Http\Controllers\AdminOrderController::class, 'show'])->name('admin.orders.show');
     Route::post('/admin/orders/{id}/status', [App\Http\Controllers\AdminOrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
     Route::post('/admin/orders/{id}/payment', [App\Http\Controllers\AdminOrderController::class, 'updatePaymentStatus'])->name('admin.orders.updatePayment');
+
+    // manajemen user (Admin Ubah Role)
+    Route::patch('/admin/users/{id}/role', [AdminUserController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::delete('/admin/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 Route::get('/about', function () {
@@ -145,6 +151,10 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'store'])->name('cart.store');
     Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    // Invoice
+    Route::get('/invoices/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{id}/download', [InvoiceController::class, 'download'])->name('invoices.download');
 });
 
 //route api wilayah 
@@ -153,7 +163,7 @@ Route::get('/wilayah/kabupaten/{id}', [WilayahController::class, 'kabupaten']);
 
 //route api google
 Route::get('/auth/google', [GoogleController::class, 'redirect'])
-        ->name('google.login');
+    ->name('google.login');
 
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 // Midtrans payment routes
@@ -162,4 +172,15 @@ Route::post('/payments/midtrans/notification', [PaymentController::class, 'midtr
 // Finish route needs to be accessible but we check auth inside
 Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/payments/midtrans/finish', [PaymentController::class, 'midtransFinish'])->name('payments.midtrans.finish');
+});
+
+Route::middleware('auth')->group(function () {
+    // Halaman View Profile (profile.blade.php)
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    
+    // Halaman Edit Profile (edit-profile.blade.php)
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    
+    // Proses Simpan Update
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });

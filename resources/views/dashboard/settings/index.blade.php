@@ -8,8 +8,7 @@
     <!-- SUBMENU NAV -->
     <div class="flex flex-wrap gap-3 border-b pb-3 text-sm sm:text-base">
         <a href="#pengguna" class="text-indigo-600 font-semibold border-b-2 border-indigo-600 pb-1">Pengguna</a>
-        <a href="#akun" class="text-gray-500 hover:text-indigo-600">Akun Saya</a>
-        <a href="#preferensi" class="text-gray-500 hover:text-indigo-600">Preferensi</a>
+
     </div>
 
     <!-- SECTION: PENGGUNA -->
@@ -31,20 +30,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ([
-                        ['name' => 'Najran Al-Faresy', 'email' => 'najran@example.com', 'role' => 'admin'],
-                        ['name' => 'Rizky Fahri', 'email' => 'rizky@example.com', 'role' => 'staff'],
-                        ['name' => 'Aulia Rahman', 'email' => 'aulia@example.com', 'role' => 'user'],
-                    ] as $user)
+                    {{-- LOOPING DATA ASLI DARI DATABASE  --}}
+                    @foreach ($users as $user)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="px-4 sm:px-6 py-3 font-medium text-gray-800">{{ $user['name'] }}</td>
                         <td class="px-4 sm:px-6 py-3 break-all">{{ $user['email'] }}</td>
                         <td class="px-4 sm:px-6 py-3">
                             <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                {{ $user['role'] == 'admin' ? 'bg-red-100 text-red-700' : '' }}
-                                {{ $user['role'] == 'staff' ? 'bg-blue-100 text-blue-700' : '' }}
-                                {{ $user['role'] == 'user' ? 'bg-green-100 text-green-700' : '' }}">
-                                {{ ucfirst($user['role']) }}
+                                {{ $user->role == 'admin' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                                {{ ucfirst($user->role) }}
                             </span>
                         </td>
                         <td class="px-4 sm:px-6 py-3 text-center">
@@ -53,6 +47,15 @@
                                 class="bg-yellow-400 hover:bg-yellow-500 text-white text-xs px-3 py-1 rounded transition">
                                 Ubah Role
                             </button>
+
+                            {{-- Form Hapus User --}}
+                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline-block ml-1" onsubmit="return confirm('Yakin hapus user ini?');">
+                                @csrf @method('DELETE')
+                                <button class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded transition">Hapus</button>
+                            </form>
+                            @else
+                            <span class="text-xs text-gray-400 italic">Akun Anda</span>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
