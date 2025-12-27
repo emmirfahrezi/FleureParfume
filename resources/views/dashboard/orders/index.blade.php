@@ -1,41 +1,34 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-6">Data Pesanan</h1>
+<h1 class="text-lg sm:text-2xl font-bold mb-4 sm:mb-6">Data Pesanan</h1>
 
-<div class="bg-white rounded-xl shadow p-6">
+<div class="bg-white rounded-xl shadow px-3 sm:px-6 py-4 sm:py-6 overflow-hidden">
 
     <!-- HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <h2 class="text-lg font-semibold text-gray-700">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <h2 class="text-base sm:text-lg font-semibold text-gray-700">
             Daftar Pesanan ({{ $orders->count() }})
         </h2>
 
-        <form method="GET" action="{{ route('admin.orders.index') }}" class="flex gap-2">
-            <!-- FILTER TANGGAL -->
-            <input
-                type="date"
-                name="date"
-                value="{{ request('date') }}"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+        <!-- FILTER FORM -->
+        <form method="GET" action="{{ route('admin.orders.index') }}"
+              class="flex flex-wrap gap-2 w-full md:w-auto">
+
+            <!-- DATE -->
+            <input type="date" name="date" value="{{ request('date') }}"
+                   class="flex-1 min-w-[120px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
+                          focus:outline-none focus:ring-2 focus:ring-indigo-500" />
 
             <!-- SEARCH -->
-            <input
-                type="text"
-                name="search"
-                value="{{ request('search') }}"
-                placeholder="Cari ID / Nama Customer..."
-                class="border border-gray-300 rounded-lg px-4 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari ID / Nama..."
+                   class="flex-1 min-w-[140px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
+                          focus:outline-none focus:ring-2 focus:ring-indigo-500" />
 
-            <!-- FILTER -->
-            <select
-                name="status"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <!-- STATUS -->
+            <select name="status"
+                    class="flex-1 min-w-[120px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
+                           focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <option value="">Semua Status</option>
                 <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                 <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Diproses</option>
@@ -44,99 +37,103 @@
                 <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
             </select>
 
-            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg">
-                Filter
-            </button>
-            <a href="{{ route('admin.orders.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm px-4 py-2 rounded-lg">
-                Reset
-            </a>
+            <!-- BUTTONS -->
+            <div class="flex gap-2 flex-1 sm:flex-none">
+                <button type="submit"
+                        class="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] sm:text-sm px-3 py-1.5 rounded-lg">
+                    Filter
+                </button>
+                <a href="{{ route('admin.orders.index') }}"
+                   class="flex-1 sm:flex-none bg-gray-200 hover:bg-gray-300 text-gray-800 text-[11px] sm:text-sm px-3 py-1.5 rounded-lg text-center">
+                    Reset
+                </a>
+            </div>
         </form>
     </div>
 
     <!-- TABLE -->
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-600">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+    <div class="w-full overflow-x-hidden">
+        <table class="w-full text-[10px] sm:text-sm text-gray-700 border-collapse">
+            <thead class="bg-gray-100 text-gray-600 uppercase text-[9px] sm:text-xs">
                 <tr>
-                    <th class="px-6 py-3 text-center">ID Pesanan</th>
-                    <th class="px-6 py-3 text-center">Customer</th>
-                    <th class="px-6 py-3 text-center">Tanggal</th>
-                    <th class="px-6 py-3 text-center">Total</th>
-                    <th class="px-6 py-3 text-center">Status</th>
-                    <th class="px-6 py-3 text-center">Pembayaran</th>
-                    <th class="px-6 py-3 text-center">Aksi</th>
+                    <th class="px-2 py-2 text-center">ID</th>
+                    <th class="px-2 py-2 text-center">Customer</th>
+                    <th class="px-2 py-2 text-center">Tanggal</th>
+                    <th class="px-2 py-2 text-center">Total</th>
+                    <th class="px-2 py-2 text-center">Status</th>
+                    <th class="px-2 py-2 text-center">Bayar</th>
+                    <th class="px-2 py-2 text-center">Aksi</th>
                 </tr>
             </thead>
-
             <tbody>
                 @forelse ($orders as $order)
                 <tr class="border-b hover:bg-gray-50">
-                    <td class="px-6 py-4 font-medium text-center text-gray-800">
-                        #ORD-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
+                    <td class="px-2 py-2 text-center font-medium text-gray-800">
+                        #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
                     </td>
-                    <td class="px-6 py-4 text-center">
-                        {{ $order->name }}
-                    </td>
-                    <td class="px-6 py-4 text-center">
+                    <td class="px-2 py-2 text-center truncate max-w-[100px]">{{ $order->name }}</td>
+                    <td class="px-2 py-2 text-center whitespace-nowrap">
                         {{ $order->created_at->format('d M Y') }}
                     </td>
-                    <td class="px-6 py-4 text-center">
+                    <td class="px-2 py-2 text-center whitespace-nowrap">
                         Rp {{ number_format($order->total, 0, ',', '.') }}
                     </td>
-                    <td class="px-6 py-4 text-center">
+
+                    <!-- STATUS -->
+                    <td class="px-2 py-2 text-center">
                         @php
                             $statusConfig = [
-                                'pending' => ['label' => 'Pending', 'class' => 'bg-gray-100 text-gray-700'],
-                                'processing' => ['label' => 'Diproses', 'class' => 'bg-blue-100 text-blue-700'],
-                                'shipped' => ['label' => 'Dikirim', 'class' => 'bg-indigo-100 text-indigo-700'],
-                                'delivered' => ['label' => 'Selesai', 'class' => 'bg-green-100 text-green-700'],
-                                'cancelled' => ['label' => 'Dibatalkan', 'class' => 'bg-red-100 text-red-700'],
+                                'pending' => 'bg-gray-100 text-gray-700',
+                                'processing' => 'bg-blue-100 text-blue-700',
+                                'shipped' => 'bg-indigo-100 text-indigo-700',
+                                'delivered' => 'bg-green-100 text-green-700',
+                                'cancelled' => 'bg-red-100 text-red-700'
                             ];
-                            $status = $statusConfig[$order->status] ?? ['label' => $order->status, 'class' => 'bg-gray-100 text-gray-700'];
                         @endphp
-                        
-                        <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST" class="inline-block">
+                        <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST">
                             @csrf
-                            <select name="status" onchange="this.form.submit()" 
-                                    class="px-2 py-1 text-xs rounded-full border-0 {{ $status['class'] }} cursor-pointer focus:ring-2 focus:ring-indigo-500">
-                                <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Diproses</option>
-                                <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Dikirim</option>
-                                <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Selesai</option>
-                                <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                            <select name="status" onchange="this.form.submit()"
+                                class="text-[9px] sm:text-xs px-1 py-1 rounded-full border-0 focus:ring-1 focus:ring-indigo-500 {{ $statusConfig[$order->status] ?? 'bg-gray-100 text-gray-700' }}">
+                                <option value="pending" {{ $order->status=='pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="processing" {{ $order->status=='processing' ? 'selected' : '' }}>Proses</option>
+                                <option value="shipped" {{ $order->status=='shipped' ? 'selected' : '' }}>Kirim</option>
+                                <option value="delivered" {{ $order->status=='delivered' ? 'selected' : '' }}>Selesai</option>
+                                <option value="cancelled" {{ $order->status=='cancelled' ? 'selected' : '' }}>Batal</option>
                             </select>
                         </form>
                     </td>
-                    <td class="px-6 py-4 text-center">
+
+                    <!-- PAYMENT -->
+                    <td class="px-2 py-2 text-center">
                         @php
-                            $paymentConfig = [
-                                'pending' => ['label' => 'Belum Bayar', 'class' => 'bg-yellow-100 text-yellow-700'],
-                                'paid' => ['label' => 'Lunas', 'class' => 'bg-green-100 text-green-700'],
-                                'failed' => ['label' => 'Gagal', 'class' => 'bg-red-100 text-red-700'],
+                            $paymentColor = [
+                                'pending' => 'bg-yellow-100 text-yellow-700',
+                                'paid' => 'bg-green-100 text-green-700',
+                                'failed' => 'bg-red-100 text-red-700'
                             ];
-                            $payment = $paymentConfig[$order->payment_status] ?? ['label' => $order->payment_status, 'class' => 'bg-gray-100 text-gray-700'];
                         @endphp
-                        
-                        <form action="{{ route('admin.orders.updatePayment', $order->id) }}" method="POST" class="inline-block">
+                        <form action="{{ route('admin.orders.updatePayment', $order->id) }}" method="POST">
                             @csrf
-                            <select name="payment_status" onchange="this.form.submit()" 
-                                    class="px-2 py-1 text-xs rounded-full border-0 {{ $payment['class'] }} cursor-pointer focus:ring-2 focus:ring-indigo-500">
-                                <option value="pending" {{ $order->payment_status == 'pending' ? 'selected' : '' }}>Belum Bayar</option>
-                                <option value="paid" {{ $order->payment_status == 'paid' ? 'selected' : '' }}>Lunas</option>
-                                <option value="failed" {{ $order->payment_status == 'failed' ? 'selected' : '' }}>Gagal</option>
+                            <select name="payment_status" onchange="this.form.submit()"
+                                class="text-[9px] sm:text-xs px-1 py-1 rounded-full border-0 focus:ring-1 focus:ring-indigo-500 {{ $paymentColor[$order->payment_status] ?? 'bg-gray-100 text-gray-700' }}">
+                                <option value="pending" {{ $order->payment_status=='pending' ? 'selected' : '' }}>Belum</option>
+                                <option value="paid" {{ $order->payment_status=='paid' ? 'selected' : '' }}>Lunas</option>
+                                <option value="failed" {{ $order->payment_status=='failed' ? 'selected' : '' }}>Gagal</option>
                             </select>
                         </form>
                     </td>
-                    <td class="px-6 py-4 text-center space-x-2">
+
+                    <!-- AKSI -->
+                    <td class="px-2 py-2 text-center">
                         <a href="{{ route('admin.orders.show', $order->id) }}"
-                           class="px-3 py-1 text-xs text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                           class="px-2 py-1 text-[9px] sm:text-xs text-white bg-indigo-600 rounded hover:bg-indigo-700">
                             Detail
                         </a>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center py-6 text-gray-400">
+                    <td colspan="7" class="text-center py-3 text-gray-400 text-[10px] sm:text-sm">
                         Belum ada pesanan
                     </td>
                 </tr>
