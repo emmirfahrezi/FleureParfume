@@ -131,7 +131,7 @@ class ProductController extends Controller
             'image' => $imagePath,
         ]);
 
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!')->with('action', 'create');
     }
 
     public function show(string $id)
@@ -199,7 +199,7 @@ class ProductController extends Controller
         //excute update
         $product->update($data);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate!');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate!')->with('action', 'update');
     }
 
     public function destroy(string $id)
@@ -214,6 +214,6 @@ class ProductController extends Controller
         //hapis dari database
         $product->delete($id);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!')->with('action', 'delete');
     }
 }

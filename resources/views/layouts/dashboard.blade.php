@@ -10,7 +10,7 @@
 
 <body class="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-white text-slate-800">
 
-        <!-- ✅ FIXED & TESTED MOBILE HEADER -->
+        
     <header class="md:hidden bg-white/90 backdrop-blur border-b border-slate-200 shadow-sm relative z-50">
         <div class="flex items-center justify-between px-4 py-3">
             <div>

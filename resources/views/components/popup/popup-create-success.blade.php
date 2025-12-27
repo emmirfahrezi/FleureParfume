@@ -1,14 +1,6 @@
-@if (session('success'))
-<div
-    x-data="{ open: true }"
-    x-show="open"
-    x-transition
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
->
-    <div
-        class="bg-white w-96 rounded-2xl shadow-xl p-6 text-center
-               transform transition-all"
-    >
+@if (session('success') && session('action') == 'create')
+<div id="successPopup" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white w-96 rounded-2xl shadow-xl p-6 text-center transform transition-all">
         <!-- Icon -->
         <div class="mx-auto mb-4 w-16 h-16 rounded-full bg-emerald-600
                     flex items-center justify-center shadow-lg
@@ -28,12 +20,17 @@
 
         <!-- Button -->
         <button
-            @click="open = false"
+            onclick="closeSuccessPopup()"
             class="w-full py-2 bg-emerald-600 hover:bg-emerald-700
-                   text-white rounded-xl font-semibold transition"
-        >
+                   text-white rounded-xl font-semibold transition">
             OK
         </button>
     </div>
 </div>
+
+<script>
+function closeSuccessPopup() {
+    document.getElementById('successPopup').style.display = 'none';
+}
+</script>
 @endif

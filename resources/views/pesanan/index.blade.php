@@ -1,4 +1,5 @@
 <x-layoutCategories>
+    
     <div class="max-w-6xl mx-auto px-6 py-14 pt-28">
         <div class="mb-8">
             <h1 class="text-4xl font-light tracking-wide" style="font-family: cormorant, serif !important;">
