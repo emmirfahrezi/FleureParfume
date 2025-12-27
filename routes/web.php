@@ -135,6 +135,8 @@ Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('ex
 
 // User-only: orders, profile, cart
 Route::middleware(['auth', 'user'])->group(function () {
+        // Update quantity order item (plus/minus)
+        Route::post('/orders/{order}/item/{item}/quantity', [OrderController::class, 'updateItemQuantity'])->name('orders.item.updateQuantity');
     // Pesanan / orders for buyers
     Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan.index');
 
