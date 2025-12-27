@@ -115,65 +115,51 @@
 
         <div class="max-w-7xl mx-auto mt-12">
             @if (isset($products) && $products->count() > 0)
-            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ($products as $product)
-                <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-xl overflow-hidden group block">
-                    <div class="relative w-full h-64 overflow-hidden">
-                        @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        @else
-                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
-                        @endif
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
-                            style="font-family: poppins, sans-serif;">Exclusive</span>
-                    </div>
-                    <div class="p-5 space-y-2">
-                        <h4 class="text-sm text-gray-500" style="font-family: cormorant, serif !important;">
-                            {{ $product->category->name ?? 'Exclusive' }}
-                        </h4>
-                        <h3 class="text-2xl font-semibold text-gray-900 truncate"
-                            style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                        <p class="text-gray-700 text-lg" style="font-family: poppins, sans-serif !important;">Rp
-                            {{ number_format($product->price, 0, ',', '.') }}
-                        </p>
-                        <div class="flex items-center justify-between pt-2">
-                            <span class="text-sm text-gray-500 italic">Limited release</span>
-                            <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View details</button>
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-xl overflow-hidden group block">
+                            <div class="relative w-full h-64 overflow-hidden">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
+                                @endif
+                                <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
+                                    style="font-family: poppins, sans-serif;">Exclusive</span>
+                            </div>
+                            <div class="p-5 space-y-2">
+                                <h4 class="text-sm text-gray-500" style="font-family: cormorant, serif !important;">
+                                    {{ $product->category->name ?? 'Exclusive' }}</h4>
+                                <h3 class="text-2xl font-semibold text-gray-900 truncate"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-gray-700 text-lg" style="font-family: poppins, sans-serif !important;">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <div class="flex items-center justify-between pt-2">
+                                    <span class="text-sm text-gray-500 italic">Limited release</span>
+                                    <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View details</button>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
 
-            <div id="productsList" class="hidden space-y-4">
-                @foreach ($products as $product)
-                <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-xl overflow-hidden flex flex-col sm:flex-row group block">
-                    <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
-                        @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        @else
-                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
-                        @endif
-                    </div>
-
-                    <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
-                        <div class="flex items-center gap-3">
-                            <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
-                                style="font-family: poppins, sans-serif;">Exclusive</span>
-                            <span class="text-xs sm:text-sm text-gray-500">{{ $product->category->name ?? 'Exclusive' }}</span>
-                        </div>
-                        <h3 class="text-2xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                        <p class="text-base sm:text-lg text-gray-700">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                        <div class="flex items-center justify-between pt-1">
-                            <span class="text-sm text-gray-500 italic">Limited release</span>
-                            <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View details</button>
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                            <!-- Pagination -->
+                            <div class="mt-8">
+                                 {{ $products->links() }}
+                            </div>
+                        </div>  
+                        
+                <div id="productsList" class="hidden space-y-4">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-xl overflow-hidden flex flex-col sm:flex-row group block">
+                            <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
+                                @endif
+                            </div>
 
             <!-- Pagination placed outside the grid/list so it stays below the products -->
             <div class="mt-8 flex justify-center">
