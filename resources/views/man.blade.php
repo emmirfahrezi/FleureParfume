@@ -1,5 +1,35 @@
 <x-layoutCategories>
-    {{-- HERO SECTION --}}
+   <style>
+        .hero-bg {
+            background-image: linear-gradient(135deg, rgba(90, 62, 43, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%), url("{{ asset('images/products/thumbnail.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .price-slider {
+            height: 5px;
+            position: relative;
+            background: #e5e7eb;
+            border-radius: 5px;
+        }
+    </style>
+
+{{-- HERO SECTION --}}
+ <div class="relative isolate px-6 pt-20 lg:px-20 h-[400px] hero-bg">
+        <div class="w-full py-6 sm:py-8 lg:py-16 flex flex-col gap-4 text-black">
+            <div class="flex items-center gap-2 text-sm sm:text-base text-gray-600"
+                style="font-family: poppins, sans-serif;">
+                <a href="/" class="hover:underline text-gray-300">Home</a>
+                <span class="text-gray-400">/</span>
+                <span class="text-white">Man</span>
+            </div>
+
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide text-white"
+                style="font-family: cormorant, serif !important;">
+                MAN
+            </h1>
+        </div>
+    </div>
     
 
     {{-- PRODUCT LIST --}}
@@ -126,7 +156,6 @@
             @endif
         </div>
     </div>
-
 
 
     {{-- SIDEBAR FILTER --}}

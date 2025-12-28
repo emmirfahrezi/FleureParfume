@@ -15,15 +15,14 @@
      <div class="max-w-3xl py-6 sm:py-8 lg:py-16 flex flex-col justify-center h-full">
 
          <!-- LEFT TEXT -->
-         <h1 class="text-5xl font-semibold tracking-tight text-white sm:text-7xl leading-none drop-shadow-lg"
+         <h1 class="text-5xl font-semibold tracking-tight text-white sm:text-6xl leading-none drop-shadow-lg"
              style="font-family: cormorant, serif !important;">
-             Data to enrich your online business
+             Elegance in Every Drop
          </h1>
 
          <p class="mt-4 text-lg font-medium text-gray-100 sm:text-xl leading-relaxed max-w-xl drop-shadow"
              style="font-family: poppins, sans-serif !important; font-weight: 300;">
-             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
-             Elit sunt amet fugiat veniam occaecat.
+             Temukan koleksi parfum eksklusif yang diracik khusus untuk menyempurnakan karaktermu. Wangi yang tak hanya harum, tapi juga meninggalkan kenangan.
          </p>
 
 
@@ -64,11 +63,11 @@
                  </p>
 
                  <div class="flex gap-4">
-                     <a href="#"
-                         class="rounded-md px-6 py-3 text-sm font-semibold text-white shadow transition hover:opacity-80"
-                         style="background-color: #5A3E2B; font-family: poppins, sans-serif !important;">
-                         Shop Now
-                     </a>
+                     <a href="{{ url('/buy') }}"
+                        class="rounded-md px-6 py-3 text-sm font-semibold text-white shadow transition hover:opacity-80"
+                        style="background-color: #5A3E2B; font-family: poppins, sans-serif !important;">
+                            Shop Now
+                        </a>
 
                  </div>
              </div>
