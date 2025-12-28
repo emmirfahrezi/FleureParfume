@@ -81,7 +81,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-4 pt-4 border-t space-y-2" style="font-family: poppins, sans-serif;">
+            <div class="mt-4 pt-4 space-y-2" style="font-family: poppins, sans-serif;">
                 <div class="flex justify-between text-sm">
                     <span class="text-gray-600">Subtotal</span>
                     <span>Rp {{ number_format($order->subtotal, 0, ',', '.') }}</span>

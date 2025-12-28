@@ -19,7 +19,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\AdminUserController;
-
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BuyController;
@@ -98,7 +98,9 @@ Route::get('/about', function () {
 
 
 
+
 Route::view('/contact', 'contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 
 

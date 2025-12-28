@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- HERO SECTION (DI BAWAH NAVBAR) -->
-<section class="w-full pt-[80px]">
+<section class="w-full">
     <div class="relative w-full h-[420px] overflow-hidden">
 
         <!-- HERO IMAGE -->
@@ -74,22 +74,31 @@
             <!-- FORM -->
             <div class="flex justify-end">
                 <div class="bg-white rounded-3xl shadow-xl p-8 w-full max-w-md">
-                    <form class="space-y-5">
+                    @if(session('success'))
+                        <div class="mb-4 p-3 rounded-xl bg-emerald-100 text-emerald-800 text-center font-semibold">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <form class="space-y-5" method="POST" action="{{ route('contact.send') }}">
+                        @csrf
+
                         <div>
                             <label class="block mb-1 text-sm">Full Name</label>
-                            <input type="text"
+                            <input type="text" name="name" required
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3">
                         </div>
+
 
                         <div>
                             <label class="block mb-1 text-sm">Email</label>
-                            <input type="email"
+                            <input type="email" name="email" required
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3">
                         </div>
 
+
                         <div>
                             <label class="block mb-1 text-sm">Message</label>
-                            <textarea rows="4"
+                            <textarea rows="4" name="message" required
                                 class="w-full border border-gray-300 rounded-xl px-4 py-3"></textarea>
                         </div>
 
