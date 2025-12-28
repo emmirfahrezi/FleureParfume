@@ -19,13 +19,13 @@
                         {{ $order->created_at->format('d M Y, H:i') }}
                     </p>
                 </div>
-                <span class="inline-block px-4 py-2 text-sm font-semibold rounded-full
-                    @if($order->status == 'pending') bg-yellow-100 text-yellow-800
+                <span
+                    class="inline-block px-4 py-2 text-sm font-semibold rounded-full
+                    @if ($order->status == 'pending') bg-yellow-100 text-yellow-800
                     @elseif($order->status == 'processing') bg-blue-100 text-blue-800
                     @elseif($order->status == 'shipped') bg-purple-100 text-purple-800
                     @elseif($order->status == 'delivered') bg-green-100 text-green-800
-                    @else bg-red-100 text-red-800
-                    @endif">
+                    @else bg-red-100 text-red-800 @endif">
                     {{ ucfirst($order->status) }}
                 </span>
             </div>
@@ -45,8 +45,8 @@
                         {{ $order->address }}<br>
                         {{ $order->city }}, {{ $order->province }}<br>
                         {{ $order->postal_code }}
-                        @if($order->note)
-                        <br><span class="text-gray-600 italic">Catatan: {{ $order->note }}</span>
+                        @if ($order->note)
+                            <br><span class="text-gray-600 italic">Catatan: {{ $order->note }}</span>
                         @endif
                     </p>
                 </div>
@@ -58,11 +58,11 @@
                     <span class="px-3 py-1 bg-gray-100 rounded text-sm" style="font-family: poppins, sans-serif;">
                         {{ ucfirst($order->payment_method) }}
                     </span>
-                    <span class="px-3 py-1 text-xs rounded
-                        @if($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
+                    <span
+                        class="px-3 py-1 text-xs rounded
+                        @if ($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
                         @elseif($order->payment_status == 'paid') bg-green-100 text-green-800
-                        @else bg-red-100 text-red-800
-                        @endif">
+                        @else bg-red-100 text-red-800 @endif">
                         {{ ucfirst($order->payment_status) }}
                     </span>
                 </div>
@@ -71,28 +71,30 @@
             <div>
                 <h3 class="font-semibold mb-4" style="font-family: poppins, sans-serif;">Produk yang Dipesan</h3>
                 <div class="space-y-4">
-                    @foreach($order->orderItems as $item)
-                    <div class="flex items-center gap-4 border-b pb-4">
-                        @if($item->product->image)
-                        <img src="{{ asset('storage/' . $item->product->image) }}" class="w-20 h-20 object-cover rounded">
-                        @else
-                        <div class="w-20 h-20 bg-gray-200 rounded"></div>
-                        @endif
-                        
-                        <div class="flex-1">
-                            <p class="font-semibold" style="font-family: poppins, sans-serif;">{{ $item->product->name }}</p>
-                            <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">
-                                Kategori: {{ $item->product->category->name ?? '-' }}
-                            </p>
-                            <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">
-                                {{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}
+                    @foreach ($order->orderItems as $item)
+                        <div class="flex items-center gap-4 border-b pb-4">
+                            @if ($item->product->image)
+                                <img src="{{ asset('storage/' . $item->product->image) }}"
+                                    class="w-20 h-20 object-cover rounded">
+                            @else
+                                <div class="w-20 h-20 bg-gray-200 rounded"></div>
+                            @endif
+
+                            <div class="flex-1">
+                                <p class="font-semibold" style="font-family: poppins, sans-serif;">
+                                    {{ $item->product->name }}</p>
+                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">
+                                    Kategori: {{ $item->product->category->name ?? '-' }}
+                                </p>
+                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">
+                                    {{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}
+                                </p>
+                            </div>
+
+                            <p class="font-semibold" style="font-family: poppins, sans-serif;">
+                                Rp {{ number_format($item->subtotal, 0, ',', '.') }}
                             </p>
                         </div>
-                        
-                        <p class="font-semibold" style="font-family: poppins, sans-serif;">
-                            Rp {{ number_format($item->subtotal, 0, ',', '.') }}
-                        </p>
-                    </div>
                     @endforeach
                 </div>
 
@@ -115,12 +117,12 @@
 
         <div class="flex justify-center gap-4 mt-8">
             <a href="{{ route('invoices.show', $order->id) }}"
-                class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
-                📄 Lihat Invoice
+                class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition font-semibold text-xs">
+                Lihat Invoice
             </a>
             <a href="{{ route('invoices.download', $order->id) }}"
-                class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition font-semibold">
-                📥 Download PDF
+                class="inline-block bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition font-semibold text-xs">
+                Download PDF
             </a>
         </div>
     </div>

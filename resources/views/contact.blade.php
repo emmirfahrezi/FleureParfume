@@ -18,7 +18,7 @@
 
         <!-- TEXT -->
         <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-            <h1 class="font-brand text-4xl md:text-5xl text-white mb-4">
+            <h1 class="font-cormorant text-4xl md:text-5xl text-white mb-4 !important">
                 Contact Us
             </h1>
 

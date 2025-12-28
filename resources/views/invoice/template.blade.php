@@ -9,18 +9,42 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             color: #333;
-            line-height: 1.6;
+            line-height: 1.5;
         }
-        
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px 8px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                padding: 8px 2px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding-bottom: 10px;
+            }
+            .info-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .summary {
+                margin-bottom: 20px;
+            }
+            .summary-box {
+                width: 100%;
+            }
+            .items-table th, .items-table td {
+                font-size: 11px;
+                padding: 6px 4px;
+            }
         }
         
         /* Header */
@@ -34,10 +58,10 @@
         }
         
         .company-info h1 {
-            font-size: 32px;
+            font-size: 22px;
             color: #c9302c;
             font-style: italic;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
         
         .company-info p {
@@ -50,9 +74,9 @@
         }
         
         .invoice-title h2 {
-            font-size: 24px;
+            font-size: 16px;
             color: #c9302c;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         
         .invoice-info {
@@ -73,7 +97,7 @@
         }
         
         .info-block h4 {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             text-transform: uppercase;
             color: #c9302c;
@@ -81,7 +105,7 @@
         }
         
         .info-block p {
-            font-size: 12px;
+            font-size: 11px;
             margin: 3px 0;
             color: #333;
         }
@@ -103,17 +127,17 @@
         }
         
         .items-table th {
-            padding: 12px 8px;
+            padding: 8px 4px;
             text-align: left;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
             border: none;
         }
         
         .items-table td {
-            padding: 10px 8px;
+            padding: 7px 4px;
             border-bottom: 1px solid #ddd;
-            font-size: 12px;
+            font-size: 11px;
         }
         
         .items-table tbody tr:nth-child(odd) {
@@ -137,14 +161,14 @@
         }
         
         .summary-box {
-            width: 300px;
+            width: 220px;
         }
         
         .summary-line {
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
-            font-size: 12px;
+            font-size: 11px;
             border-bottom: 1px solid #ddd;
         }
         
@@ -152,7 +176,7 @@
             border-top: 2px solid #c9302c;
             border-bottom: 2px solid #c9302c;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
             padding: 12px 0;
             color: #c9302c;
         }
@@ -175,7 +199,7 @@
         }
         
         .payment-status p {
-            font-size: 12px;
+            font-size: 11px;
             margin: 4px 0;
         }
         
@@ -183,7 +207,7 @@
             display: inline-block;
             padding: 4px 12px;
             border-radius: 3px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             margin-top: 4px;
         }
@@ -208,7 +232,7 @@
             margin-top: 50px;
             padding-top: 20px;
             border-top: 1px solid #ddd;
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
             text-align: center;
         }
@@ -332,7 +356,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p>Terima kasih telah berbelanja di FleureParfume! 💐</p>
+            <p>Terima kasih telah berbelanja di FleureParfume!</p>
             <p>Invoice ini adalah bukti pembayaran sah. Mohon simpan invoice ini dengan baik.</p>
             <p style="margin-top: 10px; color: #999;">Dicetak pada: {{ now()->format('d M Y H:i:s') }} WIB</p>
         </div>

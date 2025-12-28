@@ -112,13 +112,19 @@ class OrderController extends Controller
             'city' => 'required|string',
             'province' => 'required|string',
             'postal_code' => 'required|string',
-            'payment' => 'required|in:bank,ewallet,cod',
+            'payment' => 'required|in:transfer,cod',
         ]);
         
         // Store form data in session
         session(['checkout_data' => $validated]);
-        
-        // Redirect back to checkout to trigger payment popup
+
+        // Jika COD, langsung proses order tanpa Snap
+        if ($validated['payment'] === 'cod') {
+            // Panggil store() secara internal
+            return $this->store($request);
+        }
+
+        // Selain COD, trigger Snap
         return redirect()->route('orders.checkout')->with('show_payment', true);
     }
 

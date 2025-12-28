@@ -59,13 +59,16 @@
                         <ul class="py-2">
                             {{-- Modifikasi Sorting: Menggunakan link agar mengirim parameter ?sort= ke URL --}}
                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Default sorting']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">Default sorting</li>
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">
+                                Default sorting</li>
                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by latest']) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: low to high']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high</li>
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high
+                            </li>
                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: high to low']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low</li>
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -84,34 +87,41 @@
         </div>
 
 
+
+
         {{-- PRODUCTS CONTAINER --}}
         <div class="max-w-7xl mx-auto mt-12">
             @if (isset($products) && $products->count() > 0)
-                <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     @foreach ($products as $product)
                         <a href="/detailProduk/{{ $product->id }}"
-                            class="bg-white rounded-lg shadow-lg overflow-hidden transition hover:shadow-xl group block">
+                            class="bg-white rounded-lg shadow-md overflow-hidden transition hover:shadow-xl group block p-2">
                             <div class="w-full h-64 overflow-hidden relative">
                                 @if ($product->image)
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
+                                    <div
+                                        class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400 text-xs">
+                                        No Image</div>
                                 @endif
                             </div>
-                            <div class="p-4">
-                                <h4 class="text-sm text-gray-500 mb-1" style="font-family: cormorant, serif !important;">{{ $product->category->name ?? 'Women' }}</h4>
-                                <h3 class="text-xl font-semibold text-gray-900 truncate" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                                <p class="text-gray-600 mt-2" style="font-family: poppins, sans-serif !important;">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                            <div class="pt-2">
+                                <h4 class="text-xs text-gray-500 mb-1"
+                                    style="font-family: cormorant, serif !important;">
+                                    {{ $product->category->name ?? 'Women' }}</h4>
+                                <h3 class="text-base font-semibold text-gray-900 truncate"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-xs text-gray-600 mt-1"
+                                    style="font-family: poppins, sans-serif !important;">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
                             </div>
                         </a>
                     @endforeach
-
-                                <!-- Pagination -->
-                                <div class="mt-8">
-                                    {{ $products->links() }}
-                                </div>
                 </div>
+
+                <!-- Pagination -->
+
 
                 <div id="productsList" class="hidden space-y-4">
                     @foreach ($products as $product)
@@ -122,16 +132,99 @@
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">No Image</div>
+                                    <div
+                                        class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+                                        No Image</div>
                                 @endif
                             </div>
                             <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow">
-                                <h4 class="text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2" style="font-family: cormorant, serif !important;">{{ $product->category->name ?? 'Women' }}</h4>
-                                <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                                <p class="text-base sm:text-lg text-gray-600" style="font-family: poppins, sans-serif !important;">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <h4 class="text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2"
+                                    style="font-family: cormorant, serif !important;">
+                                    {{ $product->category->name ?? 'Women' }}</h4>
+                                <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-base sm:text-lg text-gray-600"
+                                    style="font-family: poppins, sans-serif !important;">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
                             </div>
                         </a>
                     @endforeach
+                </div>
+
+                <div id="productsList" class="hidden space-y-4">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}"
+                            class="card-luxe bg-white rounded-xl overflow-hidden flex flex-col sm:flex-row group block">
+                            <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @else
+                                    <div
+                                        class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+                                        No Image</div>
+                                @endif
+                            </div>
+                            <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
+                                <div class="flex items-center gap-3">
+                                    <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
+                                        style="font-family: poppins, sans-serif;">Exclusive</span>
+                                    <span
+                                        class="text-xs sm:text-sm text-gray-500">{{ $product->category->name ?? 'Exclusive' }}</span>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-gray-900"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-base sm:text-lg text-gray-700">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="text-sm text-gray-500 italic">Limited release</span>
+                                    <button
+                                        class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View
+                                        details</button>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div id="productsList" class="hidden space-y-4">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}"
+                            class="card-luxe bg-white rounded-xl overflow-hidden flex flex-col sm:flex-row group block">
+                            <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @else
+                                    <div
+                                        class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+                                        No Image</div>
+                                @endif
+                            </div>
+
+                            <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
+                                <div class="flex items-center gap-3">
+                                    <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
+                                        style="font-family: poppins, sans-serif;">Exclusive</span>
+                                    <span
+                                        class="text-xs sm:text-sm text-gray-500">{{ $product->category->name ?? 'Exclusive' }}</span>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-gray-900"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-base sm:text-lg text-gray-700">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="text-sm text-gray-500 italic">Limited release</span>
+                                    <button
+                                        class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View
+                                        details</button>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                <div class="mt-8">
+                    {{ $products->links() }}
                 </div>
             @else
                 <div class="text-center py-20">
@@ -142,10 +235,12 @@
         </div>
     </div>
 
-    <div id="overlay" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
+    <div id="overlay"
+        class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
     {{-- SIDEBAR FILTER --}}
-    <div id="filterSidebar" class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+    <div id="filterSidebar"
+        class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
         <div class="flex justify-between items-center p-6 border-b">
             <h2 class="font-bold uppercase tracking-widest">Filters</h2>
             <button onclick="closeFilter()" class="text-2xl hover:text-red-500">&times;</button>
@@ -156,30 +251,41 @@
             {{-- Filter 1: Search --}}
             <div class="px-6 mt-6">
                 <div class="flex border rounded-md overflow-hidden">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." class="w-full px-4 py-2 outline-none">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search products..." class="w-full px-4 py-2 outline-none">
                     <button type="submit" class="bg-black text-white px-4 hover:bg-gray-800 transition">&gt;</button>
                 </div>
             </div>
 
+
             {{-- Filter 2: Price (Backend Implemented) --}}
             <div class="px-6 mt-10">
-                <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter by<br>price</h2>
+                <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter
+                    by<br>price</h2>
                 <div class="relative h-2 bg-gray-200 rounded-full mb-6">
                     <div id="priceRangeFill" class="absolute inset-y-0 bg-black rounded-full"></div>
-                    <div id="priceMinHandle" class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
-                    <div id="priceMaxHandle" class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
-                    
+                    <div id="priceMinHandle"
+                        class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
+                    <div id="priceMaxHandle"
+                        class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
+
                     {{-- Tambahkan ATRIBUT NAME pada range input --}}
-                    <input id="priceMinRange" name="min_price" type="range" min="0" max="500" value="{{ request('min_price', 0) }}"
-                        step="1" class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
-                    <input id="priceMaxRange" name="max_price" type="range" min="0" max="500" value="{{ request('max_price', 500) }}"
-                        step="1" class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-20">
+                    <input id="priceMinRange" name="min_price" type="range" min="0" max="500"
+                        value="{{ request('min_price', 0) }}" step="1"
+                        class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
+                    <input id="priceMaxRange" name="max_price" type="range" min="0" max="500"
+                        value="{{ request('max_price', 500) }}" step="1"
+                        class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-20">
                 </div>
                 <div class="flex gap-4">
-                    <div class="border px-4 py-2 text-sm" id="priceMinLabel">Rp {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}</div>
-                    <div class="border px-4 py-2 text-sm" id="priceMaxLabel">Rp {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}</div>
+                    <div class="border px-4 py-2 text-sm" id="priceMinLabel">Rp
+                        {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}</div>
+                    <div class="border px-4 py-2 text-sm" id="priceMaxLabel">Rp
+                        {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}</div>
                 </div>
-                <button type="submit" class="w-full mt-4 bg-black text-white py-2 rounded text-sm hover:bg-gray-800 transition">Apply Price Filter</button>
+                <button type="submit"
+                    class="w-full mt-4 bg-black text-white py-2 rounded text-sm hover:bg-gray-800 transition">Apply
+                    Price Filter</button>
             </div>
         </form>
 
@@ -188,19 +294,20 @@
             <h3 class="text-xs mb-6 tracking-widest text-gray-400 uppercase font-bold">Filter by Category</h3>
             <ul class="space-y-4 font-semibold text-gray-700">
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}" 
-                       class="{{ request('category') == 'Exclusive' ? 'text-black underline' : 'hover:text-black' }}">Exclusive</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}"
+                        class="{{ request('category') == 'Exclusive' ? 'text-black underline' : 'hover:text-black' }}">Exclusive</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}" 
-                       class="{{ request('category') == 'Pria' ? 'text-black underline' : 'hover:text-black' }}">Pria</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}"
+                        class="{{ request('category') == 'Pria' ? 'text-black underline' : 'hover:text-black' }}">Pria</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}" 
-                       class="{{ request('category') == 'Wanita' || !request('category') ? 'text-black underline font-bold' : 'hover:text-black' }}">Wanita</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}"
+                        class="{{ request('category') == 'Wanita' || !request('category') ? 'text-black underline font-bold' : 'hover:text-black' }}">Wanita</a>
                 </li>
                 <li class="pt-4 border-t">
-                    <a href="{{ request()->url() }}" class="text-red-500 text-xs font-normal underline hover:text-red-700">Clear All Filters</a>
+                    <a href="{{ request()->url() }}"
+                        class="text-red-500 text-xs font-normal underline hover:text-red-700">Clear All Filters</a>
                 </li>
             </ul>
         </div>

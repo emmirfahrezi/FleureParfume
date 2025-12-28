@@ -38,10 +38,10 @@
     </header>
 
     <!-- Responsif DESKTOP LAYOUT MODE -->
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen md:ml-72">
 
         <!-- SIDEBAR (DESKTOP ONLY) -->
-        <aside class="hidden md:flex w-72 bg-white/90 backdrop-blur border-r border-slate-200 flex-col p-6 shadow-lg">
+        <aside class="hidden md:flex fixed top-0 left-0 h-full w-72 bg-white/90 backdrop-blur border-r border-slate-200 flex-col p-6 shadow-lg z-40">
             <div class="flex items-center gap-3 mb-10">
                 <div
                     class="h-10 w-10 rounded-full bg-rose-100 text-rose-700 font-semibold flex items-center justify-center">
