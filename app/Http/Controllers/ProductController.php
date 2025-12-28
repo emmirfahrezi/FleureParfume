@@ -60,7 +60,8 @@ class ProductController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        $products = $query->get();
+        //fix filter
+        $products = $query->paginate(12)->withQueryString();
 
         // JSON response for AJAX
         if ($request->ajax() || $request->wantsJson()) {
