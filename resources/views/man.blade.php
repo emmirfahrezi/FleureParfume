@@ -2,7 +2,8 @@
     {{-- HERO SECTION --}}
     <style>
         .hero-bg-man {
-            background-image: linear-gradient(135deg, rgba(43, 50, 90, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%), url("{{ asset('images/products/thumbnail.jpg') }}");
+            background-image: linear-gradient(135deg, rgba(43, 50, 90, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+            url("{{ asset('images/products/thumbnail.jpg') }}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -41,19 +42,19 @@
                 <div class="relative">
                     <button onclick="toggleSortDropdown()" class="flex items-center gap-2 cursor-pointer text-base">
                         @php
-                            $sortLabel = 'Default sorting';
-                            $sort = request('sort');
-                            if ($sort === 'price_asc') {
-                                $sortLabel = 'Sort by price: low to high';
-                            } elseif ($sort === 'price_desc') {
-                                $sortLabel = 'Sort by price: high to low';
-                            } elseif ($sort === 'name_asc') {
-                                $sortLabel = 'Sort by name: A-Z';
-                            } elseif ($sort === 'name_desc') {
-                                $sortLabel = 'Sort by name: Z-A';
-                            } elseif ($sort === 'latest') {
-                                $sortLabel = 'Sort by latest';
-                            }
+                        $sortLabel = 'Default sorting';
+                        $sort = request('sort');
+                        if ($sort === 'price_asc') {
+                        $sortLabel = 'Sort by price: low to high';
+                        } elseif ($sort === 'price_desc') {
+                        $sortLabel = 'Sort by price: high to low';
+                        } elseif ($sort === 'name_asc') {
+                        $sortLabel = 'Sort by name: A-Z';
+                        } elseif ($sort === 'name_desc') {
+                        $sortLabel = 'Sort by name: Z-A';
+                        } elseif ($sort === 'latest') {
+                        $sortLabel = 'Sort by latest';
+                        }
                         @endphp
                         <span id="sortLabel">{{ $sortLabel }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
@@ -93,71 +94,73 @@
 
         <div class="max-w-7xl mx-auto mt-12">
             @if (isset($products) && $products->count() > 0)
-                <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    @foreach ($products as $product)
-                        <a href="/detailProduk/{{ $product->id }}"
-                            class="bg-white rounded-lg shadow-xl ring-1 ring-black/5 overflow-hidden transition hover:shadow-2xl block group p-2">
-                            <div class="relative w-full h-64 overflow-hidden">
-                                @if ($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                                @else
-                                    <div
-                                        class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
-                                        No Image</div>
-                                @endif
-                            </div>
-                            <div class="pt-2">
-                                <h4 class="text-xs text-gray-500 mb-1">{{ $product->category->name ?? 'Men' }}</h4>
-                                <h3 class="text-base font-semibold text-gray-900 truncate">{{ $product->name }}</h3>
-                                <p class="text-xs text-gray-600 mt-1">Rp
-                                    {{ number_format($product->price, 0, ',', '.') }}</p>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-                <div id="productsList" class="hidden space-y-4">
-                    @foreach ($products as $product)
-                        <a href="/detailProduk/{{ $product->id }}"
-                            class="card-luxe bg-white rounded-xl shadow-xl ring-1 ring-black/5 overflow-hidden flex flex-col sm:flex-row group block hover:shadow-2xl transition">
-                            <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
-                                @if ($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                                @else
-                                    <div
-                                        class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
-                                        No Image</div>
-                                @endif
-                            </div>
-                            <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
-                                <div class="flex items-center gap-3">
-                                    <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
-                                        style="font-family: poppins, sans-serif;">Exclusive</span>
-                                    <span
-                                        class="text-xs sm:text-sm text-gray-500">{{ $product->category->name ?? 'Exclusive' }}</span>
-                                </div>
-                                <h3 class="text-2xl font-semibold text-gray-900"
-                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                                <p class="text-base sm:text-lg text-gray-700">Rp
-                                    {{ number_format($product->price, 0, ',', '.') }}</p>
-                                <div class="flex items-center justify-between pt-1">
-                                    <span class="text-sm text-gray-500 italic">Limited release</span>
-                                    <button
-                                        class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View
-                                        details</button>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-                <!-- Pagination -->
-                <div class="mt-8">
-                    {{ $products->links() }}
-                </div>
+            <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach ($products as $product)
+                <a href="/detailProduk/{{ $product->id }}"
+                    class="bg-white rounded-lg shadow-xl ring-1 ring-black/5 overflow-hidden transition hover:shadow-2xl block group p-2">
+                    <div class="relative w-full h-64 overflow-hidden">
+                        @if ($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        @else
+                        <div
+                            class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
+                            No Image</div>
+                        @endif
+                    </div>
+                    <div class="pt-2">
+                        <h4 class="text-xs text-gray-500 mb-1">{{ $product->category->name ?? 'Men' }}</h4>
+                        <h3 class="text-base font-semibold text-gray-900 truncate">{{ $product->name }}</h3>
+                        <p class="text-xs text-gray-600 mt-1">Rp
+                            {{ number_format($product->price, 0, ',', '.') }}
+                        </p>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+            <div id="productsList" class="hidden space-y-4">
+                @foreach ($products as $product)
+                <a href="/detailProduk/{{ $product->id }}"
+                    class="card-luxe bg-white rounded-xl shadow-xl ring-1 ring-black/5 overflow-hidden flex flex-col sm:flex-row group block hover:shadow-2xl transition">
+                    <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
+                        @if ($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        @else
+                        <div
+                            class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+                            No Image</div>
+                        @endif
+                    </div>
+                    <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
+                        <div class="flex items-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
+                                style="font-family: poppins, sans-serif;">Exclusive</span>
+                            <span
+                                class="text-xs sm:text-sm text-gray-500">{{ $product->category->name ?? 'Exclusive' }}</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900"
+                            style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                        <p class="text-base sm:text-lg text-gray-700">Rp
+                            {{ number_format($product->price, 0, ',', '.') }}
+                        </p>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-sm text-gray-500 italic">Limited release</span>
+                            <button
+                                class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View
+                                details</button>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+            <!-- Pagination -->
+            <div class="mt-8">
+                {{ $products->links() }}
+            </div>
             @else
-                <div class="text-center py-20 text-gray-500">Belum ada produk untuk kategori ini. <br> <a
-                        href="{{ request()->url() }}" class="underline text-black">Reset Filter</a></div>
+            <div class="text-center py-20 text-gray-500">Belum ada produk untuk kategori ini. <br> <a
+                    href="{{ request()->url() }}" class="underline text-black">Reset Filter</a></div>
             @endif
         </div>
     </div>
@@ -200,9 +203,11 @@
                 </div>
                 <div class="flex gap-4 mb-4">
                     <div class="border px-4 py-2 text-[10px] w-1/2 text-center" id="minDisplay">Rp
-                        {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}</div>
+                        {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}
+                    </div>
                     <div class="border px-4 py-2 text-[10px] w-1/2 text-center" id="maxDisplay">Rp
-                        {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}</div>
+                        {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}
+                    </div>
                 </div>
                 <button type="submit"
                     class="w-full bg-black text-white py-3 rounded font-bold text-xs hover:bg-gray-800 transition tracking-widest">APPLY
