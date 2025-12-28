@@ -10,7 +10,7 @@
         @endif
 
         <div class="text-center mb-16">
-            <h1 class="font-brand text-4xl md:text-5xl text-[#3B2F2F] mb-4">Your Profile</h1>
+            <h1 class="font font-cormorant text-4xl md:text-5xl text-[#3B2F2F] mb-4">Your Profile</h1>
             <p class="text-gray-600">Informasi akun Fleure Perfumes Anda</p>
         </div>
 
@@ -27,7 +27,7 @@
                             @endif
                         </div>
                         <h3 class="font-semibold text-lg">{{ $user->name }}</h3>
-                        <span class="inline-block bg-[#F5EAD7] text-[#3B2F2F] px-4 py-1 rounded-full text-xs">Member Fleure</span>
+                       
                     </div>
 
                     <!-- DETAIL -->
@@ -42,12 +42,12 @@
                         </div>
 
                         <div class="flex gap-4 pt-4">
-                            <a href="{{ route('profile.edit') }}" class="px-8 py-3 rounded-xl bg-[#3B2F2F] text-white hover:bg-[#2A211F] transition">
+                            <a href="{{ route('profile.edit') }}" class="w-full sm:w-auto px-6 py-2 rounded-lg bg-[#3B2F2F] text-white text-sm font-semibold hover:bg-[#2A211F] transition flex items-center justify-center h-12">
                                 Edit Profile
                             </a>
-                            <form action="{{ route('logout') }}" method="POST">
+                            <form action="{{ route('logout') }}" method="POST" class="w-full sm:w-auto">
                                 @csrf
-                                <button type="submit" class="px-8 py-3 rounded-xl bg-red-500 text-white hover:bg-red-600 transition">
+                                <button type="submit" class="w-full sm:w-auto px-6 py-2 rounded-lg bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition flex items-center justify-center h-12">
                                     Logout
                                 </button>
                             </form>

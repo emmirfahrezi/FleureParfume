@@ -1,3 +1,8 @@
+/* Utility for Cormorant font */
+.font-cormorant {
+    font-family: 'Cormorant', serif !important;
+    font-weight: 600 !important;
+}
 .navlink {
     @apply text-sm font-medium text-black uppercase hover:text-white;
 }

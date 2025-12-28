@@ -5,7 +5,7 @@
 <!-- HERO ABOUT -->
 <section class="bg-[#F5EFE6] py-30">
     <div class="max-w-6xl mx-auto px-6 text-center">
-        <h1 class="font-brand text-5xl tracking-[0.25em] text-[#3B2F2F] mb-6">
+        <h1 class="font-cormorant text-5xl tracking-[0.25em] text-[#3B2F2F] mb-6">
             ABOUT
         </h1>
         <p class="max-w-2xl mx-auto text-[#6B5B4B] leading-relaxed">

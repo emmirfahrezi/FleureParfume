@@ -52,10 +52,10 @@
                 </div>
 
                 <div class="pt-4 flex justify-center gap-4">
-                    <button type="submit" class="px-10 py-3 rounded-xl bg-[#3B2F2F] text-white hover:bg-[#2A211F] transition">
+                    <button type="submit" class="w-full sm:w-auto px-6 py-2 rounded-lg bg-[#3B2F2F] text-white hover:bg-[#2A211F] transition text-sm font-semibold flex items-center justify-center h-12">
                         Simpan Perubahan
                     </button>
-                    <a href="{{ route('profile.show') }}" class="px-10 py-3 text-gray-500">Batal</a>
+                    <a href="{{ route('profile.show') }}" class="w-full sm:w-auto px-6 py-2 rounded-lg text-gray-500 text-sm font-semibold text-center flex items-center justify-center h-12">Batal</a>
                 </div>
             </form>
         </div>

@@ -7,90 +7,103 @@
             </p>
         </div>
 
-        <form id="checkoutForm" action="{{ route('orders.prepare') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <form id="checkoutForm" action="{{ route('orders.prepare') }}" method="POST"
+            class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             @csrf
 
-            @if(session('error'))
-            <div class="lg:col-span-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                {{ session('error') }}
-            </div>
+            @if (session('error'))
+                <div class="lg:col-span-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    {{ session('error') }}
+                </div>
             @endif
 
-            @if(isset($errorMessage) && $errorMessage)
-            <div class="lg:col-span-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                <strong>Payment Gateway Error:</strong> {{ $errorMessage }}
-                <br><small>Periksa konfigurasi Midtrans atau cek log untuk detail.</small>
-            </div>
+            @if (isset($errorMessage) && $errorMessage)
+                <div class="lg:col-span-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <strong>Payment Gateway Error:</strong> {{ $errorMessage }}
+                    <br><small>Periksa konfigurasi Midtrans atau cek log untuk detail.</small>
+                </div>
             @endif
 
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
                     <div class="flex items-center justify-between">
-                        <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Informasi Kontak</h2>
+                        <h2 class="text-xl font-semibold text-gray-900"
+                            style="font-family: cormorant, serif !important;">Informasi Kontak</h2>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="space-y-2">
-                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Nama Lengkap</label>
-                            <input type="text" name="name" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="John Doe" required>
+                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Nama
+                                Lengkap</label>
+                            <input type="text" name="name"
+                                class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                                placeholder="John Doe" required>
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Email</label>
-                            <input type="email" name="email" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="you@email.com" required>
+                            <input type="email" name="email"
+                                class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                                placeholder="you@email.com" required>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">No. Telepon</label>
-                            <input type="tel" name="phone" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="08xxxxxxxxxx" required>
+                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">No.
+                                Telepon</label>
+                            <input type="tel" name="phone"
+                                class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                                placeholder="08xxxxxxxxxx" required>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Catatan untuk Kurir (opsional)</label>
-                            <input type="text" name="note" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="Patokan rumah, dll">
+                            <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Catatan untuk
+                                Kurir (opsional)</label>
+                            <input type="text" name="note"
+                                class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                                placeholder="Patokan rumah, dll">
                         </div>
                     </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                    <!-- Alamat tetap -->
-                    <div class="space-y-2">
-                        <label class="text-sm text-gray-600">Alamat</label>
-                        <input type="text" name="address" class="w-full border rounded-lg px-3 py-2" required>
-                    </div>
+                     <!-- Alamat tetap -->
+					<div class="space-y-2">
+						<label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Alamat</label>
+						<input type="text" name="address" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="Jalan, nomor rumah, dsb" required>
+					</div>
 
                     <!-- Provinsi -->
-                    <div class="space-y-2">
-                        <label class="text-sm text-gray-600">Provinsi</label>
-                        <select id="province" name="province" class="w-full border rounded-lg px-3 py-2" required>
-                            <option value="">-- Pilih Provinsi --</option>
-                        </select>
-                    </div>
+					<div class="space-y-2">
+						<label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Provinsi</label>
+						<select id="province" name="province" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" required>
+							<option value="">-- Pilih Provinsi --</option>
+						</select>
+					</div>
 
                     <!-- Kota -->
-                    <div class="space-y-2">
-                        <label class="text-sm text-gray-600">Kota / Kabupaten</label>
-                        <select id="city" name="city" class="w-full border rounded-lg px-3 py-2" required>
-                            <option value="">-- Pilih Kota/Kabupaten --</option>
-                        </select>
-                    </div>
+					<div class="space-y-2">
+						<label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Kota / Kabupaten</label>
+						<select id="city" name="city" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" required>
+							<option value="">-- Pilih Kota/Kabupaten --</option>
+						</select>
+					</div>
 
                     <!-- Kode Pos tetap -->
-                    <div class="space-y-2">
-                        <label class="text-sm text-gray-600">Kode Pos</label>
-                        <input type="text" name="postal_code" class="w-full border rounded-lg px-3 py-2" required>
-                    </div>
-
+					<div class="space-y-2">
+						<label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Kode Pos</label>
+						<input type="text" name="postal_code" class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black" placeholder="misal: 12345" required>
+					</div>
                 </div>
+
 
 
 
                 <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
-                    <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Metode Pembayaran</h2>
+                    <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">
+                        Metode Pembayaran</h2>
                     <div class="space-y-3">
-                        <label for="codCheckbox" class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-black">
+                        <label for="codCheckbox"
+                            class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-black">
                             <input type="checkbox" id="codCheckbox" name="cod" value="1" class="h-4 w-4">
 
                             <div>
-                                <p class="font-semibold" style="font-family: poppins, sans-serif;">Bayar di Tempat (COD)</p>
-                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Tersedia untuk area tertentu — centang jika ingin COD</p>
+                                <p class="font-semibold" style="font-family: poppins, sans-serif;">Bayar di Tempat (COD)
+                                </p>
+                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Tersedia
+                                    untuk area tertentu — centang jika ingin COD</p>
                             </div>
                         </label>
                     </div>
@@ -99,7 +112,8 @@
 
             <div class="space-y-4">
                 <div class="bg-white rounded-xl shadow-md p-6 space-y-4">
-                    <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">Ringkasan Pesanan</h2>
+                    <h2 class="text-xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">
+                        Ringkasan Pesanan</h2>
                     <div class="flex justify-between text-sm text-gray-700" style="font-family: poppins, sans-serif;">
                         <span>Subtotal</span>
                         <span>Rp {{ number_format($subtotal ?? 0, 0, ',', '.') }}</span>
@@ -108,14 +122,17 @@
                         <span>Ongkir</span>
                         <span>Rp {{ number_format($shippingCost ?? 0, 0, ',', '.') }}</span>
                     </div>
-                    <div class="flex justify-between text-base font-semibold pt-2" style="font-family: poppins, sans-serif;">
+                    <div class="flex justify-between text-base font-semibold pt-2"
+                        style="font-family: poppins, sans-serif;">
                         <span>Total</span>
                         <span>Rp {{ number_format($total ?? 0, 0, ',', '.') }}</span>
                     </div>
-                    <button type="submit" id="pay-button" class="w-full bg-black text-white py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
+                    <button type="submit" id="pay-button"
+                        class="w-full bg-black text-white py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
                         Lanjutkan ke Pembayaran
                     </button>
-                    <a href="/cart" class="block text-center text-sm text-gray-600 hover:text-black" style="font-family: poppins, sans-serif;">Kembali ke Cart</a>
+                    <a href="/cart" class="block text-center text-sm text-gray-600 hover:text-black"
+                        style="font-family: poppins, sans-serif;">Kembali ke Cart</a>
                 </div>
             </div>
         </form>
@@ -186,7 +203,7 @@
                     if (codCheckbox && codCheckbox.checked) {
                         ensurePaymentField('cod');
                     } else {
-                        ensurePaymentField('ewallet');
+                        ensurePaymentField('transfer');
                     }
 
                     // Validate required fields
@@ -202,36 +219,41 @@
         });
 
         // If snap token exists, show payment popup
-        @if(isset($snapToken) && $snapToken)
-        document.addEventListener('DOMContentLoaded', function() {
-            const snapToken = "{{ $snapToken }}";
-
-            if (typeof window.snap === 'undefined') {
-                console.error('Midtrans Snap not loaded');
-                return;
-            }
-
-            // Auto-show payment popup
-            window.snap.pay(snapToken, {
-                onSuccess: function(result) {
-                    console.log('Payment success:', result);
-                    window.location.href = "{{ route('payments.midtrans.finish') }}?order_id={{ session('pending_order_code') }}&status_code=200&transaction_status=settlement";
-                },
-                onPending: function(result) {
-                    console.log('Payment pending:', result);
-                    window.location.href = "{{ route('payments.midtrans.finish') }}?order_id={{ session('pending_order_code') }}&status_code=201&transaction_status=pending";
-                },
-                onError: function(result) {
-                    console.error('Payment error:', result);
-                    alert('Pembayaran gagal. Silakan coba lagi.');
-                    window.location.href = "{{ route('orders.checkout') }}";
-                },
-                onClose: function() {
-                    console.log('Payment popup closed');
-                    // Don't redirect, let user try again
+        @if (isset($snapToken) && $snapToken)
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cek hidden input payment, hanya show Snap jika bukan COD
+                const paymentInput = document.getElementById('paymentHidden');
+                if (paymentInput && paymentInput.value === 'cod') {
+                    return; // Jangan show Snap
                 }
+                const snapToken = "{{ $snapToken }}";
+                if (typeof window.snap === 'undefined') {
+                    console.error('Midtrans Snap not loaded');
+                    return;
+                }
+                window.snap.pay(snapToken, {
+                    onSuccess: function(result) {
+                        console.log('Payment success:', result);
+                        window.location.href =
+                            "{{ route('payments.midtrans.finish') }}?order_id={{ session('pending_order_code') }}&status_code=200&transaction_status=settlement";
+                    },
+                    onPending: function(result) {
+                        console.log('Payment pending:', result);
+                        window.location.href =
+                            "{{ route('payments.midtrans.finish') }}?order_id={{ session('pending_order_code') }}&status_code=201&transaction_status=pending";
+                    },
+                    onError: function(result) {
+                        console.error('Payment error:', result);
+                        alert('Pembayaran gagal. Silakan coba lagi.');
+                        window.location.href = "{{ route('orders.checkout') }}";
+                    },
+                    onClose: function() {
+                        console.log('Payment popup closed');
+                        alert(
+                            'Kamu menutup pembayaran. Pesanan belum dibayar. Silakan lanjutkan pembayaran jika ingin menyelesaikan pesanan.');
+                    }
+                });
             });
-        });
         @endif
     </script>
 

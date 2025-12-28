@@ -3,7 +3,8 @@
         <div class="text-center mb-8">
             <div class="mb-4">
                 <svg class="w-20 h-20 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
             <h1 class="text-4xl font-light tracking-wide mb-2" style="font-family: cormorant, serif !important;">
@@ -16,7 +17,7 @@
 
         <div class="bg-white rounded-xl shadow-md p-6 mb-6">
             <h2 class="text-xl font-semibold mb-4" style="font-family: cormorant, serif !important;">Detail Pesanan</h2>
-            
+
             <div class="grid grid-cols-2 gap-4 text-sm mb-4" style="font-family: poppins, sans-serif;">
                 <div>
                     <p class="text-gray-600">Order ID</p>
@@ -44,36 +45,39 @@
                     {{ $order->email }}<br>
                     {{ $order->address }}<br>
                     {{ $order->city }}, {{ $order->province }} {{ $order->postal_code }}
-                    @if($order->note)
-                    <br><span class="text-gray-600">Catatan: {{ $order->note }}</span>
+                    @if ($order->note)
+                        <br><span class="text-gray-600">Catatan: {{ $order->note }}</span>
                     @endif
                 </p>
             </div>
         </div>
 
         <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-            <h2 class="text-xl font-semibold mb-4" style="font-family: cormorant, serif !important;">Produk yang Dipesan</h2>
-            
+            <h2 class="text-xl font-semibold mb-4" style="font-family: cormorant, serif !important;">Produk yang Dipesan
+            </h2>
+
             <div class="space-y-3">
-                @foreach($order->orderItems as $item)
-                <div class="flex items-center gap-4 border-b pb-3">
-                    @if($item->product->image)
-                    <img src="{{ asset('storage/' . $item->product->image) }}" class="w-16 h-16 object-cover rounded">
-                    @else
-                    <div class="w-16 h-16 bg-gray-200 rounded"></div>
-                    @endif
-                    
-                    <div class="flex-1">
-                        <p class="font-semibold" style="font-family: poppins, sans-serif;">{{ $item->product->name }}</p>
-                        <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">
-                            {{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}
+                @foreach ($order->orderItems as $item)
+                    <div class="flex items-center gap-4 border-b pb-3">
+                        @if ($item->product->image)
+                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                class="w-16 h-16 object-cover rounded">
+                        @else
+                            <div class="w-16 h-16 bg-gray-200 rounded"></div>
+                        @endif
+
+                        <div class="flex-1">
+                            <p class="font-semibold" style="font-family: poppins, sans-serif;">
+                                {{ $item->product->name }}</p>
+                            <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">
+                                {{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}
+                            </p>
+                        </div>
+
+                        <p class="font-semibold" style="font-family: poppins, sans-serif;">
+                            Rp {{ number_format($item->subtotal, 0, ',', '.') }}
                         </p>
                     </div>
-                    
-                    <p class="font-semibold" style="font-family: poppins, sans-serif;">
-                        Rp {{ number_format($item->subtotal, 0, ',', '.') }}
-                    </p>
-                </div>
                 @endforeach
             </div>
 
@@ -94,14 +98,17 @@
         </div>
 
         <div class="text-center space-y-3">
-            <div class="flex justify-center gap-3">
-                <a href="{{ route('invoices.show', $order->id) }}" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-blue-700 transition">
-                    📄 Lihat Invoice
+            <div class="flex flex-wrap justify-center gap-2">
+                <a href="{{ route('invoices.show', $order->id) }}"
+                    class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg uppercase tracking-widest text-xs font-semibold hover:bg-blue-700 transition">
+                    Lihat Invoice
                 </a>
-                <a href="{{ route('invoices.download', $order->id) }}" class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-green-700 transition">
-                    📥 Download PDF
+                <a href="{{ route('invoices.download', $order->id) }}"
+                    class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg uppercase tracking-widest text-xs font-semibold hover:bg-green-700 transition">
+                    Download PDF
                 </a>
-                <a href="{{ route('orders.index') }}" class="inline-block bg-black text-white px-8 py-3 rounded-lg uppercase tracking-widest text-sm font-semibold hover:bg-gray-800 transition">
+                <a href="{{ route('orders.index') }}"
+                    class="inline-block bg-black text-white px-4 py-2 rounded-lg uppercase tracking-widest text-xs font-semibold hover:bg-gray-800 transition">
                     Lihat Semua Pesanan
                 </a>
             </div>
