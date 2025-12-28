@@ -28,10 +28,7 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/buy', function () {
-    $products = \App\Models\Product::with('category')->inRandomOrder()->get();
-    return view('buy', compact('products'));
-});
+// Route /buy hanya diarahkan ke BuyController
 
 // BUY PERFUMES (PAGINATION DI SINI)
 Route::get('/buy', [BuyController::class, 'index'])->name('buy');
