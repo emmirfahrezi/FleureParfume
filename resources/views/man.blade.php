@@ -1,6 +1,28 @@
 <x-layoutCategories>
     {{-- HERO SECTION --}}
-    
+    <style>
+        .hero-bg-man {
+            background-image: linear-gradient(135deg, rgba(43, 50, 90, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%), url("{{ asset('images/products/thumbnail.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+    <div class="relative isolate px-6 pt-20 lg:px-20 h-[400px] hero-bg-man">
+        <div class="w-full py-6 sm:py-8 lg:py-16 flex flex-col gap-4 text-white">
+            <div class="flex items-center gap-2 text-sm sm:text-base text-gray-200"
+                style="font-family: poppins, sans-serif;">
+                <a href="/" class="hover:underline text-gray-300">Home</a>
+                <span class="text-gray-400">/</span>
+                <span class="text-white">Men</span>
+            </div>
+
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide text-white"
+                style="font-family: cormorant, serif !important;">
+                MEN
+            </h1>
+        </div>
+    </div>
 
     {{-- PRODUCT LIST --}}
     <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-10">
@@ -18,7 +40,22 @@
             <div class="flex items-center gap-6 text-gray-700">
                 <div class="relative">
                     <button onclick="toggleSortDropdown()" class="flex items-center gap-2 cursor-pointer text-base">
-                        <span id="sortLabel">Default sorting</span>
+                        @php
+                            $sortLabel = 'Default sorting';
+                            $sort = request('sort');
+                            if ($sort === 'price_asc') {
+                                $sortLabel = 'Sort by price: low to high';
+                            } elseif ($sort === 'price_desc') {
+                                $sortLabel = 'Sort by price: high to low';
+                            } elseif ($sort === 'name_asc') {
+                                $sortLabel = 'Sort by name: A-Z';
+                            } elseif ($sort === 'name_desc') {
+                                $sortLabel = 'Sort by name: Z-A';
+                            } elseif ($sort === 'latest') {
+                                $sortLabel = 'Sort by latest';
+                            }
+                        @endphp
+                        <span id="sortLabel">{{ $sortLabel }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path d="M19 9l-7 7-7-7" />
@@ -27,16 +64,14 @@
                     <div id="sortDropdown"
                         class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <ul class="py-2">
-                            {{-- Modifikasi Sorting: Menggunakan link agar mengirim parameter ?sort= ke URL --}}
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Default sorting']) }}'"
+                            {{-- Modifikasi Sorting: Value harus sesuai dengan controller --}}
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">
                                 Default sorting</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by latest']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: low to high']) }}'"
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high
                             </li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: high to low']) }}'"
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low
                             </li>
                         </ul>

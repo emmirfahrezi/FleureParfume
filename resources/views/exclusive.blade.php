@@ -78,7 +78,22 @@
             <div class="flex items-center gap-6 text-gray-700">
                 <div class="relative">
                     <button onclick="toggleSortDropdown()" class="flex items-center gap-2 cursor-pointer">
-                        <span id="sortLabel" class="text-base">Default sorting</span>
+                        @php
+                            $sortLabel = 'Default sorting';
+                            $sort = request('sort');
+                            if ($sort === 'price_asc') {
+                                $sortLabel = 'Sort by price: low to high';
+                            } elseif ($sort === 'price_desc') {
+                                $sortLabel = 'Sort by price: high to low';
+                            } elseif ($sort === 'name_asc') {
+                                $sortLabel = 'Sort by name: A-Z';
+                            } elseif ($sort === 'name_desc') {
+                                $sortLabel = 'Sort by name: Z-A';
+                            } elseif ($sort === 'latest') {
+                                $sortLabel = 'Sort by latest';
+                            }
+                        @endphp
+                        <span id="sortLabel" class="text-base">{{ $sortLabel }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -87,16 +102,14 @@
                     <div id="sortDropdown"
                         class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <ul class="py-2">
-                            {{-- Modifikasi Sorting: Menggunakan link agar mengirim parameter ?sort= ke URL --}}
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Default sorting']) }}'"
+                            {{-- Modifikasi Sorting: Value harus sesuai dengan controller --}}
+                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">
-                                Default sorting</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by latest']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: low to high']) }}'"
+                                Default sorting</li> 
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high
                             </li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: high to low']) }}'"
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low
                             </li>
                         </ul>
