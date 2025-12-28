@@ -30,8 +30,8 @@ class ReportController extends Controller
 
         public function downloadProductReport()
     {
-        // 1. Ambil semua data produk
-        $products = Product::all();
+        // 1. Ambil semua data produk beserta kategori
+        $products = Product::with('category')->get();
 
         // 2. Data untuk dikirim ke view
         $data = [

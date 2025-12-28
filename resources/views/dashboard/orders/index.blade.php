@@ -16,21 +16,21 @@
 
         <!-- FILTER FORM -->
         <form method="GET" action="{{ route('admin.orders.index') }}"
-              class="flex flex-wrap gap-2 w-full md:w-auto">
+            class="flex flex-wrap gap-2 w-full md:w-auto">
 
             <!-- DATE -->
             <input type="date" name="date" value="{{ request('date') }}"
-                   class="flex-1 min-w-[120px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
+                class="flex-1 min-w-[120px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
                           focus:outline-none focus:ring-2 focus:ring-indigo-500" />
 
             <!-- SEARCH -->
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari ID / Nama..."
-                   class="flex-1 min-w-[140px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
+                class="flex-1 min-w-[140px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
                           focus:outline-none focus:ring-2 focus:ring-indigo-500" />
 
             <!-- STATUS -->
             <select name="status"
-                    class="flex-1 min-w-[120px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
+                class="flex-1 min-w-[120px] border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] sm:text-sm
                            focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <option value="">Semua Status</option>
                 <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -43,11 +43,11 @@
             <!-- BUTTONS -->
             <div class="flex gap-2 flex-1 sm:flex-none">
                 <button type="submit"
-                        class="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] sm:text-sm px-3 py-1.5 rounded-lg">
+                    class="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] sm:text-sm px-3 py-1.5 rounded-lg">
                     Filter
                 </button>
                 <a href="{{ route('admin.orders.index') }}"
-                   class="flex-1 sm:flex-none bg-gray-200 hover:bg-gray-300 text-gray-800 text-[11px] sm:text-sm px-3 py-1.5 rounded-lg text-center">
+                    class="flex-1 sm:flex-none bg-gray-200 hover:bg-gray-300 text-gray-800 text-[11px] sm:text-sm px-3 py-1.5 rounded-lg text-center">
                     Reset
                 </a>
             </div>
@@ -65,7 +65,7 @@
                     <th class="px-2 py-2 text-center">Total</th>
                     <th class="px-2 py-2 text-center">Status</th>
                     <th class="px-2 py-2 text-center">Bayar</th>
-                    <th class="px-2 py-2 text-center">Aksi</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -85,13 +85,13 @@
                     <!-- STATUS -->
                     <td class="px-2 py-2 text-center">
                         @php
-                            $statusConfig = [
-                                'pending' => 'bg-gray-100 text-gray-700',
-                                'processing' => 'bg-blue-100 text-blue-700',
-                                'shipped' => 'bg-indigo-100 text-indigo-700',
-                                'delivered' => 'bg-green-100 text-green-700',
-                                'cancelled' => 'bg-red-100 text-red-700'
-                            ];
+                        $statusConfig = [
+                        'pending' => 'bg-gray-100 text-gray-700',
+                        'processing' => 'bg-blue-100 text-blue-700',
+                        'shipped' => 'bg-indigo-100 text-indigo-700',
+                        'delivered' => 'bg-green-100 text-green-700',
+                        'cancelled' => 'bg-red-100 text-red-700'
+                        ];
                         @endphp
                         <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST">
                             @csrf
@@ -109,11 +109,11 @@
                     <!-- PAYMENT -->
                     <td class="px-2 py-2 text-center">
                         @php
-                            $paymentColor = [
-                                'pending' => 'bg-yellow-100 text-yellow-700',
-                                'paid' => 'bg-green-100 text-green-700',
-                                'failed' => 'bg-red-100 text-red-700'
-                            ];
+                        $paymentColor = [
+                        'pending' => 'bg-yellow-100 text-yellow-700',
+                        'paid' => 'bg-green-100 text-green-700',
+                        'failed' => 'bg-red-100 text-red-700'
+                        ];
                         @endphp
                         <form action="{{ route('admin.orders.updatePayment', $order->id) }}" method="POST">
                             @csrf
@@ -127,12 +127,6 @@
                     </td>
 
                     <!-- AKSI -->
-                    <td class="px-2 py-2 text-center">
-                        <a href="{{ route('admin.orders.show', $order->id) }}"
-                           class="px-2 py-1 text-[9px] sm:text-xs text-white bg-indigo-600 rounded hover:bg-indigo-700">
-                            Detail
-                        </a>
-                    </td>
                 </tr>
                 @empty
                 <tr>

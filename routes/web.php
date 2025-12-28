@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\DashboardController;
@@ -22,19 +21,14 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\BuyController;
+// use App\Http\Controllers\BuyController; // <-- Gak kepake kalau pake ProductController
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/buy', function () {
-    $products = \App\Models\Product::with('category')->inRandomOrder()->get();
-    return view('buy', compact('products'));
-});
-
-// BUY PERFUMES (PAGINATION DI SINI)
-Route::get('/buy', [BuyController::class, 'index'])->name('buy');
+// === 🔥 PERBAIKAN 1: Pake ProductController biar Filter Jalan ===
+Route::get('/buy', [ProductController::class, 'index'])->name('buy');
 
 Route::get('/detailProduk/{id}', function ($id) {
     $product = \App\Models\Product::with('category')->findOrFail($id);
@@ -61,13 +55,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     });
 
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // === 🔥 PERBAIKAN 2: Hapus duplikat, sisain yang pake Controller ===
     // Halaman pengaturan dashboard (hanya admin)
-    Route::get('/dashboard/settings', function () {
-        return view('dashboard.settings.index');
-    })->name('dashboard.settings');
     Route::get('/dashboard/settings', [AdminUserController::class, 'index'])->name('dashboard.settings');
 
     Route::prefix('dashboard')->group(function () {
@@ -96,14 +87,8 @@ Route::get('/about', function () {
     return view('about');
 });
 
-
-
-
 Route::view('/contact', 'contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
-
-
-
 
 // Grup untuk user area
 Route::middleware(['auth', 'user'])->prefix('user')->group(function () {
@@ -117,44 +102,33 @@ Scramble::registerUiRoute('/docs');
 Scramble::registerJsonSpecificationRoute('/openapi.json');
 
 // Include only API routes (URIs starting with 'api') in documentation
-
 Scramble::routes(function ($route) {
     return true; // include every route
 });
 
 //CATEGORIES\\
-// Route Halaman Women
 Route::get('/woman', [CategoryPageController::class, 'woman'])->name('woman.index');
-
-// Route Halaman Man
 Route::get('/man', [CategoryPageController::class, 'man'])->name('man.index');
-
-// Route Halaman Unisex
 Route::get('/unisex', [CategoryPageController::class, 'unisex'])->name('unisex.index');
-
-// Route Halaman Unisex
 Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('exclusive.index');
 
 // User-only: orders, profile, cart
 Route::middleware(['auth', 'user'])->group(function () {
-        // Update quantity order item (plus/minus)
-        Route::post('/orders/{order}/item/{item}/quantity', [OrderController::class, 'updateItemQuantity'])->name('orders.item.updateQuantity');
+    // Update quantity order item (plus/minus)
+    Route::post('/orders/{order}/item/{item}/quantity', [OrderController::class, 'updateItemQuantity'])->name('orders.item.updateQuantity');
+
     // Pesanan / orders for buyers
     Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan.index');
-
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/success/{orderId}', [OrderController::class, 'success'])->name('orders.success');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
     Route::post('/orders/prepare', [OrderController::class, 'prepare'])->name('orders.prepare');
 
-    // Profile
-    Route::get('/profile', function () {
-        $user = Auth::user();
-        return view('profile', compact('user'));
-    })->name('profile.show');
+    // === 🔥 PERBAIKAN 3: Hapus Route Profile duplikat di sini ===
+    // (Udah dipindah ke ProfileController di bawah biar rapi)
 
-    // Settings
+    // Settings (Ini cuma view, aman)
     Route::get('/settings', function () {
         return view('dashboard.settings.index');
     })->name('dashboard.settings');
@@ -174,10 +148,9 @@ Route::get('/wilayah/provinsi', [WilayahController::class, 'provinsi']);
 Route::get('/wilayah/kabupaten/{id}', [WilayahController::class, 'kabupaten']);
 
 //route api google
-Route::get('/auth/google', [GoogleController::class, 'redirect'])
-        ->name('google.login');
-
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+
 // Midtrans payment routes
 Route::post('/payments/midtrans/notification', [PaymentController::class, 'midtransNotification'])->name('payments.midtrans.notification');
 
@@ -186,14 +159,10 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/payments/midtrans/finish', [PaymentController::class, 'midtransFinish'])->name('payments.midtrans.finish');
 });
 
+// Profile Management (Controller Based)
 Route::middleware('auth')->group(function () {
-    // Halaman View Profile (profile.blade.php)
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    
-    // Halaman Edit Profile (edit-profile.blade.php)
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    
-    // Proses Simpan Update
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
@@ -203,5 +172,5 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Ini redundan sama yang di dalem middleware admin, tapi gapapa buat safety kalau admin logout
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -78,7 +78,22 @@
             <div class="flex items-center gap-6 text-gray-700">
                 <div class="relative">
                     <button onclick="toggleSortDropdown()" class="flex items-center gap-2 cursor-pointer">
-                        <span id="sortLabel" class="text-base">Default sorting</span>
+                        @php
+                            $sortLabel = 'Default sorting';
+                            $sort = request('sort');
+                            if ($sort === 'price_asc') {
+                                $sortLabel = 'Sort by price: low to high';
+                            } elseif ($sort === 'price_desc') {
+                                $sortLabel = 'Sort by price: high to low';
+                            } elseif ($sort === 'name_asc') {
+                                $sortLabel = 'Sort by name: A-Z';
+                            } elseif ($sort === 'name_desc') {
+                                $sortLabel = 'Sort by name: Z-A';
+                            } elseif ($sort === 'latest') {
+                                $sortLabel = 'Sort by latest';
+                            }
+                        @endphp
+                        <span id="sortLabel" class="text-base">{{ $sortLabel }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -87,16 +102,14 @@
                     <div id="sortDropdown"
                         class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <ul class="py-2">
-                            {{-- Modifikasi Sorting: Menggunakan link agar mengirim parameter ?sort= ke URL --}}
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Default sorting']) }}'"
+                            {{-- Modifikasi Sorting: Value harus sesuai dengan controller --}}
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">
                                 Default sorting</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by latest']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by latest</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: low to high']) }}'"
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high
                             </li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'Sort by price: high to low']) }}'"
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low
                             </li>
                         </ul>
@@ -211,17 +224,26 @@
     {{-- SIDEBAR FILTER --}}
     <div id="filterSidebar"
         class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h2 class="font-bold">Filter Options</h2>
-            <button onclick="closeFilter()" class="text-2xl">&times;</button>
+
+        <div class="flex justify-between items-center p-6 border-b border-gray-100">
+            <h2 class="text-xl font-semibold">Filters</h2>
+            <button onclick="closeFilter()" class="text-3xl">&times;</button>
         </div>
 
-        {{-- FORM FILTER --}}
+        {{-- FORM FILTER UTAMA --}}
         <form action="{{ request()->url() }}" method="GET">
-            {{-- Filter Pencarian --}}
+            {{-- Pastikan filter sort & category yang lama tetap terbawa saat filter harga/search diubah --}}
+            @if (request('sort'))
+                <input type="hidden" name="sort" value="{{ request('sort') }}">
+            @endif
+            @if (request('category'))
+                <input type="hidden" name="category" value="{{ request('category') }}">
+            @endif
+
+            {{-- Filter 1: Search --}}
             <div class="px-6 mt-6">
-                <div class="flex border rounded overflow-hidden">
-                    <input type="text" name="search" value="{{ request('search') }}"
+                <div class="flex border border-gray-300 rounded overflow-hidden">
+                    <input type="text" name="q" value="{{ request('q') }}"
                         placeholder="Search products..." class="w-full px-4 py-2 outline-none text-sm">
                     <button type="submit" class="bg-black text-white px-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
@@ -233,9 +255,9 @@
                 </div>
             </div>
 
-            {{-- Filter Harga --}}
+            {{-- Filter 2: Price --}}
             <div class="px-6 mt-10">
-                <h2 class="text-4xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter
+                <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter
                     by<br>price</h2>
                 <div class="relative h-2 bg-gray-200 rounded-full mb-6">
                     <div id="priceRangeFill" class="absolute inset-y-0 bg-black rounded-full"></div>
@@ -244,7 +266,7 @@
                     <div id="priceMaxHandle"
                         class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
 
-                    {{-- Input Range dengan Atribut Name --}}
+                    {{-- Tambahkan ATRIBUT NAME pada range input --}}
                     <input id="priceMinRange" name="min_price" type="range" min="0" max="500"
                         value="{{ request('min_price', 0) }}" step="1"
                         class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
@@ -253,40 +275,40 @@
                         class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-20">
                 </div>
                 <div class="flex gap-4">
-                    <div class="border px-4 py-2 text-xs" id="priceMinLabel">Rp
+                    <div class="border px-4 py-2 text-sm" id="priceMinLabel">Rp
                         {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}</div>
-                    <div class="border px-4 py-2 text-xs" id="priceMaxLabel">Rp
+                    <div class="border px-4 py-2 text-sm" id="priceMaxLabel">Rp
                         {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}</div>
                 </div>
                 <button type="submit"
-                    class="w-full mt-4 bg-black text-white py-2 rounded font-bold hover:bg-gray-800 transition">APPLY
-                    PRICE</button>
+                    class="w-full mt-4 bg-black text-white py-2 rounded text-sm hover:bg-gray-800 transition">Apply
+                    Price Filter</button>
             </div>
         </form>
 
-        {{-- Filter Kategori --}}
+        {{-- Filter 3: Category (Link langsung ganti URL) --}}
         <div class="px-6 mt-14 mb-10">
-            <h3 class="text-xl mb-6 tracking-widest uppercase text-gray-400 text-sm font-bold">Filter by Category</h3>
+            <h3 class="text-xs mb-6 tracking-widest text-gray-400 uppercase font-bold">Filter by Category</h3>
             <ul class="space-y-4 font-semibold text-lg">
-                {{-- Menggunakan request()->fullUrlWithQuery agar filter search/harga tidak hilang saat pilih kategori --}}
+                {{-- Gunakan fullUrlWithQuery agar filter lainnya (search/price) tetap terjaga saat ganti kategori --}}
                 <li>
                     <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}"
-                        class="{{ request('category') == 'Exclusive' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Exclusive</a>
+                        class="{{ request('category') == 'Exclusive' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Exclusive</a>
                 </li>
                 <li>
                     <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}"
-                        class="{{ request('category') == 'Pria' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Pria</a>
+                        class="{{ request('category') == 'Pria' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Pria</a>
                 </li>
                 <li>
                     <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}"
-                        class="{{ request('category') == 'Wanita' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Wanita</a>
+                        class="{{ request('category') == 'Wanita' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Wanita</a>
                 </li>
                 <li>
                     <a href="{{ request()->fullUrlWithQuery(['category' => 'Unisex']) }}"
-                        class="{{ request('category') == 'Unisex' ? 'text-amber-600 underline' : 'hover:text-amber-600' }}">Unisex</a>
+                        class="{{ request('category') == 'Unisex' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Unisex</a>
                 </li>
                 <li class="pt-4">
-                    <a href="{{ request()->url() }}" class="text-red-500 text-xs font-normal underline">Reset All
+                    <a href="{{ request()->url() }}" class="text-red-500 text-sm font-normal underline">Clear All
                         Filters</a>
                 </li>
             </ul>
