@@ -187,7 +187,7 @@
             {{-- Filter 1: Search --}}
             <div class="px-6 mt-6">
                 <div class="flex border border-gray-300 rounded overflow-hidden">
-                    <input type="text" name="search" value="{{ request('search') }}"
+                    <input type="text" name="q" value="{{ request('q') }}"
                         placeholder="Search products..." class="w-full px-4 py-2 outline-none text-sm">
                     <button type="submit" class="bg-black text-white px-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"

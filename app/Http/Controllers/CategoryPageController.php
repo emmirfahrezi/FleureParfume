@@ -11,16 +11,18 @@ class CategoryPageController extends Controller
 {
     private function applyFiltersToQuery(Request $request, $query)
     {
+
         if ($request->filled('q')) {
             $query->where('name', 'like', '%' . $request->q . '%');
         }
 
-        if ($request->filled('price_min')) {
-            $query->where('price', '>=', (float) $request->price_min);
+        // Samakan dengan buy: min_price dan max_price dikali 1000
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', (float) $request->min_price * 1000);
         }
 
-        if ($request->filled('price_max')) {
-            $query->where('price', '<=', (float) $request->price_max);
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', (float) $request->max_price * 1000);
         }
 
         if ($request->filled('sort')) {
