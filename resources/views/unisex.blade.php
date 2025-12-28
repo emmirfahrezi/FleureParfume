@@ -203,7 +203,7 @@
         <form action="{{ request()->url() }}" method="GET">
             <div class="px-6">
                 <div class="flex border rounded overflow-hidden">
-                    <input type="text" name="search" value="{{ request('search') }}"
+                    <input type="text" name="q" value="{{ request('q') }}"
                         placeholder="Search products..." class="w-full px-4 py-2 outline-none text-sm">
                     <button type="submit" class="bg-black text-white px-4">&gt;</button>
                 </div>

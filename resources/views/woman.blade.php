@@ -271,7 +271,7 @@
                 {{-- Filter 1: Search --}}
                 <div class="px-6 mt-6">
                     <div class="flex border rounded-md overflow-hidden">
-                        <input type="text" name="search" value="{{ request('search') }}"
+                        <input type="text" name="q" value="{{ request('q') }}"
                             placeholder="Search products..." class="w-full px-4 py-2 outline-none">
                         <button type="submit"
                             class="bg-black text-white px-4 hover:bg-gray-800 transition">&gt;</button>
