@@ -299,9 +299,7 @@
 @if (session('login_success') || session('register_success'))
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- TRIK BIAR VS CODE GA MERAH ---
-            // Kita jadiin string dulu ("..."), baru dibandingin di JS
-
+            
             // Ambil nama user dengan aman (optional)
             const userName = "{{ optional(auth()->user())->name ?? 'User' }}";
 
@@ -309,7 +307,7 @@
             const isRegister = "{{ session('register_success') ? 'yes' : 'no' }}" === "yes";
 
             // Default Text (Login)
-            let titleText = 'WELCOME BACKK!';
+            let titleText = 'WELCOME BACK!';
             let bodyText = `Halo ${userName}, senang melihatmu kembali.`;
             let iconType = 'success';
 

@@ -44,9 +44,8 @@
                         Store Address
                     </h3>
                     <p class="text-gray-700">
-                        Fleur Perfumes Boutique<br>
-                        Jl. Elegance No. 88<br>
-                        Bandung, Indonesia
+                        Jl. Sukajadi No.131-139 Cipedes <br>
+                        Kec. Sukajadi Kota Bandung Jawa Barat 40162
                     </p>
                 </div>
 
@@ -55,8 +54,8 @@
                         Contact
                     </h3>
                     <p class="text-gray-700">
-                        Email: support@fleureperfumes.com<br>
-                        Phone: +62 812 3456 7890
+                        Email: fleureperfumes@gmail.com<br>
+                        Phone: +62 812-6632-9814
                     </p>
                 </div>
 
@@ -65,8 +64,8 @@
                         Opening Hours
                     </h3>
                     <p class="text-gray-700">
-                        Monday – Friday: 09.00 – 18.00<br>
-                        Saturday: 10.00 – 16.00
+                        Monday – Friday: 09.00 – 21.00<br>
+                        Saturday – Sunday: 10.00 – 20.00
                     </p>
                 </div>
             </div>
