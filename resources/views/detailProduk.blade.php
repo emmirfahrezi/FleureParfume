@@ -36,22 +36,11 @@
                         </p>
                     </div>
 
-                    {{-- DESCRIPTION --}}
-                    @if ($product->description)
-                    <p class="text-gray-700 leading-relaxed text-base" style="font-family: poppins, sans-serif;">
-                        {{ $product->description }}
-                    </p>
-                    @else
-                    <p class="text-gray-600 text-base" style="font-family: poppins, sans-serif;">
-                        Premium fragrance crafted with the finest ingredients.
-                    </p>
-                    @endif
-
+                   
+                  
                     {{-- QUANTITY + ADD TO CART --}}
                     <form action="{{ route('cart.store') }}" method="POST">
                         @csrf
-
-                        {{-- 🔥 WAJIB ADA INI: Biar Controller tau produk mana yang dibeli 🔥 --}}
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                         <div class="flex items-center gap-4 py-6 border-t border-b">
@@ -93,16 +82,7 @@
                         @if ($product->description)
                         <p>{{ $product->description }}</p>
                         @endif
-                        <p>
-                            Discover the perfect scent for your personality. Our premium fragrance collection is crafted
-                            with the finest ingredients sourced from around the world.
-                            Each perfume tells a unique story and evokes a special memory or emotion.
-                        </p>
-                        <p>
-                            Whether you're looking for something fresh and light, warm and woody, or floral and elegant,
-                            we have the perfect aroma to match your style.
-                            Our expert blenders have created these fragrances to last all day with just a few spritzes.
-                        </p>
+                     
                     </div>
 
 
@@ -161,11 +141,7 @@
     </div>
 
     <script>
-        const maxStock = {
-            {
-                $product - > stock
-            }
-        };
+        const maxStock = {{ $product->stock }};
 
         function incrementQty() {
             const input = document.getElementById('quantityInput');

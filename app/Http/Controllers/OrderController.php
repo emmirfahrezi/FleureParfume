@@ -202,7 +202,7 @@ class OrderController extends Controller
                 'status' => $paymentStatus == 'paid' ? 'processing' : 'pending',
             ]);
 
-            // Simpan order items
+            // Simpan order items & kurangi stok produk
             foreach ($cartItems as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -211,6 +211,11 @@ class OrderController extends Controller
                     'price' => $item->product->price,
                     'subtotal' => $item->product->price * $item->quantity,
                 ]);
+                // Kurangi stok produk
+                $product = $item->product;
+                if ($product->stock !== null) {
+                    $product->decrement('stock', $item->quantity);
+                }
             }
 
             // Hapus cart items setelah checkout

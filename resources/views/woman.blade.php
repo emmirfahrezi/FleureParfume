@@ -1,15 +1,10 @@
-<x-layoutCategories>
-    {{-- hero section --}}
     <style>
         .hero-bg {
-            background-image: linear-gradient(135deg, rgba(90, 62, 43, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
-                url("{{ asset('images/products/thumbnail.jpg') }}");
+            background-image: linear-gradient(135deg, rgba(90, 62, 43, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%), url("{{ asset('images/products/thumbnail.jpg') }}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
-
-        /* Styling untuk Range Slider Harga */
         .price-slider {
             height: 5px;
             position: relative;
@@ -17,6 +12,9 @@
             border-radius: 5px;
         }
     </style>
+<x-layoutCategories>
+    {{-- hero section --}}
+
 
     <div class="relative isolate px-6 pt-20 lg:px-20 h-[400px] hero-bg">
         <div class="w-full py-6 sm:py-8 lg:py-16 flex flex-col gap-4 text-black">
