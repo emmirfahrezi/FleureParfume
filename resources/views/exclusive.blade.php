@@ -41,17 +41,30 @@
             opacity: 0.9;
         }
 
-        /* Fix Slider UI */
+        /*  FIX SLIDER UI BIAR DUA-DUANYA BISA DIGESER  */
+
+        /* 1. Inputnya sendiri kita bikin tembus klik (pointer-events: none) */
+        input[type=range] {
+            pointer-events: none;
+            -webkit-appearance: none;
+            /* Wajib buat Chrome/Safari */
+            background: transparent;
+        }
+
+        /* 2. Tapi PENTOLAN-nya (Thumb) kita bikin BISA diklik (pointer-events: auto) */
         input[type=range]::-webkit-slider-thumb {
             pointer-events: auto;
             width: 20px;
             height: 20px;
             -webkit-appearance: none;
             background: #d4af37;
-            /* Ubah jadi emas dikit */
             border: 2px solid white;
             border-radius: 50%;
             cursor: pointer;
+            position: relative;
+            z-index: 50;
+            /* Biar pentolannya selalu di atas */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
     </style>
 
@@ -218,17 +231,22 @@
                 </div>
             </div>
 
-            {{-- 2. Price Filter --}}
+            {{-- 2. Price Filter (SUDAH FIX) --}}
             <div class="px-6 mt-10">
                 <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter by<br>Price</h2>
 
                 <div class="range-slider mb-8 relative w-full h-1 bg-gray-200 rounded-full mt-2">
                     <div id="rangeFill" class="absolute h-full bg-black rounded-full z-10"></div>
+                    {{-- Handle UI (Visual doang) --}}
                     <div id="minHandle" class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow"></div>
                     <div id="maxHandle" class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow"></div>
 
-                    <input type="range" name="min_price" id="inputMin" min="0" max="500" value="{{ request('min_price', 0) }}" step="1" oninput="updateRangeUI()" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30 appearance-none">
-                    <input type="range" name="max_price" id="inputMax" min="0" max="500" value="{{ request('max_price', 500) }}" step="1" oninput="updateRangeUI()" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30 appearance-none">
+                    {{-- INPUT RANGE  --}}
+                    <input type="range" name="min_price" id="inputMin" min="0" max="500" value="{{ request('min_price', 0) }}" step="1" oninput="updateRangeUI()"
+                        class="absolute inset-0 w-full h-full opacity-0 z-30 appearance-none pointer-events-none">
+
+                    <input type="range" name="max_price" id="inputMax" min="0" max="500" value="{{ request('max_price', 500) }}" step="1" oninput="updateRangeUI()"
+                        class="absolute inset-0 w-full h-full opacity-0 z-30 appearance-none pointer-events-none">
                 </div>
 
                 <div class="flex justify-between items-center gap-4 mb-6">
@@ -240,7 +258,7 @@
             </div>
         </form>
 
-        {{-- 3. Category Links (Logic Fix) --}}
+        {{-- 3. Category Links --}}
         <div class="px-6 mt-14 mb-10">
             <h3 class="text-xs mb-6 tracking-widest text-gray-400 uppercase font-bold">Category</h3>
             <ul class="space-y-4 font-semibold text-lg">
@@ -267,11 +285,7 @@
         </div>
     </div>
 
-    {{--
-        =======================================================
-        BAGIAN 4: SCRIPT WAJIB
-        =======================================================
-    --}}
+    {{-- SCRIPT --}}
     <script>
         const filterSidebar = document.getElementById('filterSidebar');
         const overlay = document.getElementById('overlay');
@@ -334,6 +348,7 @@
             let maxVal = parseInt(maxInput.value);
             const maxLimit = 500;
 
+            // Logic biar ga tabrakan (jarak minimal 10)
             if (minVal > maxVal - 10) {
                 if (document.activeElement === minInput) {
                     minInput.value = maxVal - 10;
