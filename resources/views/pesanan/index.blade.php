@@ -1,182 +1,97 @@
-@extends('layouts.dashboard')
-
-@section('content')
-<h1 class="text-2xl font-bold mb-6">Data Pesanan</h1>
-
-<div class="bg-white rounded-xl shadow p-6">
-
-    <!-- HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <h2 class="text-lg font-semibold text-gray-700">
-            Daftar Pesanan
-        </h2>
-
-        <div class="flex gap-2">
-            <!-- FILTER TANGGAL -->
-            <input
-                type="date"
-                id="dateFilter"
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-
-            <!-- SEARCH -->
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Cari ID / Nama Customer..."
-                class="border border-gray-300 rounded-lg px-4 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-
-            <!-- FILTER -->
-            <select
-                class="border border-gray-300 rounded-lg px-3 py-2 text-sm 
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500" id="statusFilter">
-                <option value="">Semua Status</option>
-                <option value="notyetpaid">Belum Dibayar</option>
-                <option value="delivery">Dikirim</option>
-                <option value="process">Diproses</option>
-                <option value="done">Selesai</option>
-                <option value="cancel">Dibatalkan</option>
-            </select>
+<x-layoutCategories>
+    
+    <div class="max-w-6xl mx-auto px-6 py-14 pt-28">
+        <div class="mb-8">
+            <h1 class="text-4xl font-light tracking-wide" style="font-family: cormorant, serif !important;">
+                Pesanan Saya
+            </h1>
+            <p class="text-gray-600 mt-2" style="font-family: poppins, sans-serif;">
+                Lihat riwayat dan status pesanan kamu
+            </p>
         </div>
+
+        @if ($orders->isEmpty())
+            <div class="bg-white rounded-xl shadow-md p-12 text-center">
+                <p class="text-gray-500 mb-4" style="font-family: poppins, sans-serif;">
+                    Belum ada pesanan
+                </p>
+                <a href="/buy"
+                    class="inline-block bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition">
+                    Mulai Belanja
+                </a>
+            </div>
+        @else
+            <div class="space-y-4">
+                @foreach ($orders as $order)
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">
+                                    Order #{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}
+                                </p>
+                                <p class="text-xs text-gray-500" style="font-family: poppins, sans-serif;">
+                                    {{ $order->created_at->format('d M Y, H:i') }}
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <span
+                                    class="inline-block px-3 py-1 text-xs font-semibold rounded-full
+                            @if ($order->status == 'pending') bg-yellow-100 text-yellow-800
+                            @elseif($order->status == 'processing') bg-blue-100 text-blue-800
+                            @elseif($order->status == 'shipped') bg-purple-100 text-purple-800
+                            @elseif($order->status == 'delivered') bg-green-100 text-green-800
+                            @else bg-red-100 text-red-800 @endif">
+                                    {{ ucfirst($order->status) }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-4 mb-4">
+                            <div class="space-y-2">
+                                @foreach ($order->orderItems as $item)
+                                    <div class="flex items-center gap-3">
+                                        @if ($item->product->image)
+                                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                                class="w-12 h-12 object-cover rounded">
+                                        @else
+                                            <div class="w-12 h-12 bg-gray-200 rounded"></div>
+                                        @endif
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold" style="font-family: poppins, sans-serif;">
+                                                {{ $item->product->name }}
+                                            </p>
+                                            <p class="text-xs text-gray-600" style="font-family: poppins, sans-serif;">
+                                                {{ $item->quantity }} x Rp
+                                                {{ number_format($item->price, 0, ',', '.') }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center border-t pt-4">
+                            <div>
+                                <p class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Total
+                                    Pembayaran</p>
+                                <p class="text-lg font-semibold" style="font-family: poppins, sans-serif;">
+                                    Rp {{ number_format($order->total, 0, ',', '.') }}
+                                </p>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="{{ route('invoices.show', $order->id) }}"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+                                    📄 Invoice
+                                </a>
+                                <a href="{{ route('orders.show', $order->id) }}"
+                                    class="bg-black text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
+                                    Lihat Detail
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
-
-    <!-- TABLE -->
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-600">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                <tr>
-                    <th class="px-6 py-3 text-center">ID Pesanan</th>
-                    <th class="px-6 py-3 text-center">Customer</th>
-                    <th class="px-6 py-3 text-center">Tanggal</th>
-                    <th class="px-6 py-3 text-center">Total</th>
-                    <th class="px-6 py-3 text-center">Status</th>
-                    <th class="px-6 py-3 text-center">Aksi</th>
-                </tr>
-            </thead>
-
-            <tbody id="orderTable">
-
-                <!-- ROW 1 -->
-                <tr class="border-b hover:bg-gray-50" data-status="notyetpaid" data-date="2025-12-20">
-                    <td class="px-6 py-4 font-medium text-center text-gray-800">
-                        #ORD-001
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        Najran Al-Faresy
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        20 Des 2025
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        Rp 750.000
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
-                            Belum Dibayar
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-center space-x-2">
-                        <a href="/show"
-                           class="px-3 py-1 text-xs text-white bg-indigo-600 rounded hover:bg-indigo-700">
-                            Detail
-                        </a>
-                    </td>
-                </tr>
-
-                <!-- ROW 2 -->
-                <tr class="border-b hover:bg-gray-50" data-status="delivery" data-date="2025-12-19">
-                    <td class="px-6 py-4 font-medium text-center text-gray-800">
-                        #ORD-002
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        Aulia Rahma
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        19 Des 2025
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        Rp 1.200.000
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
-                            Dikirim
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-center space-x-2">
-                        <a href="/show"
-                           class="px-3 py-1 text-xs text-white bg-indigo-600 rounded hover:bg-indigo-700">
-                            Detail
-                        </a>
-                    </td>
-                </tr>
-
-                <!-- ROW 3 -->
-                <tr class="border-b hover:bg-gray-50" data-status="done" data-date="2025-12-18">
-                    <td class="px-6 py-4 font-medium text-center text-gray-800">
-                        #ORD-003
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        Budi Santoso
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        18 Des 2025
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        Rp 450.000
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                            Selesai
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-center space-x-2">
-                        <a href="/show"
-                           class="px-3 py-1 text-xs text-white bg-indigo-600 rounded hover:bg-indigo-700">
-                            Detail
-                        </a>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- SEARCH SCRIPT -->
-<script>
-const searchInput  = document.getElementById('searchInput');
-const statusFilter = document.getElementById('statusFilter');
-const dateFilter   = document.getElementById('dateFilter');
-const rows = document.querySelectorAll('#orderTable tr');
-
-function filterTable() {
-    const searchText = searchInput.value.toLowerCase();
-    const selectedStatus = statusFilter.value.toLowerCase();
-    const selectedDate = dateFilter.value; // YYYY-MM-DD
-
-    rows.forEach(row => {
-        const rowText   = row.innerText.toLowerCase();
-        const rowStatus = row.dataset.status.toLowerCase();
-        const rowDate   = row.dataset.date;
-
-        const matchSearch = rowText.includes(searchText);
-        const matchStatus = selectedStatus === '' || rowStatus === selectedStatus;
-        const matchDate   = selectedDate === '' || rowDate === selectedDate;
-
-        row.style.display =
-            (matchSearch && matchStatus && matchDate)
-                ? ''
-                : 'none';
-    });
-}
-
-searchInput.addEventListener('keyup', filterTable);
-statusFilter.addEventListener('change', filterTable);
-dateFilter.addEventListener('change', filterTable);
-</script>
-
-
-@endsection
+</x-layoutCategories>

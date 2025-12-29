@@ -1,6 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('content')
+<!-- Popup Success -->
+<x-popup.popup-create-success />
+
 @if ($errors->any())
 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
     <strong class="font-bold">Waduh! Ada yang salah nih:</strong>
@@ -127,4 +130,11 @@
         </div>
     </form>
 </div>
+
+<script>
+document.querySelector('form').addEventListener('submit', () => {
+    localStorage.setItem('product_created', 'true');
+});
+</script>
+
 @endsection

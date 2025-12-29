@@ -1,232 +1,178 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-6">Data Produk</h1>
+<!-- Popup Success -->
+<x-popup.popup-create-success />
+<x-popup.popup-update-success />
+<x-popup.popup-delete-success />
 
-<div class="bg-white rounded-xl shadow p-6">
+<h1 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Data Produk</h1>
 
-    <!-- HEADER + FILTER -->
-    <div class="flex flex-col gap-4 mb-6">
-        <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-gray-700">Daftar Produk</h2>
-            <a href="{{ route('products.create') }}"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg">Create</a>
-        </div>
+<div class="bg-white rounded-xl shadow p-3 sm:p-6">
 
-        <!-- FILTER FORM -->
-        <form method="GET" action="{{ route('products.index') }}" class="grid grid-cols-1 md:grid-cols-5 gap-3">
-            <!-- Search -->
-            <div class="col-span-1 md:col-span-2">
-                <label class="block text-xs text-gray-500 mb-1">Cari</label>
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari produk..."
-                    class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            </div>
-
-            <!-- Category -->
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Kategori</label>
-                <select name="category"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option value="">Semua</option>
-                    <option value="Pria" {{ request('category') == 'Pria' ? 'selected' : '' }}>Pria</option>
-                    <option value="Wanita" {{ request('category') == 'Wanita' ? 'selected' : '' }}>Wanita</option>
-                    <option value="Unisex" {{ request('category') == 'Unisex' ? 'selected' : '' }}>Unisex</option>
-                </select>
-            </div>
-
-            <!-- Sort -->
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Urutkan</label>
-                <select name="sort" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option value="">Default</option>
-                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama A–Z</option>
-                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama Z–A</option>
-                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga Terendah</option>
-                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga Tertinggi</option>
-                </select>
-            </div>
-
-            <!-- Price Range -->
-            <div class="grid grid-cols-2 gap-2">
-                <div>
-                    <label class="block text-xs text-gray-500 mb-1">Harga Min</label>
-                    <input type="number" name="price_min" value="{{ request('price_min') }}"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        min="0">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-500 mb-1">Harga Max</label>
-                    <input type="number" name="price_max" value="{{ request('price_max') }}"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        min="0">
-                </div>
-            </div>
-
-
-
-            <!-- Actions -->
-            <div class="flex items-end gap-2 md:col-span-5">
-                <button type="submit"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg">Terapkan
-                    Filter</button>
-                <a href="{{ route('products.index') }}"
-                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm px-4 py-2 rounded-lg">Reset</a>
-            </div>
-        </form>
+    <!-- HEADER -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+        <h2 class="text-base sm:text-lg font-semibold text-gray-700">Daftar Produk</h2>
+        <a href="{{ route('products.create') }}"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm px-4 py-2 rounded-lg text-center">
+            + Tambah Produk
+        </a>
     </div>
 
+    <!-- FILTERS -->
+    <div class="space-y-3 sm:space-y-0 mb-6">
+        <!-- BARIS 1: CARI + KATEGORI -->
+        <div class="flex flex-wrap gap-2 sm:gap-3">
+            <!-- Cari Nama -->
+            <div class="flex-1 min-w-[140px]">
+                <label class="block text-[10px] sm:text-xs text-gray-500 mb-0.5">Cari Nama</label>
+                <input type="text" id="searchInput" placeholder="Cari produk..."
+                    class="w-full border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-sm focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Kategori -->
+            <div class="flex-1 min-w-[120px]">
+                <label class="block text-[10px] sm:text-xs text-gray-500 mb-0.5">Kategori</label>
+                <select id="categorySelect"
+                    class="w-full border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-sm">
+                    <option value="">Semua</option>
+                    <option value="Pria">Pria</option>
+                    <option value="Wanita">Wanita</option>
+                    <option value="Unisex">Unisex</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- BARIS 2: URUTKAN + MIN + MAX -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-3">
+            <!-- Urutkan -->
+            <div>
+                <label class="block text-[10px] sm:text-xs text-gray-500 mb-0.5">Urutkan</label>
+                <select id="sortSelect"
+                    class="w-full border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-sm">
+                    <option value="">Default</option>
+                    <option value="name_asc">Nama A–Z</option>
+                    <option value="name_desc">Nama Z–A</option>
+                    <option value="price_asc">Harga Terendah</option>
+                    <option value="price_desc">Harga Tertinggi</option>
+                </select>
+            </div>
+
+            <!-- Min -->
+            <div>
+                <label class="block text-[10px] sm:text-xs text-gray-500 mb-0.5">Min</label>
+                <input type="number" id="minPrice"
+                    class="w-full border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-sm">
+            </div>
+
+            <!-- Max -->
+            <div>
+                <label class="block text-[10px] sm:text-xs text-gray-500 mb-0.5">Max</label>
+                <input type="number" id="maxPrice"
+                    class="w-full border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-sm">
+            </div>
+        </div>
+    </div>
 
     <!-- TABLE -->
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left text-gray-600">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+    <div class="overflow-x-auto rounded-lg border border-gray-100">
+        <table class="w-full text-[11px] sm:text-sm text-left text-gray-600">
+            <thead class="text-[10px] sm:text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>
-                    <th class="px-6 py-3">Gambar</th>
-                    <th class="px-6 py-3">Nama</th>
-                    <th class="px-6 py-3">Kategori</th>
-                    <th class="px-6 py-3">Harga</th>
-                    <th class="px-6 py-3">Stok</th>
-                    <th class="px-6 py-3 text-center">Aksi</th>
+                    <th class="px-2 sm:px-4 py-2 sm:py-3">Gambar</th>
+                    <th class="px-2 sm:px-4 py-2 sm:py-3">Nama</th>
+                    <th class="px-2 sm:px-4 py-2 sm:py-3">Kategori</th>
+                    <th class="px-2 sm:px-4 py-2 sm:py-3">Harga</th>
+                    <th class="px-2 sm:px-4 py-2 sm:py-3">Stok</th>
+                    <th class="px-2 sm:px-4 py-2 sm:py-3 text-center">Aksi</th>
                 </tr>
             </thead>
-
-            <tbody id="productTable">
-                @forelse ($products as $product)
+            <tbody id="productTableBody">
+                @foreach ($products as $product)
                 <tr class="border-b hover:bg-gray-50">
-                    <td class="px-6 py-4">
+                    <td class="px-2 sm:px-4 py-3 sm:py-4">
                         @if ($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}"
-                            class="w-14 h-14 rounded-lg object-cover">
+                            class="w-9 h-9 sm:w-12 sm:h-12 rounded-lg object-cover">
                         @else
-                        <span class="text-xs text-gray-400">No Image</span>
+                        -
                         @endif
                     </td>
-
-                    <td class="px-6 py-4 font-medium text-gray-800">
-                        {{ $product->name }}
-                    </td>
-
-                    <td class="px-6 py-4">
-                        @if($product->category)
-                        <span class="px-3 py-1 text-xs rounded-full
-            {{ $product->category->name == 'Wanita' ? 'bg-pink-100 text-pink-700' : '' }}
-            {{ $product->category->name == 'Pria' ? 'bg-blue-100 text-blue-700' : '' }}
-            {{ $product->category->name == 'Unisex' ? 'bg-purple-100 text-purple-700' : '' }}">
-
-                            {{ $product->category->name }}
-                        </span>
-                        @else
-                        <span class="text-xs text-gray-400">Tanpa Kategori</span>
-                        @endif
-                    </td>
-
-                    <td class="px-6 py-4">
-                        Rp {{ number_format($product->price, 0, ',', '.') }}
-                    </td>
-
-                    <td class="px-6 py-4">
-                        {{ $product->stock }}
-                    </td>
-
-                    <td class="px-6 py-4 text-center space-x-2">
-                        <a href="#"
-                            class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">
-                            Edit
-                        </a>
-
+                    <td class="px-2 sm:px-4 py-3 sm:py-4 font-medium">{{ $product->name }}</td>
+                    <td class="px-2 sm:px-4 py-3 sm:py-4">{{ $product->category->name ?? '-' }}</td>
+                    <td class="px-2 sm:px-4 py-3 sm:py-4">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                    <td class="px-2 sm:px-4 py-3 sm:py-4">{{ $product->stock }}</td>
+                    <td class="px-2 sm:px-4 py-3 sm:py-4 text-center space-x-1 sm:space-x-2">
+                        <a href="{{ route('products.edit', $product->id) }}"
+                            class="text-yellow-500 hover:underline text-[11px] sm:text-sm">Edit</a>
+                        |
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline"
-                            onsubmit="return confirm('Yakin mau hapus produk {{ $product->name }}?');">
+                            onsubmit="return confirm('Hapus?');">
                             @csrf
                             @method('DELETE')
-                            <button class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">
-                                Hapus
-                            </button>
+                            <button class="text-red-500 hover:underline text-[11px] sm:text-sm">Hapus</button>
                         </form>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="text-center py-6 text-gray-400">
-                        Belum ada produk
-                    </td>
-                </tr>
-                @endforelse
+                @endforeach
             </tbody>
-
         </table>
     </div>
 </div>
 
-<!-- Optional: Client-side quick filter on current page results -->
+{{-- SCRIPT LIVE SEARCH --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const input = document.querySelector('input[name="q"]');
-        if (!input) return;
-        const tableBody = document.getElementById('productTable');
-        const url = "{{ route('products.index') }}";
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = ['searchInput', 'categorySelect', 'sortSelect', 'minPrice', 'maxPrice'];
+        const tableBody = document.getElementById('productTableBody');
 
-        let timer = null;
+        function fetchProducts() {
+            const q = document.getElementById('searchInput').value;
+            const cat = document.getElementById('categorySelect').value;
+            const sort = document.getElementById('sortSelect').value;
+            const min = document.getElementById('minPrice').value;
+            const max = document.getElementById('maxPrice').value;
 
-        input.addEventListener('input', function() {
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-                const q = input.value;
-
-                // preserve other filters in querystring
-                const params = new URLSearchParams(window.location.search);
-                if (q) params.set('q', q);
-                else params.delete('q');
-
-                fetch(url + '?' + params.toString(), {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        const products = data.products || [];
-
-                        if (products.length === 0) {
-                            tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-400">Belum ada produk</td></tr>`;
-                            return;
-                        }
-
-                        tableBody.innerHTML = products.map(p => `
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="px-6 py-4">${p.image ? `<img src="${p.image}" class="w-14 h-14 rounded-lg object-cover">` : `<span class="text-xs text-gray-400">No Image</span>`}</td>
-                            <td class="px-6 py-4 font-medium text-gray-800">${escapeHtml(p.name)}</td>
-                            <td class="px-6 py-4"><span class="px-3 py-1 text-xs rounded-full ${p.category == 'Wanita' ? 'bg-pink-100 text-pink-700' : ''} ${p.category == 'Pria' ? 'bg-blue-100 text-blue-700' : ''} ${p.category == 'Unisex' ? 'bg-purple-100 text-purple-700' : ''}">${p.category}</span></td>
-                            <td class="px-6 py-4">Rp ${Number(p.price).toLocaleString('id-ID')}</td>
-                            <td class="px-6 py-4">${p.stock}</td>
-                            <td class="px-6 py-4 text-center space-x-2">
-                                <a href="/dashboard/products/${p.id}/edit" class="px-3 py-1 text-xs text-white bg-yellow-400 rounded hover:bg-yellow-500">Edit</a>
-
-                                <form action="/dashboard/products/${p.id}" method="POST" class="inline" onsubmit="return confirm('Yakin mau hapus produk ${escapeHtml(p.name)}?');">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                    `).join('');
-                    })
-                    .catch(err => console.error(err));
-            }, 300);
-        });
-
-        function escapeHtml(unsafe) {
-            return unsafe ? unsafe.replace(/[&<>"'\/]/g, function(m) {
-                return ({
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#039;',
-                    '/': '&#x2F;'
-                })[m];
-            }) : '';
+            fetch(`{{ route('products.index') }}?q=${q}&category=${cat}&sort=${sort}&price_min=${min}&price_max=${max}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    tableBody.innerHTML = '';
+                    if (data.products.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-[11px] sm:text-sm">Zonk, gak ada data Bang.</td></tr>';
+                        return;
+                    }
+                    data.products.forEach(p => {
+                        let img = p.image ? `<img src="${p.image}" class="w-9 h-9 sm:w-12 sm:h-12 rounded-lg object-cover">` : '-';
+                        let price = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.price);
+                        let row = `
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="px-2 sm:px-4 py-3 sm:py-4">${img}</td>
+                                <td class="px-2 sm:px-4 py-3 sm:py-4 font-medium">${p.name}</td>
+                                <td class="px-2 sm:px-4 py-3 sm:py-4">${p.category || '-'}</td>
+                                <td class="px-2 sm:px-4 py-3 sm:py-4">${price}</td>
+                                <td class="px-2 sm:px-4 py-3 sm:py-4">${p.stock}</td>
+                                <td class="px-2 sm:px-4 py-3 sm:py-4 text-center">
+                                    <a href="/dashboard/products/${p.id}/edit" class="text-yellow-500 hover:underline text-[11px] sm:text-sm">Edit</a> |
+                                    <form action="/dashboard/products/${p.id}" method="POST" class="inline" onsubmit="return confirm('Hapus?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="text-red-500 hover:underline text-[11px] sm:text-sm">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>`;
+                        tableBody.innerHTML += row;
+                    });
+                });
         }
+
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener(id.includes('Select') ? 'change' : 'keyup', fetchProducts);
+        });
+        document.getElementById('minPrice').addEventListener('change', fetchProducts);
+        document.getElementById('maxPrice').addEventListener('change', fetchProducts);
     });
 </script>
 @endsection

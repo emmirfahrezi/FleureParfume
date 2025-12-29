@@ -4,18 +4,41 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
-
 use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Str;
-
-
-
-
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CategoryPageController;
+use App\Http\Controllers\OrderController;
+use App\Models\Order;
+use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InvoiceController;
+// use App\Http\Controllers\BuyController; // <-- Gak kepake kalau pake ProductController
 
 Route::get('/', function () {
     return view('home');
+})->name('home');
+
+// === 🔥 PERBAIKAN 1: Pake ProductController biar Filter Jalan ===
+Route::get('/buy', [ProductController::class, 'index'])->name('buy');
+
+Route::get('/detailProduk/{id}', function ($id) {
+    $product = \App\Models\Product::with('category')->findOrFail($id);
+    return view('detailProduk', compact('product'));
+});
+
+// Fallback for old /detailProduk route without ID
+Route::get('/detailProduk', function () {
+    $product = \App\Models\Product::with('category')->firstOrFail();
+    return redirect('/detailProduk/' . $product->id);
 });
 
 // Authentication routes
@@ -25,12 +48,39 @@ Route::get('/register', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Admin area (dashboard, products, reports)
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', function () {
+        return redirect()->route('admin.dashboard');
+    });
 
-// Products
-Route::prefix('dashboard')->group(function () {
-    Route::resource('products', ProductController::class);
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // === 🔥 PERBAIKAN 2: Hapus duplikat, sisain yang pake Controller ===
+    // Halaman pengaturan dashboard (hanya admin)
+    Route::get('/dashboard/settings', [AdminUserController::class, 'index'])->name('dashboard.settings');
+
+    Route::prefix('dashboard')->group(function () {
+        Route::resource('products', ProductController::class);
+    });
+
+    // Delete product (restrict to admin)
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // Route untuk laporan PDF (admin only)
+    Route::get('/admin/report-user', [ReportController::class, 'downloadUserReport'])->name('reports.users.download');
+    Route::get('/admin/report-product', [ReportController::class, 'downloadProductReport'])->name('reports.products.download');
+
+    // Admin orders
+    Route::get('/admin/orders', [App\Http\Controllers\AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('/admin/orders/{id}', [App\Http\Controllers\AdminOrderController::class, 'show'])->name('admin.orders.show');
+    Route::post('/admin/orders/{id}/status', [App\Http\Controllers\AdminOrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+    Route::post('/admin/orders/{id}/payment', [App\Http\Controllers\AdminOrderController::class, 'updatePaymentStatus'])->name('admin.orders.updatePayment');
+
+    // manajemen user (Admin Ubah Role)
+    Route::patch('/admin/users/{id}/role', [AdminUserController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::delete('/admin/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 Route::get('/about', function () {
@@ -38,55 +88,13 @@ Route::get('/about', function () {
 });
 
 Route::view('/contact', 'contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
-
-//hapus
-// Perhatikan ada parameter {id} dan method-nya delete
-Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-// Delete product
-Route::delete('/products/{id}', [ProductController::class, 'destroy'])
-    ->name('products.destroy');
-
-// Dummy FE Najran
-Route::get('/pesanan', function () {
-    return view('pesanan.index');
-})->name('pesanan.index');
-
-Route::view('/show', 'pesanan.show');
-
-Route::get('/update', function () {
-    return view('dashboard.products.update', [
-        'product' => (object)[
-            'id' => 1,
-            'name' => 'Parfum Dummy',
-            'category' => 'Unisex',
-            'price' => 150000,
-            'stock' => 20,
-            'image' => null
-        ]
-    ]);
-});
-
-// end dummy FE Najran
-// Grup untuk admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-});
-
-// Grup untuk user
+// Grup untuk user area
 Route::middleware(['auth', 'user'])->prefix('user')->group(function () {
     Route::get('/', function () {
         return view('user');
     })->name('user.dashboard');
-});
-
-// Route untuk laporan PDF
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/report-user', [ReportController::class, 'downloadUserReport'])->name('reports.users.download');
-});
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/report-product', [ReportController::class, 'downloadProductReport'])->name('reports.products.download');
 });
 
 // Register Scramble documentation routes
@@ -94,19 +102,75 @@ Scramble::registerUiRoute('/docs');
 Scramble::registerJsonSpecificationRoute('/openapi.json');
 
 // Include only API routes (URIs starting with 'api') in documentation
-
 Scramble::routes(function ($route) {
     return true; // include every route
 });
 
-Route::get('/profile', function () {
-    return view('profile');
-})->middleware('auth')->name('profile');
+//CATEGORIES\\
+Route::get('/woman', [CategoryPageController::class, 'woman'])->name('woman.index');
+Route::get('/man', [CategoryPageController::class, 'man'])->name('man.index');
+Route::get('/unisex', [CategoryPageController::class, 'unisex'])->name('unisex.index');
+Route::get('/exclusive', [CategoryPageController::class, 'exclusive'])->name('exclusive.index');
 
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
+// User-only: orders, profile, cart
+Route::middleware(['auth', 'user'])->group(function () {
+    // Update quantity order item (plus/minus)
+    Route::post('/orders/{order}/item/{item}/quantity', [OrderController::class, 'updateItemQuantity'])->name('orders.item.updateQuantity');
+
+    // Pesanan / orders for buyers
+    Route::get('/pesanan', [OrderController::class, 'index'])->name('pesanan.index');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/success/{orderId}', [OrderController::class, 'success'])->name('orders.success');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+    Route::post('/orders/prepare', [OrderController::class, 'prepare'])->name('orders.prepare');
+
+    // === 🔥 PERBAIKAN 3: Hapus Route Profile duplikat di sini ===
+    // (Udah dipindah ke ProfileController di bawah biar rapi)
+
+    // Settings (Ini cuma view, aman)
+    Route::get('/settings', function () {
+        return view('dashboard.settings.index');
+    })->name('dashboard.settings');
+
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    // Invoice
+    Route::get('/invoices/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{id}/download', [InvoiceController::class, 'download'])->name('invoices.download');
 });
 
-Route::get('/reset-password', function () {
-    return view('auth.reset-password');
+//route api wilayah 
+Route::get('/wilayah/provinsi', [WilayahController::class, 'provinsi']);
+Route::get('/wilayah/kabupaten/{id}', [WilayahController::class, 'kabupaten']);
+
+//route api google
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
+
+// Midtrans payment routes
+Route::post('/payments/midtrans/notification', [PaymentController::class, 'midtransNotification'])->name('payments.midtrans.notification');
+
+// Finish route needs to be accessible but we check auth inside
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::get('/payments/midtrans/finish', [PaymentController::class, 'midtransFinish'])->name('payments.midtrans.finish');
 });
+
+// Profile Management (Controller Based)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+// Forgot Password & Reset Password
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
+
+// Ini redundan sama yang di dalem middleware admin, tapi gapapa buat safety kalau admin logout
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

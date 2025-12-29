@@ -6,35 +6,30 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        // query builder
-        $query = Product::query();
+        // Build base query with category relation
+        $query = Product::with('category');
 
-        //filter untuk pencarian dari nama produk
+        // Front filters (q, category, price_min/max, sort)
         if ($request->filled('q')) {
             $query->where('name', 'like', '%' . $request->q . '%');
         }
-
-        //filter dari kategori (pria, wanita, unisex)
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('name', $request->category);
+            });
         }
-
-        //filter harga minimum
         if ($request->filled('price_min')) {
             $query->where('price', '>=', $request->price_min);
         }
-
-        //filter harga max
         if ($request->filled('price_max')) {
             $query->where('price', '<=', $request->price_max);
         }
-
-        //untuk sorting 
         if ($request->filled('sort')) {
             switch ($request->sort) {
                 case 'name_asc':
@@ -50,23 +45,31 @@ class ProductController extends Controller
                     $query->orderBy('price', 'desc');
                     break;
                 default:
-                    $query->orderBy('create_at', 'desc');
+                    $query->orderBy('created_at', 'desc');
                     break;
             }
-        } else {
-            $query->orderBy('create_at', 'desc');
         }
 
-        //execute query ambil data
-        $products = $query->with('category')->get();
+        // Additional filters for slider-based UI (min_price/max_price fields)
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $query->whereBetween('price', [$request->min_price * 1000, $request->max_price * 1000]);
+        }
 
-        // jika request AJAX atau ingin JSON, kembalikan data JSON
+        // Default sort
+        if (!$request->filled('sort')) {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        //fix filter
+        $products = $query->paginate(12)->withQueryString();
+
+        // JSON response for AJAX
         if ($request->ajax() || $request->wantsJson()) {
             $data = $products->map(function ($p) {
                 return [
                     'id' => $p->id,
                     'name' => $p->name,
-                    'category' => $p->category->name,
+                    'category' => optional($p->category)->name,
                     'price' => $p->price,
                     'stock' => $p->stock,
                     'image' => $p->image ? asset('storage/' . $p->image) : null,
@@ -76,7 +79,13 @@ class ProductController extends Controller
             return response()->json(['products' => $data]);
         }
 
-        return view('dashboard.products.index', compact('products'));
+        $isAdmin = Auth::check() && Auth::user()->role === 'admin';
+
+        if ($isAdmin) {
+            return view('dashboard.products.index', compact('products'));
+        }
+
+        return view('buy', compact('products'));
     }
 
     public function create()
@@ -123,7 +132,7 @@ class ProductController extends Controller
             'image' => $imagePath,
         ]);
 
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!')->with('action', 'create');
     }
 
     public function show(string $id)
@@ -135,7 +144,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return view('dashboard.products.edit', compact('product'));
+        $categories = Category::all();
+
+        return view('dashboard.products.update', compact('product', 'categories'));
     }
 
     public function update(Request $request, string $id)
@@ -146,10 +157,10 @@ class ProductController extends Controller
         //validasi
         $request->validate([
             'name' => 'required',
-            'category' => 'required|in:Pria,Wanita,Unisex',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
-            'image' => 'nullable|image|mines:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
             //25 kata untuk deskripsi
             'description' => [
@@ -166,7 +177,7 @@ class ProductController extends Controller
         $data = [
             'name' => $request->name,
             'description' => $request->description,
-            'category' => $request->category,
+            'category_id' => $request->category_id,
             'price' => $request->price,
             'stock' => $request->stock,
         ];
@@ -188,6 +199,8 @@ class ProductController extends Controller
 
         //excute update
         $product->update($data);
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate!')->with('action', 'update');
     }
 
     public function destroy(string $id)
@@ -202,6 +215,6 @@ class ProductController extends Controller
         //hapis dari database
         $product->delete($id);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!')->with('action', 'delete');
     }
 }
