@@ -142,165 +142,97 @@
 
     <div id="overlay" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
-    {{--
-        =======================================================
-        BAGIAN 3: SIDEBAR FILTER
-        =======================================================
-    --}}
-    <div id="filterSidebar" class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto shadow-2xl">
-        <div class="flex justify-between items-center p-6 border-b">
-            <h2 class="font-bold uppercase tracking-widest">Filters</h2>
-            <button onclick="closeFilter()" class="text-2xl hover:text-red-500">&times;</button>
+   {{-- SIDEBAR FILTER --}}
+    <div id="filterSidebar"
+        class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+
+        <div class="flex justify-between items-center p-6 border-b border-gray-100">
+            <h2 class="text-xl font-semibold">Filters</h2>
+            <button onclick="closeFilter()" class="text-3xl">&times;</button>
         </div>
 
+        {{-- FORM FILTER UTAMA --}}
         <form action="{{ request()->url() }}" method="GET">
-            {{-- Simpan sort biar gak ilang --}}
-            @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
+            {{-- Pastikan filter sort & category yang lama tetap terbawa saat filter harga/search diubah --}}
+            @if (request('sort'))
+                <input type="hidden" name="sort" value="{{ request('sort') }}">
+            @endif
+            @if (request('category'))
+                <input type="hidden" name="category" value="{{ request('category') }}">
+            @endif
 
-            {{-- 1. Search --}}
+            {{-- Filter 1: Search --}}
             <div class="px-6 mt-6">
-                <div class="flex border rounded-md overflow-hidden hover:border-black transition">
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Search products..." class="w-full px-4 py-2 outline-none text-sm">
-                    <button type="submit" class="bg-black text-white px-4 hover:bg-gray-800 transition">&gt;</button>
+                <div class="flex border border-gray-300 rounded overflow-hidden">
+                    <input type="text" name="q" value="{{ request('q') }}"
+                        placeholder="Search products..." class="w-full px-4 py-2 outline-none text-sm">
+                    <button type="submit" class="bg-black text-white px-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            {{-- 2. Price Filter --}}
+            {{-- Filter 2: Price --}}
             <div class="px-6 mt-10">
-                <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter by<br>Price</h2>
+                <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter
+                    by<br>price</h2>
+                <div class="relative h-2 bg-gray-200 rounded-full mb-6">
+                    <div id="priceRangeFill" class="absolute inset-y-0 bg-black rounded-full"></div>
+                    <div id="priceMinHandle"
+                        class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
+                    <div id="priceMaxHandle"
+                        class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
 
-                <div class="range-slider mb-8 relative w-full h-1 bg-gray-200 rounded-full mt-2">
-                    <div id="rangeFill" class="absolute h-full bg-black rounded-full z-10"></div>
-                    <div id="minHandle" class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow"></div>
-                    <div id="maxHandle" class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow"></div>
-
-                    <input type="range" name="min_price" id="inputMin" min="0" max="500" value="{{ request('min_price', 0) }}" step="1" oninput="updateRangeUI()" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30 appearance-none">
-                    <input type="range" name="max_price" id="inputMax" min="0" max="500" value="{{ request('max_price', 500) }}" step="1" oninput="updateRangeUI()" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30 appearance-none">
+                    {{-- Tambahkan ATRIBUT NAME pada range input --}}
+                    <input id="priceMinRange" name="min_price" type="range" min="0" max="500"
+                        value="{{ request('min_price', 0) }}" step="1"
+                        class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
+                    <input id="priceMaxRange" name="max_price" type="range" min="0" max="500"
+                        value="{{ request('max_price', 500) }}" step="1"
+                        class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-20">
                 </div>
-
-                <div class="flex justify-between items-center gap-4 mb-6">
-                    <div class="border px-3 py-2 text-xs w-24 text-center rounded bg-gray-50" id="minDisplay">Rp 0</div>
-                    <div class="border px-3 py-2 text-xs w-24 text-center rounded bg-gray-50" id="maxDisplay">Rp 500.000</div>
+                <div class="flex gap-4">
+                    <div class="border px-4 py-2 text-sm" id="priceMinLabel">Rp
+                        {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}</div>
+                    <div class="border px-4 py-2 text-sm" id="priceMaxLabel">Rp
+                        {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}</div>
                 </div>
-
-                <button type="submit" class="w-full bg-black text-white py-3 rounded text-xs font-bold hover:bg-gray-800 transition tracking-widest uppercase">Apply Filter</button>
+                <button type="submit"
+                    class="w-full mt-4 bg-black text-white py-2 rounded text-sm hover:bg-gray-800 transition">Apply
+                    Price Filter</button>
             </div>
         </form>
 
-        {{-- 3. Category Links --}}
+        {{-- Filter 3: Category (Link langsung ganti URL) --}}
         <div class="px-6 mt-14 mb-10">
             <h3 class="text-xs mb-6 tracking-widest text-gray-400 uppercase font-bold">Filter by Category</h3>
-            <ul class="space-y-4 font-semibold text-gray-700">
+            <ul class="space-y-4 font-semibold text-lg">
+                {{-- Gunakan fullUrlWithQuery agar filter lainnya (search/price) tetap terjaga saat ganti kategori --}}
                 <li>
-                    <a href="{{ route('exclusive.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
-                        class="{{ request()->routeIs('exclusive.index') ? 'text-black underline font-bold' : 'hover:text-black' }}">Exclusive</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}"
+                        class="{{ request('category') == 'Exclusive' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Exclusive</a>
                 </li>
                 <li>
-                    <a href="{{ route('man.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
-                        class="{{ request()->routeIs('man.index') ? 'text-black underline font-bold' : 'hover:text-black' }}">Pria</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}"
+                        class="{{ request('category') == 'Pria' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Pria</a>
                 </li>
                 <li>
-                    <a href="{{ route('woman.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
-                        class="{{ request()->routeIs('woman.index') ? 'text-black underline font-bold' : 'hover:text-black' }}">Wanita</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}"
+                        class="{{ request('category') == 'Wanita' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Wanita</a>
                 </li>
                 <li>
-                    <a href="{{ route('unisex.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
-                        class="{{ request()->routeIs('unisex.index') ? 'text-black underline font-bold' : 'hover:text-black' }}">Unisex</a>
+                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Unisex']) }}"
+                        class="{{ request('category') == 'Unisex' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Unisex</a>
                 </li>
-                <li class="pt-4 border-t">
-                    <a href="{{ request()->url() }}" class="text-red-500 text-xs font-normal underline hover:text-red-700">Clear All Filters</a>
+                <li class="pt-4">
+                    <a href="{{ request()->url() }}" class="text-red-500 text-sm font-normal underline">Clear All
+                        Filters</a>
                 </li>
             </ul>
         </div>
     </div>
-
-    {{--
-        =======================================================
-        BAGIAN 4: SCRIPT
-        =======================================================
-    --}}
-    <script>
-        const filterSidebar = document.getElementById('filterSidebar');
-        const overlay = document.getElementById('overlay');
-
-        function openFilter() {
-            filterSidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeFilter() {
-            filterSidebar.classList.add('-translate-x-full');
-            overlay.classList.add('opacity-0', 'pointer-events-none');
-            document.body.style.overflow = 'auto';
-        }
-        overlay.addEventListener('click', closeFilter);
-
-        function toggleView(view) {
-            const grid = document.getElementById('productsGrid');
-            const list = document.getElementById('productsList');
-            const gridIcon = document.getElementById('gridView');
-            const listIcon = document.getElementById('listView');
-
-            if (view === 'grid') {
-                grid.classList.remove('hidden');
-                list.classList.add('hidden');
-                gridIcon.classList.add('text-black');
-                gridIcon.classList.remove('text-gray-400');
-                listIcon.classList.remove('text-black');
-                listIcon.classList.add('text-gray-400');
-            } else {
-                grid.classList.add('hidden');
-                list.classList.remove('hidden');
-                listIcon.classList.add('text-black');
-                listIcon.classList.remove('text-gray-400');
-                gridIcon.classList.remove('text-black');
-                gridIcon.classList.add('text-gray-400');
-            }
-        }
-
-        function toggleSortDropdown() {
-            document.getElementById('sortDropdown').classList.toggle('hidden');
-        }
-        window.onclick = function(event) {
-            if (!event.target.closest('button[onclick="toggleSortDropdown()"]')) {
-                document.getElementById('sortDropdown').classList.add('hidden');
-            }
-        }
-
-        function updateRangeUI() {
-            const minInput = document.getElementById('inputMin');
-            const maxInput = document.getElementById('inputMax');
-            const rangeFill = document.getElementById('rangeFill');
-            const minHandle = document.getElementById('minHandle');
-            const maxHandle = document.getElementById('maxHandle');
-            const minDisplay = document.getElementById('minDisplay');
-            const maxDisplay = document.getElementById('maxDisplay');
-
-            let minVal = parseInt(minInput.value);
-            let maxVal = parseInt(maxInput.value);
-            const maxLimit = 500;
-
-            if (minVal > maxVal - 10) {
-                if (document.activeElement === minInput) {
-                    minInput.value = maxVal - 10;
-                    minVal = maxVal - 10;
-                } else {
-                    maxInput.value = minVal + 10;
-                    maxVal = minVal + 10;
-                }
-            }
-
-            const minPercent = (minVal / maxLimit) * 100;
-            const maxPercent = (maxVal / maxLimit) * 100;
-
-            rangeFill.style.left = minPercent + '%';
-            rangeFill.style.width = (maxPercent - minPercent) + '%';
-            minHandle.style.left = minPercent + '%';
-            maxHandle.style.left = maxPercent + '%';
-            minDisplay.innerText = 'Rp ' + (minVal * 1000).toLocaleString('id-ID');
-            maxDisplay.innerText = 'Rp ' + (maxVal * 1000).toLocaleString('id-ID');
-        }
-        document.addEventListener('DOMContentLoaded', updateRangeUI);
-    </script>
 </x-layoutCategories>
