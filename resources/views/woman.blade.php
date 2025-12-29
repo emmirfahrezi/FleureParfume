@@ -143,7 +143,7 @@
     {{-- Overlay Gelap --}}
     <div id="overlay" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
-   {{-- SIDEBAR FILTER --}}
+    {{-- SIDEBAR FILTER --}}
     <div id="filterSidebar"
         class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
 
@@ -156,13 +156,10 @@
         <form action="{{ request()->url() }}" method="GET">
             {{-- Pastikan filter sort & category yang lama tetap terbawa saat filter harga/search diubah --}}
             @if (request('sort'))
-                <input type="hidden" name="sort" value="{{ request('sort') }}">
-            @endif
-            @if (request('category'))
-                <input type="hidden" name="category" value="{{ request('category') }}">
+            <input type="hidden" name="sort" value="{{ request('sort') }}">
             @endif
 
-            {{-- Filter 1: Search --}}
+            {{-- 1. Search --}}
             <div class="px-6 mt-6">
                 <div class="flex border border-gray-300 rounded overflow-hidden">
                     <input type="text" name="q" value="{{ request('q') }}"
@@ -177,7 +174,9 @@
                 </div>
             </div>
 
-            {{-- Filter 2: Price --}}
+            {{--
+                 Filter 2: Price 
+            --}}
             <div class="px-6 mt-10">
                 <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter
                     by<br>price</h2>
@@ -188,7 +187,6 @@
                     <div id="priceMaxHandle"
                         class="absolute -top-2 w-6 h-6 bg-black rounded-full -translate-x-1/2 cursor-pointer"></div>
 
-                    {{-- Tambahkan ATRIBUT NAME pada range input --}}
                     <input id="priceMinRange" name="min_price" type="range" min="0" max="500"
                         value="{{ request('min_price', 0) }}" step="1"
                         class="absolute inset-0 w-full h-6 opacity-0 cursor-pointer z-30">
@@ -198,9 +196,11 @@
                 </div>
                 <div class="flex gap-4">
                     <div class="border px-4 py-2 text-sm" id="priceMinLabel">Rp
-                        {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}</div>
+                        {{ number_format(request('min_price', 0) * 1000, 0, ',', '.') }}
+                    </div>
                     <div class="border px-4 py-2 text-sm" id="priceMaxLabel">Rp
-                        {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}</div>
+                        {{ number_format(request('max_price', 500) * 1000, 0, ',', '.') }}
+                    </div>
                 </div>
                 <button type="submit"
                     class="w-full mt-4 bg-black text-white py-2 rounded text-sm hover:bg-gray-800 transition">Apply
@@ -208,26 +208,27 @@
             </div>
         </form>
 
-        {{-- Filter 3: Category (Link langsung ganti URL) --}}
+        {{--
+             3. Category Links (sudah fix) 
+        --}}
         <div class="px-6 mt-14 mb-10">
             <h3 class="text-xs mb-6 tracking-widest text-gray-400 uppercase font-bold">Filter by Category</h3>
             <ul class="space-y-4 font-semibold text-lg">
-                {{-- Gunakan fullUrlWithQuery agar filter lainnya (search/price) tetap terjaga saat ganti kategori --}}
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}"
-                        class="{{ request('category') == 'Exclusive' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Exclusive</a>
+                    <a href="{{ route('exclusive.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('exclusive.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Exclusive</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}"
-                        class="{{ request('category') == 'Pria' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Pria</a>
+                    <a href="{{ route('man.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('man.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Pria</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}"
-                        class="{{ request('category') == 'Wanita' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Wanita</a>
+                    <a href="{{ route('woman.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('woman.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Wanita</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Unisex']) }}"
-                        class="{{ request('category') == 'Unisex' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Unisex</a>
+                    <a href="{{ route('unisex.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('unisex.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Unisex</a>
                 </li>
                 <li class="pt-4">
                     <a href="{{ request()->url() }}" class="text-red-500 text-sm font-normal underline">Clear All
@@ -236,4 +237,106 @@
             </ul>
         </div>
     </div>
+
+    {{--
+        =======================================================
+        BAGIAN 3: SCRIPT JS
+        (Wajib ada biar filter & sort jalan)
+        =======================================================
+    --}}
+    <script>
+        const filterSidebar = document.getElementById('filterSidebar');
+        const overlay = document.getElementById('overlay');
+
+        function openFilter() {
+            filterSidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFilter() {
+            filterSidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'auto';
+        }
+        overlay.addEventListener('click', closeFilter);
+
+        function toggleView(view) {
+            const grid = document.getElementById('productsGrid');
+            const list = document.getElementById('productsList');
+            const gridIcon = document.getElementById('gridView');
+            const listIcon = document.getElementById('listView');
+
+            if (view === 'grid') {
+                grid.classList.remove('hidden');
+                list.classList.add('hidden');
+                gridIcon.classList.add('text-black');
+                gridIcon.classList.remove('text-gray-400');
+                listIcon.classList.remove('text-black');
+                listIcon.classList.add('text-gray-400');
+            } else {
+                grid.classList.add('hidden');
+                list.classList.remove('hidden');
+                listIcon.classList.add('text-black');
+                listIcon.classList.remove('text-gray-400');
+                gridIcon.classList.remove('text-black');
+                gridIcon.classList.add('text-gray-400');
+            }
+        }
+
+        function toggleSortDropdown() {
+            document.getElementById('sortDropdown').classList.toggle('hidden');
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('button[onclick="toggleSortDropdown()"]')) {
+                document.getElementById('sortDropdown').classList.add('hidden');
+            }
+        }
+
+        // Logic Slider Price SESUAI ID HTML LU
+        const minRange = document.getElementById('priceMinRange');
+        const maxRange = document.getElementById('priceMaxRange');
+        const rangeFill = document.getElementById('priceRangeFill');
+        const minHandle = document.getElementById('priceMinHandle');
+        const maxHandle = document.getElementById('priceMaxHandle');
+        const minLabel = document.getElementById('priceMinLabel');
+        const maxLabel = document.getElementById('priceMaxLabel');
+
+        function updateRangeUI() {
+            let minVal = parseInt(minRange.value);
+            let maxVal = parseInt(maxRange.value);
+            const maxLimit = 500;
+
+            // Logic biar pentolan ga tabrakan (jarak minimal 10)
+            if (maxVal - minVal < 10) {
+                if (document.activeElement === minRange) {
+                    minRange.value = maxVal - 10;
+                    minVal = maxVal - 10;
+                } else {
+                    maxRange.value = minVal + 10;
+                    maxVal = minVal + 10;
+                }
+            }
+
+            const minPercent = (minVal / maxLimit) * 100;
+            const maxPercent = (maxVal / maxLimit) * 100;
+
+            rangeFill.style.left = minPercent + '%';
+            rangeFill.style.right = (100 - maxPercent) + '%';
+
+            minHandle.style.left = minPercent + '%';
+            maxHandle.style.left = maxPercent + '%';
+
+            minLabel.innerText = 'Rp ' + (minVal * 1000).toLocaleString('id-ID');
+            maxLabel.innerText = 'Rp ' + (maxVal * 1000).toLocaleString('id-ID');
+        }
+
+        // Event Listeners buat Price Filter
+        if (minRange && maxRange) {
+            minRange.addEventListener('input', updateRangeUI);
+            maxRange.addEventListener('input', updateRangeUI);
+            // Jalanin pas load biar UI update
+            document.addEventListener('DOMContentLoaded', updateRangeUI);
+        }
+    </script>
 </x-layoutCategories>
