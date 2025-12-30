@@ -39,12 +39,12 @@
                     Quick Links
                 </h3>
                 <ul class="space-y-2" style="font-family: poppins, sans-serif !important;">
-                    <li><a href="/" class="hover:text-white transition text-sm">Home</a></li>
-                    <li><a href="/buy" class="hover:text-white transition text-sm">Shop All Products</a></li>
-                    <li><a href="/unisex" class="hover:text-white transition text-sm">Categories</a></li>
-                    <li><a href="/exclusive" class="hover:text-white transition text-sm">Exclusive</a></li>
-                    <li><a href="/about" class="hover:text-white transition text-sm">About Us</a></li>
-                    <li><a href="/contact" class="hover:text-white transition text-sm">Contact</a></li>
+                    <li><a href="{{ url('/') }}" class="hover:text-white transition text-sm">Home</a></li>
+                    <li><a href="{{ url('/buy') }}" class="hover:text-white transition text-sm">Shop All Products</a></li>
+                    <li><a href="{{ route('unisex.index') }}" class="hover:text-white transition text-sm">Categories</a></li>
+                    <li><a href="{{ route('exclusive.index') }}" class="hover:text-white transition text-sm">Exclusive</a></li>
+                    <li><a href="{{ url('/about') }}" class="hover:text-white transition text-sm">About Us</a></li>
+                    <li><a href="{{ url('/contact') }}" class="hover:text-white transition text-sm">Contact</a></li>
                 </ul>
             </div>
 
