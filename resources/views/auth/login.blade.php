@@ -29,8 +29,11 @@
             Welcome, please sign in
         </p>
 
-        @if(session('error'))
-        <p class="text-red-500 text-sm mb-3">{{ session('error') }}</p>
+
+        @if ($errors->any())
+            <div class="text-red-500 text-sm mb-3">
+                {{ $errors->first('email') }}
+            </div>
         @endif
 
         <form method="POST" action="/login">
@@ -55,15 +58,12 @@
             </div>
 
             <div class="text-right mb-4">
-                <a href="/forgot-password"
-                    class="text-sm underline"
-                    style="color:#4B2E15;">
+                <a href="/forgot-password" class="text-sm underline" style="color:#4B2E15;">
                     Forgot your password?
                 </a>
             </div>
 
-            <button
-                class="w-full py-2 sm:py-3 rounded-xl font-semibold text-white transition hover:opacity-90"
+            <button class="w-full py-2 sm:py-3 rounded-xl font-semibold text-white transition hover:opacity-90"
                 style="background-color:#4B2E15;">
                 Sign In
             </button>
