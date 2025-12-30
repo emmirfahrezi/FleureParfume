@@ -17,8 +17,8 @@ class DashboardController extends Controller
         // 2. Ambil Total Pesanan
         $totalPesanan = Order::count();
 
-        // 3. Ambil Total Pendapatan
-        $totalPendapatan = Order::sum('subtotal');
+        // 3. Ambil Total Pendapatan (hanya pesanan yang sudah lunas)
+        $totalPendapatan = Order::where('payment_status', 'paid')->sum('total');
 
         // 4. Ambil Data Penjualan (Gunakan cara yang kompatibel dengan SQLite & MySQL)
         // Kita ambil semua pesanan dalam 5 bulan terakhir
