@@ -6,7 +6,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-class InvoiceController extends Controller
+class invoiceController extends Controller
 {
     /**
      * Tampilkan invoice di browser (HTML)

@@ -20,7 +20,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\invoiceController;
 // use App\Http\Controllers\BuyController; // <-- Gak kepake kalau pake ProductController
 
 Route::get('/', function () {
@@ -139,8 +139,8 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 
     // Invoice
-    Route::get('/invoices/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
-    Route::get('/invoices/{id}/download', [InvoiceController::class, 'download'])->name('invoices.download');
+    Route::get('/invoices/{id}', [invoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{id}/download', [invoiceController::class, 'download'])->name('invoices.download');
 });
 
 //route api wilayah 
