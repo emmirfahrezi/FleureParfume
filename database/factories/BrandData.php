@@ -7,8 +7,8 @@ class BrandData
     public static function get()
     {
         return [
-            ['name' => 'TOM FORD', 'image' => 'images/products/ Tom.jpg'],
-            ['name' => 'CHANEL', 'image' => 'images/products/Channel.jpg'],
+            ['name' => 'TOM FORD', 'image' => 'images/products/Tom.jpg'],
+            ['name' => 'CHANEL', 'image' => 'images/products/chanel.jpg'],
             ['name' => 'DIOR', 'image' => 'images/products/Dior.jpg'],
             ['name' => 'GUCCI', 'image' => 'images/products/Gucci.jpg'],
             ['name' => 'VERSACE', 'image' => 'images/products/Versace.jpg'],
