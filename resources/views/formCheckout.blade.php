@@ -36,7 +36,7 @@
                                 Lengkap</label>
                             <input type="text" name="name"
                                 class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
-                                placeholder="John Doe" required>
+                                placeholder="nama kamu" required>
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm text-gray-600" style="font-family: poppins, sans-serif;">Email</label>

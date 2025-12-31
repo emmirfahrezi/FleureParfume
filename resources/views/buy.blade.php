@@ -234,22 +234,21 @@
         <div class="px-6 mt-14 mb-10">
             <h3 class="text-xs mb-6 tracking-widest text-gray-400 uppercase font-bold">Filter by Category</h3>
             <ul class="space-y-4 font-semibold text-lg">
-                {{-- Gunakan fullUrlWithQuery agar filter lainnya (search/price) tetap terjaga saat ganti kategori --}}
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Exclusive']) }}"
-                        class="{{ request('category') == 'Exclusive' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Exclusive</a>
+                    <a href="{{ route('exclusive.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('exclusive.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Exclusive</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Pria']) }}"
-                        class="{{ request('category') == 'Pria' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Pria</a>
+                    <a href="{{ route('man.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('man.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Pria</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Wanita']) }}"
-                        class="{{ request('category') == 'Wanita' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Wanita</a>
+                    <a href="{{ route('woman.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('woman.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Wanita</a>
                 </li>
                 <li>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'Unisex']) }}"
-                        class="{{ request('category') == 'Unisex' ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Unisex</a>
+                    <a href="{{ route('unisex.index', request()->only(['q', 'min_price', 'max_price', 'sort'])) }}"
+                        class="{{ request()->routeIs('unisex.index') ? 'text-amber-700 underline' : 'hover:text-amber-700' }}">Unisex</a>
                 </li>
                 <li class="pt-4">
                     <a href="{{ request()->url() }}" class="text-red-500 text-sm font-normal underline">Clear All

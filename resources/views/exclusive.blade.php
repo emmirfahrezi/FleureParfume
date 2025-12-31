@@ -2,7 +2,7 @@
     <style>
         .exclusive-hero {
             background-image: linear-gradient(135deg, rgba(23, 16, 7, 0.85) 0%, rgba(112, 85, 38, 0.65) 100%),
-            url("{{ asset('images/products/thumbnail.jpg') }}");
+                url("{{ asset('images/products/thumbnail.jpg') }}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -62,21 +62,25 @@
     {{-- HERO SECTION --}}
     <div class="relative isolate px-6 pt-20 lg:px-20 h-[450px] exclusive-hero">
         <div class="w-full py-10 sm:py-12 lg:py-16 flex flex-col gap-5 text-white max-w-4xl">
-            <div class="flex items-center gap-2 text-sm sm:text-base text-white/80" style="font-family: poppins, sans-serif;">
+            <div class="flex items-center gap-2 text-sm sm:text-base text-white/80"
+                style="font-family: poppins, sans-serif;">
                 <a href="/" class="hover:underline text-gray-300">Home</a>
                 <span>/</span>
                 <span>Exclusive</span>
             </div>
 
             <div class="space-y-3">
-                <div class="inline-flex items-center gap-2 pill-gold px-4 py-1 rounded-full text-sm uppercase tracking-[0.25em]" style="font-family: poppins, sans-serif;">
+                <div class="inline-flex items-center gap-2 pill-gold px-4 py-1 rounded-full text-sm uppercase tracking-[0.25em]"
+                    style="font-family: poppins, sans-serif;">
                     Signature Collection
                 </div>
-                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-tight" style="font-family: cormorant, serif !important;">
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-tight"
+                    style="font-family: cormorant, serif !important;">
                     EXCLUSIVE PERFUMES
                 </h1>
                 <p class="text-base sm:text-lg text-white/80 max-w-2xl" style="font-family: poppins, sans-serif;">
-                    Kurasi parfum premium dengan sentuhan artisan, komposisi langka, dan finishing mewah untuk momen paling istimewa.
+                    Kurasi parfum premium dengan sentuhan artisan, komposisi langka, dan finishing mewah untuk momen
+                    paling istimewa.
                 </p>
             </div>
         </div>
@@ -86,26 +90,35 @@
 
         <div class="w-full flex items-center justify-between py-4 border-b border-gray-200">
             <div class="flex items-center gap-3 text-black cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M6 12h12M10 18h4" />
                 </svg>
-                <button onclick="openFilter()" class="flex items-center gap-2 font-medium hover:text-gray-600">Filter Products</button>
+                <button onclick="openFilter()" class="flex items-center gap-2 font-medium hover:text-gray-600">Filter
+                    Products</button>
             </div>
 
             <div class="flex items-center gap-6 text-gray-700">
                 <div class="relative">
                     <button onclick="toggleSortDropdown()" class="flex items-center gap-2 cursor-pointer">
                         @php
-                        $sortLabel = 'Default sorting';
-                        $sort = request('sort');
-                        if ($sort === 'price_asc') $sortLabel = 'Sort by price: low to high';
-                        elseif ($sort === 'price_desc') $sortLabel = 'Sort by price: high to low';
-                        elseif ($sort === 'name_asc') $sortLabel = 'Sort by name: A-Z';
-                        elseif ($sort === 'name_desc') $sortLabel = 'Sort by name: Z-A';
-                        elseif ($sort === 'latest') $sortLabel = 'Sort by latest';
+                            $sortLabel = 'Default sorting';
+                            $sort = request('sort');
+                            if ($sort === 'price_asc') {
+                                $sortLabel = 'Sort by price: low to high';
+                            } elseif ($sort === 'price_desc') {
+                                $sortLabel = 'Sort by price: high to low';
+                            } elseif ($sort === 'name_asc') {
+                                $sortLabel = 'Sort by name: A-Z';
+                            } elseif ($sort === 'name_desc') {
+                                $sortLabel = 'Sort by name: Z-A';
+                            } elseif ($sort === 'latest') {
+                                $sortLabel = 'Sort by latest';
+                            }
                         @endphp
                         <span id="sortLabel" class="text-base">{{ $sortLabel }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
@@ -114,20 +127,24 @@
                         <ul class="py-2">
                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'"
                                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">
-                                Default sorting</li> 
+                                Default sorting</li>
                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high</li>
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high
+                            </li>
                             <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'"
-                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low</li>
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low
+                            </li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <svg id="gridView" onclick="toggleView('grid')" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 cursor-pointer text-black" fill="currentColor" viewBox="0 0 24 24">
+                    <svg id="gridView" onclick="toggleView('grid')" xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5 cursor-pointer text-black" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" />
                     </svg>
-                    <svg id="listView" onclick="toggleView('list')" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 cursor-pointer text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                    <svg id="listView" onclick="toggleView('list')" xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5 cursor-pointer text-gray-400" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z" />
                     </svg>
                 </div>
@@ -137,110 +154,144 @@
         {{-- PRODUCTS CONTAINER --}}
         <div class="max-w-7xl mx-auto mt-12">
             @if (isset($products) && $products->count() > 0)
-            {{-- GRID VIEW (Mewah Style) --}}
-            <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                @foreach ($products as $product)
-                <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-lg overflow-hidden block group p-2">
-                    <div class="relative w-full h-30 sm:h-48 lg:h-60 overflow-hidden">
-                        @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        @else
-                        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">No Image</div>
-                        @endif
-                        <span class="absolute top-2 left-2 px-2 py-1 rounded-full text-[10px] uppercase tracking-wide pill-gold" style="font-family: poppins, sans-serif;">
-                            {{ $product->category->name ?? 'Exclusive' }}
-                        </span>
-                    </div>
-                    <div class="pt-3 px-1">
-                        <h3 class="text-base font-semibold text-gray-900 truncate" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                        <p class="text-xs text-gray-600 mt-1" style="font-family: poppins, sans-serif !important;">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                {{-- GRID VIEW (Mewah Style) --}}
+                <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}"
+                            class="card-luxe bg-white rounded-lg overflow-hidden block group p-2">
+                            <div class="relative w-full h-30 sm:h-48 lg:h-60 overflow-hidden">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @else
+                                    <div
+                                        class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
+                                        No Image</div>
+                                @endif
+                                <span
+                                    class="absolute top-2 left-2 px-2 py-1 rounded-full text-[10px] uppercase tracking-wide pill-gold"
+                                    style="font-family: poppins, sans-serif;">
+                                    {{ $product->category->name ?? 'Exclusive' }}
+                                </span>
+                            </div>
+                            <div class="pt-3 px-1">
+                                <h3 class="text-base font-semibold text-gray-900 truncate"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-xs text-gray-600 mt-1"
+                                    style="font-family: poppins, sans-serif !important;">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
 
-            {{-- LIST VIEW (Mewah Style) --}}
-            <div id="productsList" class="hidden space-y-4">
-                @foreach ($products as $product)
-                <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-xl overflow-hidden flex flex-col sm:flex-row group block">
-                    <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
-                        @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        @else
-                        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">No Image</div>
-                        @endif
-                    </div>
-                    <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
-                        <div class="flex items-center gap-3">
-                            <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold" style="font-family: poppins, sans-serif;">{{ $product->category->name ?? 'Exclusive' }}</span>
-                        </div>
-                        <h3 class="text-2xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                        <p class="text-lg text-gray-700 font-medium">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                        <div class="flex items-center justify-between pt-1">
-                            <span class="text-sm text-gray-500 italic">Limited release</span>
-                            <button class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View Details</button>
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                {{-- LIST VIEW (Mewah Style) --}}
+                <div id="productsList" class="hidden space-y-4">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}"
+                            class="card-luxe bg-white rounded-xl overflow-hidden flex flex-col sm:flex-row group block">
+                            <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @else
+                                    <div
+                                        class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                        No Image</div>
+                                @endif
+                            </div>
+                            <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
+                                <div class="flex items-center gap-3">
+                                    <span class="px-3 py-1 rounded-full text-xs uppercase tracking-wide pill-gold"
+                                        style="font-family: poppins, sans-serif;">{{ $product->category->name ?? 'Exclusive' }}</span>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-gray-900"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-lg text-gray-700 font-medium">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="text-sm text-gray-500 italic">Limited release</span>
+                                    <button
+                                        class="px-4 py-2 rounded-full text-sm font-semibold text-white btn-gold">View
+                                        Details</button>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
 
-            {{-- Pagination --}}
-            <div class="mt-8 flex justify-center">
-                {{ $products->links() }}
-            </div>
+                {{-- Pagination --}}
+                <div class="mt-8 flex justify-center">
+                    {{ $products->links() }}
+                </div>
             @else
-            <div class="text-center py-20">
-                <p class="text-gray-500 text-lg">Belum ada produk Exclusive.</p>
-                <a href="{{ request()->url() }}" class="text-amber-700 underline mt-4">Reset Filter</a>
-            </div>
+                <div class="text-center py-20">
+                    <p class="text-gray-500 text-lg">Belum ada produk Exclusive.</p>
+                    <a href="{{ request()->url() }}" class="text-amber-700 underline mt-4">Reset Filter</a>
+                </div>
             @endif
         </div>
     </div>
 
-    <div id="overlay" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
+    <div id="overlay"
+        class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
-    <div id="filterSidebar" class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto shadow-2xl">
+    <div id="filterSidebar"
+        class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto shadow-2xl">
         <div class="flex justify-between items-center p-6 border-b border-gray-100">
             <h2 class="text-xl font-semibold">Filters</h2>
             <button onclick="closeFilter()" class="text-3xl">&times;</button>
         </div>
 
         <form action="{{ request()->url() }}" method="GET">
-            @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
+            @if (request('sort'))
+                <input type="hidden" name="sort" value="{{ request('sort') }}">
+            @endif
 
             {{-- 1. Search --}}
             <div class="px-6 mt-6">
                 <div class="flex border rounded-md overflow-hidden hover:border-amber-600 transition">
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Search exclusive..." class="w-full px-4 py-2 outline-none text-sm">
+                    <input type="text" name="q" value="{{ request('q') }}"
+                        placeholder="Search exclusive..." class="w-full px-4 py-2 outline-none text-sm">
                     <button type="submit" class="bg-black text-white px-4 hover:bg-gray-800 transition">&gt;</button>
                 </div>
             </div>
 
             {{-- 2. Price Filter (SUDAH FIX) --}}
             <div class="px-6 mt-10">
-                <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter by<br>Price</h2>
+                <h2 class="text-3xl font-light mb-6" style="font-family: 'Playfair Display', serif;">Filter
+                    by<br>Price</h2>
 
                 <div class="range-slider mb-8 relative w-full h-1 bg-gray-200 rounded-full mt-2">
                     <div id="rangeFill" class="absolute h-full bg-black rounded-full z-10"></div>
                     {{-- Handle UI (Visual doang) --}}
-                    <div id="minHandle" class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow"></div>
-                    <div id="maxHandle" class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow"></div>
+                    <div id="minHandle"
+                        class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow">
+                    </div>
+                    <div id="maxHandle"
+                        class="absolute -top-1.5 w-4 h-4 bg-black rounded-full -translate-x-1/2 pointer-events-none z-20 shadow">
+                    </div>
 
                     {{-- INPUT RANGE  --}}
-                    <input type="range" name="min_price" id="inputMin" min="0" max="500" value="{{ request('min_price', 0) }}" step="1" oninput="updateRangeUI()"
+                    <input type="range" name="min_price" id="inputMin" min="0" max="500"
+                        value="{{ request('min_price', 0) }}" step="1" oninput="updateRangeUI()"
                         class="absolute inset-0 w-full h-full opacity-0 z-30 appearance-none pointer-events-none">
 
-                    <input type="range" name="max_price" id="inputMax" min="0" max="500" value="{{ request('max_price', 500) }}" step="1" oninput="updateRangeUI()"
+                    <input type="range" name="max_price" id="inputMax" min="0" max="500"
+                        value="{{ request('max_price', 500) }}" step="1" oninput="updateRangeUI()"
                         class="absolute inset-0 w-full h-full opacity-0 z-30 appearance-none pointer-events-none">
                 </div>
 
                 <div class="flex justify-between items-center gap-4 mb-6">
-                    <div class="border px-3 py-2 text-xs w-24 text-center rounded bg-gray-50" id="minDisplay">Rp 0</div>
-                    <div class="border px-3 py-2 text-xs w-24 text-center rounded bg-gray-50" id="maxDisplay">Rp 500.000</div>
+                    <div class="border px-3 py-2 text-xs w-24 text-center rounded bg-gray-50" id="minDisplay">Rp 0
+                    </div>
+                    <div class="border px-3 py-2 text-xs w-24 text-center rounded bg-gray-50" id="maxDisplay">Rp
+                        500.000</div>
                 </div>
 
-                <button type="submit" class="w-full btn-gold text-white py-3 rounded text-xs font-bold transition tracking-widest uppercase shadow-md">Apply Filter</button>
+                <button type="submit"
+                    class="w-full btn-gold text-white py-3 rounded text-xs font-bold transition tracking-widest uppercase shadow-md">Apply
+                    Filter</button>
             </div>
         </form>
 
@@ -265,7 +316,8 @@
                         class="{{ request()->routeIs('unisex.index') ? 'text-amber-700 underline font-bold' : 'hover:text-amber-700' }}">Unisex</a>
                 </li>
                 <li class="pt-4">
-                    <a href="{{ request()->url() }}" class="text-red-500 text-sm font-normal underline hover:text-red-700">Clear All Filters</a>
+                    <a href="{{ request()->url() }}"
+                        class="text-red-500 text-sm font-normal underline hover:text-red-700">Clear All Filters</a>
                 </li>
             </ul>
         </div>
