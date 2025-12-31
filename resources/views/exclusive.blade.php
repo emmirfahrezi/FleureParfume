@@ -1,9 +1,4 @@
 <x-layoutCategories>
-    {{--
-        =======================================================
-        BAGIAN 1: CUSTOM CSS & HERO (LUXURY THEME)
-        =======================================================
-    --}}
     <style>
         .exclusive-hero {
             background-image: linear-gradient(135deg, rgba(23, 16, 7, 0.85) 0%, rgba(112, 85, 38, 0.65) 100%),
@@ -41,9 +36,6 @@
             opacity: 0.9;
         }
 
-        /*  FIX SLIDER UI BIAR DUA-DUANYA BISA DIGESER  */
-
-        /* 1. Inputnya sendiri kita bikin tembus klik (pointer-events: none) */
         input[type=range] {
             pointer-events: none;
             -webkit-appearance: none;
@@ -51,7 +43,6 @@
             background: transparent;
         }
 
-        /* 2. Tapi PENTOLAN-nya (Thumb) kita bikin BISA diklik (pointer-events: auto) */
         input[type=range]::-webkit-slider-thumb {
             pointer-events: auto;
             width: 20px;
@@ -91,11 +82,6 @@
         </div>
     </div>
 
-    {{--
-        =======================================================
-        BAGIAN 2: LIST PRODUK & TOOLBAR
-        =======================================================
-    --}}
     <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-10">
 
         <div class="w-full flex items-center justify-between py-4 border-b border-gray-200">
@@ -123,11 +109,16 @@
                             <path d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div id="sortDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                        <ul class="py-2 text-sm">
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'" class="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b">Default sorting</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Sort by price: low to high</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Sort by price: high to low</li>
+                    <div id="sortDropdown"
+                        class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                        <ul class="py-2">
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">
+                                Default sorting</li> 
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high</li>
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low</li>
                         </ul>
                     </div>
                 </div>
@@ -150,7 +141,7 @@
             <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ($products as $product)
                 <a href="/detailProduk/{{ $product->id }}" class="card-luxe bg-white rounded-lg overflow-hidden block group p-2">
-                    <div class="relative w-full h-64 overflow-hidden">
+                    <div class="relative w-full h-30 sm:h-48 lg:h-60 overflow-hidden">
                         @if ($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         @else
@@ -209,11 +200,6 @@
 
     <div id="overlay" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
-    {{--
-        =======================================================
-        BAGIAN 3: SIDEBAR FILTER
-        =======================================================
-    --}}
     <div id="filterSidebar" class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto shadow-2xl">
         <div class="flex justify-between items-center p-6 border-b border-gray-100">
             <h2 class="text-xl font-semibold">Filters</h2>

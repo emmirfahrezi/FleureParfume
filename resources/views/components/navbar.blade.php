@@ -183,6 +183,11 @@
             <a href="{{ route('cart.index') }}"
                 class="block px-4 py-3 text-base font-medium text-black hover:bg-black/5">CART</a>
 
+            @guest
+                <a href="{{ route('login') }}"
+                    class="block px-4 py-3 text-base font-medium text-green-600 hover:bg-black/5">LOGIN</a>
+            @endguest
+
             @auth
                 <div class="border-t border-black/10 mt-2 pt-2">
                     <div class="px-4 py-2 text-xs text-gray-500 uppercase">Signed in as

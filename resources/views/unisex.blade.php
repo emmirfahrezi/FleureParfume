@@ -1,19 +1,14 @@
 <x-layoutCategories>
-    {{--
-        =======================================================
-        BAGIAN 1: HERO SECTION (KHUSUS UNISEX)
-        =======================================================
-    --}}
     <style>
         .hero-bg-unisex {
             background-image: linear-gradient(135deg, rgba(43, 50, 90, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
-            url("{{ asset('images/products/thumbnail.jpg') }}");
+                url("{{ asset('images/products/thumbnail.jpg') }}");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* CSS FIX SLIDER BIAR MANTAP */
+
         input[type=range]::-webkit-slider-thumb {
             pointer-events: auto;
             width: 20px;
@@ -24,54 +19,64 @@
 
     <div class="relative isolate px-6 pt-20 lg:px-20 h-[400px] hero-bg-unisex">
         <div class="w-full py-6 sm:py-8 lg:py-16 flex flex-col gap-4 text-white">
-            <div class="flex items-center gap-2 text-sm sm:text-base text-gray-200" style="font-family: poppins, sans-serif;">
+            <div class="flex items-center gap-2 text-sm sm:text-base text-gray-200"
+                style="font-family: poppins, sans-serif;">
                 <a href="/" class="hover:underline text-gray-300">Home</a>
                 <span class="text-gray-400">/</span>
                 <span class="text-white">Unisex</span>
             </div>
-            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide text-white" style="font-family: cormorant, serif !important;">
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide text-white"
+                style="font-family: cormorant, serif !important;">
                 UNISEX
             </h1>
         </div>
     </div>
 
-    {{--
-        =======================================================
-        BAGIAN 2: LIST PRODUK & TOOLBAR
-        =======================================================
-    --}}
+
     <div class="relative isolate px-6 pt-14 lg:px-20 min-h-screen py-10">
 
         <div class="w-full flex items-center justify-between py-4 border-b border-gray-200">
             <div class="flex items-center gap-3 text-black cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M6 12h12M10 18h4" />
                 </svg>
-                <button onclick="openFilter()" class="flex items-center gap-2 font-medium hover:text-gray-600">Filter Products</button>
+                <button onclick="openFilter()" class="flex items-center gap-2 font-medium hover:text-gray-600">Filter
+                    Products</button>
             </div>
 
             <div class="flex items-center gap-6 text-gray-700">
                 <div class="relative">
                     <button onclick="toggleSortDropdown()" class="flex items-center gap-2 cursor-pointer text-base">
                         <span id="sortLabel">Sort Products</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div id="sortDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                        <ul class="py-2 text-sm">
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'" class="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b">Default</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Price: Low to High</li>
-                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Price: High to Low</li>
+                    <div id="sortDropdown"
+                        class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                        <ul class="py-2">
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => null]) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition border-b border-gray-50">
+                                Default sorting</li>
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: low to high
+                            </li>
+                            <li onclick="window.location.href='{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}'"
+                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer transition">Sort by price: high to low
+                            </li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <svg id="gridView" onclick="toggleView('grid')" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 cursor-pointer text-black" fill="currentColor" viewBox="0 0 24 24">
+                    <svg id="gridView" onclick="toggleView('grid')" xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5 cursor-pointer text-black" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" />
                     </svg>
-                    <svg id="listView" onclick="toggleView('list')" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 cursor-pointer text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                    <svg id="listView" onclick="toggleView('list')" xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5 cursor-pointer text-gray-400" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z" />
                     </svg>
                 </div>
@@ -80,77 +85,93 @@
 
         <div class="max-w-7xl mx-auto mt-12">
             @if (isset($products) && $products->count() > 0)
-            <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                @foreach ($products as $product)
-                <a href="/detailProduk/{{ $product->id }}" class="bg-white rounded-lg shadow-md hover:shadow-xl transition block group p-2 border border-gray-100">
-                    <div class="relative w-full h-64 overflow-hidden rounded-md">
-                        @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        @else
-                        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">No Image</div>
-                        @endif
-                    </div>
-                    <div class="pt-3 px-1">
-                        <h4 class="text-xs text-gray-500 mb-1">{{ $product->category->name ?? 'Unisex' }}</h4>
-                        <h3 class="text-base font-semibold text-gray-900 truncate" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                        <p class="text-xs text-gray-600 mt-1">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}"
+                            class="bg-white rounded-lg shadow-md hover:shadow-xl transition block group p-2 border border-gray-100">
+                            <div class="relative w-full h-30 sm:h-48 lg:h-60 overflow-hidden rounded-md">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                @else
+                                    <div
+                                        class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs">
+                                        No Image</div>
+                                @endif
+                            </div>
+                            <div class="pt-3 px-1">
+                                <h4 class="text-xs text-gray-500 mb-1">{{ $product->category->name ?? 'Unisex' }}</h4>
+                                <h3 class="text-base font-semibold text-gray-900 truncate"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-xs text-gray-600 mt-1">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
 
-            <div id="productsList" class="hidden space-y-4">
-                @foreach ($products as $product)
-                <a href="/detailProduk/{{ $product->id }}" class="bg-white rounded-xl shadow-md flex flex-col sm:flex-row overflow-hidden border border-gray-100 group">
-                    <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
-                        @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        @else
-                        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">No Image</div>
-                        @endif
-                    </div>
-                    <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
-                        <span class="text-xs text-gray-500 uppercase tracking-wider">{{ $product->category->name ?? 'Unisex' }}</span>
-                        <h3 class="text-2xl font-semibold text-gray-900" style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
-                        <p class="text-lg text-gray-700 font-medium">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                        <button class="mt-2 px-6 py-2 rounded-full text-sm font-semibold text-white bg-black w-fit hover:bg-gray-800 transition">View Details</button>
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                <div id="productsList" class="hidden space-y-4">
+                    @foreach ($products as $product)
+                        <a href="/detailProduk/{{ $product->id }}"
+                            class="bg-white rounded-xl shadow-md flex flex-col sm:flex-row overflow-hidden border border-gray-100 group">
+                            <div class="relative w-full sm:w-48 h-48 overflow-hidden flex-shrink-0">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                @else
+                                    <div
+                                        class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                        No Image</div>
+                                @endif
+                            </div>
+                            <div class="p-4 sm:p-6 flex flex-col justify-center flex-grow gap-2">
+                                <span
+                                    class="text-xs text-gray-500 uppercase tracking-wider">{{ $product->category->name ?? 'Unisex' }}</span>
+                                <h3 class="text-2xl font-semibold text-gray-900"
+                                    style="font-family: cormorant, serif !important;">{{ $product->name }}</h3>
+                                <p class="text-lg text-gray-700 font-medium">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <button
+                                    class="mt-2 px-6 py-2 rounded-full text-sm font-semibold text-white bg-black w-fit hover:bg-gray-800 transition">View
+                                    Details</button>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
 
-            <div class="mt-8 flex justify-center">
-                {{ $products->links() }}
-            </div>
+                <div class="mt-8 flex justify-center">
+                    {{ $products->links() }}
+                </div>
             @else
-            <div class="text-center py-20 text-gray-500">
-                Produk tidak ditemukan.<br>
-                <a href="{{ request()->url() }}" class="text-black underline">Reset Filter</a>
-            </div>
+                <div class="text-center py-20 text-gray-500">
+                    Produk tidak ditemukan.<br>
+                    <a href="{{ request()->url() }}" class="text-black underline">Reset Filter</a>
+                </div>
             @endif
         </div>
     </div>
 
-    <div id="overlay" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
+    <div id="overlay"
+        class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 
-    {{--
-        =======================================================
-        BAGIAN 3: SIDEBAR FILTER
-        =======================================================
-    --}}
-    <div id="filterSidebar" class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto shadow-2xl">
+
+    <div id="filterSidebar"
+        class="fixed top-0 left-0 h-full w-[360px] bg-white -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto shadow-2xl">
         <div class="flex justify-between items-center p-6 border-b border-gray-100">
             <h2 class="text-xl font-semibold">Filters</h2>
             <button onclick="closeFilter()" class="text-3xl">&times;</button>
         </div>
 
         <form action="{{ request()->url() }}" method="GET">
-            @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
+            @if (request('sort'))
+                <input type="hidden" name="sort" value="{{ request('sort') }}">
+            @endif
 
             {{-- 1. Search --}}
             <div class="px-6 mt-6">
                 <div class="flex border rounded-md overflow-hidden hover:border-black transition">
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Search products..." class="w-full px-4 py-2 outline-none text-sm">
+                    <input type="text" name="q" value="{{ request('q') }}"
+                        placeholder="Search products..." class="w-full px-4 py-2 outline-none text-sm">
                     <button type="submit" class="bg-black text-white px-4 hover:bg-gray-800 transition">&gt;</button>
                 </div>
             </div>
@@ -189,10 +210,7 @@
             </div>
         </form>
 
-        {{--
-             3. Category Links (LOGIC FIX)
-            Sekarang pake route() biar pindah halaman beneran, bukan cuma nambah query.
-        --}}
+
         <div class="px-6 mt-14 mb-10">
             <h3 class="text-xs mb-6 tracking-widest text-gray-400 uppercase font-bold">Filter by Category</h3>
             <ul class="space-y-4 font-semibold text-lg">
@@ -213,110 +231,11 @@
                         class="{{ request()->routeIs('unisex.index') ? 'text-black underline font-bold' : 'hover:text-black' }}">Unisex</a>
                 </li>
                 <li class="pt-4 border-t">
-                    <a href="{{ request()->url() }}" class="text-red-500 text-xs font-normal underline hover:text-red-700">Clear All Filters</a>
+                    <a href="{{ request()->url() }}"
+                        class="text-red-500 text-xs font-normal underline hover:text-red-700">Clear All Filters</a>
                 </li>
             </ul>
         </div>
     </div>
 
-    {{--
-        =======================================================
-        BAGIAN 4: SCRIPT WAJIB (BIAR TOMBOL JALAN)
-        =======================================================
-    --}}
-    <script>
-        const filterSidebar = document.getElementById('filterSidebar');
-        const overlay = document.getElementById('overlay');
-
-        function openFilter() {
-            filterSidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('opacity-0', 'pointer-events-none');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeFilter() {
-            filterSidebar.classList.add('-translate-x-full');
-            overlay.classList.add('opacity-0', 'pointer-events-none');
-            document.body.style.overflow = 'auto';
-        }
-        overlay.addEventListener('click', closeFilter);
-
-        function toggleView(view) {
-            const grid = document.getElementById('productsGrid');
-            const list = document.getElementById('productsList');
-            const gridIcon = document.getElementById('gridView');
-            const listIcon = document.getElementById('listView');
-
-            if (view === 'grid') {
-                grid.classList.remove('hidden');
-                list.classList.add('hidden');
-                gridIcon.classList.add('text-black');
-                gridIcon.classList.remove('text-gray-400');
-                listIcon.classList.remove('text-black');
-                listIcon.classList.add('text-gray-400');
-            } else {
-                grid.classList.add('hidden');
-                list.classList.remove('hidden');
-                listIcon.classList.add('text-black');
-                listIcon.classList.remove('text-gray-400');
-                gridIcon.classList.remove('text-black');
-                gridIcon.classList.add('text-gray-400');
-            }
-        }
-
-        function toggleSortDropdown() {
-            document.getElementById('sortDropdown').classList.toggle('hidden');
-        }
-        window.onclick = function(event) {
-            if (!event.target.closest('button[onclick="toggleSortDropdown()"]')) {
-                document.getElementById('sortDropdown').classList.add('hidden');
-            }
-        }
-
-        // Logic Slider Price SESUAI ID HTML LU
-        const minRange = document.getElementById('priceMinRange');
-        const maxRange = document.getElementById('priceMaxRange');
-        const rangeFill = document.getElementById('priceRangeFill');
-        const minHandle = document.getElementById('priceMinHandle');
-        const maxHandle = document.getElementById('priceMaxHandle');
-        const minLabel = document.getElementById('priceMinLabel');
-        const maxLabel = document.getElementById('priceMaxLabel');
-
-        function updateRangeUI() {
-            let minVal = parseInt(minRange.value);
-            let maxVal = parseInt(maxRange.value);
-            const maxLimit = 500;
-
-            // Logic biar pentolan ga tabrakan (jarak minimal 10)
-            if (maxVal - minVal < 10) {
-                if (document.activeElement === minRange) {
-                    minRange.value = maxVal - 10;
-                    minVal = maxVal - 10;
-                } else {
-                    maxRange.value = minVal + 10;
-                    maxVal = minVal + 10;
-                }
-            }
-
-            const minPercent = (minVal / maxLimit) * 100;
-            const maxPercent = (maxVal / maxLimit) * 100;
-
-            rangeFill.style.left = minPercent + '%';
-            rangeFill.style.right = (100 - maxPercent) + '%';
-
-            minHandle.style.left = minPercent + '%';
-            maxHandle.style.left = maxPercent + '%';
-
-            minLabel.innerText = 'Rp ' + (minVal * 1000).toLocaleString('id-ID');
-            maxLabel.innerText = 'Rp ' + (maxVal * 1000).toLocaleString('id-ID');
-        }
-
-        // Event Listeners buat Price Filter
-        if (minRange && maxRange) {
-            minRange.addEventListener('input', updateRangeUI);
-            maxRange.addEventListener('input', updateRangeUI);
-            // Jalanin pas load biar UI update
-            document.addEventListener('DOMContentLoaded', updateRangeUI);
-        }
-    </script>
 </x-layoutCategories>

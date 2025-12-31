@@ -99,7 +99,7 @@
                     @foreach ($products as $product)
                         <a href="/detailProduk/{{ $product->id }}"
                             class="bg-white rounded-lg shadow-md overflow-hidden transition hover:shadow-xl block border border-gray-100 p-2">
-                            <div class="relative w-full h-64 overflow-hidden">
+                            <div class="relative w-full h-30 sm:h-48 lg:h-60 overflow-hidden">
                                 @if ($product->image)
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                         class="w-full h-full object-cover">
